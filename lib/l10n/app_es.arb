@@ -1,0 +1,21 @@
+{
+  "@@locale": "es",
+  "appTitle": "Water Mind",
+  "hello": "Hola",
+  "welcome": "Bienvenido a Water Mind",
+  "settings": "Configuración",
+  "language": "Idioma",
+  "theme": "Tema",
+  "darkMode": "Modo oscuro",
+  "lightMode": "Modo claro",
+  "systemMode": "Modo del sistema",
+  "notifications": "Notificaciones",
+  "profile": "Perfil",
+  "logout": "Cerrar sesión",
+  "login": "Iniciar sesión",
+  "email": "Correo electrónico",
+  "password": "Contraseña",
+  "register": "Registrarse",
+  "forgotPassword": "¿Olvidó su contraseña?",
+  "changeLanguage": "Cambiar idioma"
+}

@@ -1,0 +1,75 @@
+{
+  "@@locale": "en",
+  "appTitle": "Water Mind",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "hello": "Hello",
+  "@hello": {
+    "description": "A simple greeting"
+  },
+  "welcome": "Welcome to Water Mind",
+  "@welcome": {
+    "description": "Welcome message"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings title"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language selection option"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme selection option"
+  },
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "Dark mode option"
+  },
+  "lightMode": "Light Mode",
+  "@lightMode": {
+    "description": "Light mode option"
+  },
+  "systemMode": "System Mode",
+  "@systemMode": {
+    "description": "System mode option"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications settings"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "User profile"
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button"
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Login button"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email field"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password field"
+  },
+  "register": "Register",
+  "@register": {
+    "description": "Register button"
+  },
+  "forgotPassword": "Forgot Password?",
+  "@forgotPassword": {
+    "description": "Forgot password link"
+  },
+  "changeLanguage": "Change Language",
+  "@changeLanguage": {
+    "description": "Change language button"
+  }
+}

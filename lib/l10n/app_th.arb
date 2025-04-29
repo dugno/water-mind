@@ -1,0 +1,21 @@
+{
+  "@@locale": "th",
+  "appTitle": "Water Mind",
+  "hello": "สวัสดี",
+  "welcome": "ยินดีต้อนรับสู่ Water Mind",
+  "settings": "การตั้งค่า",
+  "language": "ภาษา",
+  "theme": "ธีม",
+  "darkMode": "โหมดมืด",
+  "lightMode": "โหมดสว่าง",
+  "systemMode": "โหมดระบบ",
+  "notifications": "การแจ้งเตือน",
+  "profile": "โปรไฟล์",
+  "logout": "ออกจากระบบ",
+  "login": "เข้าสู่ระบบ",
+  "email": "อีเมล",
+  "password": "รหัสผ่าน",
+  "register": "ลงทะเบียน",
+  "forgotPassword": "ลืมรหัสผ่าน?",
+  "changeLanguage": "เปลี่ยนภาษา"
+}

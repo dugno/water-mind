@@ -1,0 +1,21 @@
+{
+  "@@locale": "ja",
+  "appTitle": "Water Mind",
+  "hello": "こんにちは",
+  "welcome": "Water Mind へようこそ",
+  "settings": "設定",
+  "language": "言語",
+  "theme": "テーマ",
+  "darkMode": "ダークモード",
+  "lightMode": "ライトモード",
+  "systemMode": "システムモード",
+  "notifications": "通知",
+  "profile": "プロフィール",
+  "logout": "ログアウト",
+  "login": "ログイン",
+  "email": "メール",
+  "password": "パスワード",
+  "register": "登録",
+  "forgotPassword": "パスワードをお忘れですか？",
+  "changeLanguage": "言語を変更"
+}

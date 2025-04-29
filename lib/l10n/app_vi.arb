@@ -1,0 +1,21 @@
+{
+  "@@locale": "vi",
+  "appTitle": "Water Mind",
+  "hello": "Xin chào",
+  "welcome": "Chào mừng đến với Water Mind",
+  "settings": "Cài đặt",
+  "language": "Ngôn ngữ",
+  "theme": "Giao diện",
+  "darkMode": "Chế độ tối",
+  "lightMode": "Chế độ sáng",
+  "systemMode": "Chế độ hệ thống",
+  "notifications": "Thông báo",
+  "profile": "Hồ sơ",
+  "logout": "Đăng xuất",
+  "login": "Đăng nhập",
+  "email": "Email",
+  "password": "Mật khẩu",
+  "register": "Đăng ký",
+  "forgotPassword": "Quên mật khẩu?",
+  "changeLanguage": "Thay đổi ngôn ngữ"
+}

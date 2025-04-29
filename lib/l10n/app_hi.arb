@@ -1,0 +1,21 @@
+{
+  "@@locale": "hi",
+  "appTitle": "Water Mind",
+  "hello": "नमस्ते",
+  "welcome": "Water Mind में आपका स्वागत है",
+  "settings": "सेटिंग्स",
+  "language": "भाषा",
+  "theme": "थीम",
+  "darkMode": "डार्क मोड",
+  "lightMode": "लाइट मोड",
+  "systemMode": "सिस्टम मोड",
+  "notifications": "सूचनाएं",
+  "profile": "प्रोफ़ाइल",
+  "logout": "लॉग आउट",
+  "login": "लॉग इन",
+  "email": "ईमेल",
+  "password": "पासवर्ड",
+  "register": "रजिस्टर",
+  "forgotPassword": "पासवर्ड भूल गए?",
+  "changeLanguage": "भाषा बदलें"
+}

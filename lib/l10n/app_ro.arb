@@ -1,0 +1,21 @@
+{
+  "@@locale": "ro",
+  "appTitle": "Water Mind",
+  "hello": "Bună",
+  "welcome": "Bine ați venit la Water Mind",
+  "settings": "Setări",
+  "language": "Limbă",
+  "theme": "Temă",
+  "darkMode": "Mod întunecat",
+  "lightMode": "Mod luminos",
+  "systemMode": "Mod sistem",
+  "notifications": "Notificări",
+  "profile": "Profil",
+  "logout": "Deconectare",
+  "login": "Autentificare",
+  "email": "Email",
+  "password": "Parolă",
+  "register": "Înregistrare",
+  "forgotPassword": "Ați uitat parola?",
+  "changeLanguage": "Schimbă limba"
+}

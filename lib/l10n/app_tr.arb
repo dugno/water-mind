@@ -1,0 +1,21 @@
+{
+  "@@locale": "tr",
+  "appTitle": "Water Mind",
+  "hello": "Merhaba",
+  "welcome": "Water Mind'a Hoş Geldiniz",
+  "settings": "Ayarlar",
+  "language": "Dil",
+  "theme": "Tema",
+  "darkMode": "Karanlık Mod",
+  "lightMode": "Aydınlık Mod",
+  "systemMode": "Sistem Modu",
+  "notifications": "Bildirimler",
+  "profile": "Profil",
+  "logout": "Çıkış Yap",
+  "login": "Giriş Yap",
+  "email": "E-posta",
+  "password": "Şifre",
+  "register": "Kayıt Ol",
+  "forgotPassword": "Şifremi Unuttum?",
+  "changeLanguage": "Dili Değiştir"
+}

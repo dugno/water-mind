@@ -1,0 +1,21 @@
+{
+  "@@locale": "ru",
+  "appTitle": "Water Mind",
+  "hello": "Привет",
+  "welcome": "Добро пожаловать в Water Mind",
+  "settings": "Настройки",
+  "language": "Язык",
+  "theme": "Тема",
+  "darkMode": "Темный режим",
+  "lightMode": "Светлый режим",
+  "systemMode": "Системный режим",
+  "notifications": "Уведомления",
+  "profile": "Профиль",
+  "logout": "Выйти",
+  "login": "Войти",
+  "email": "Электронная почта",
+  "password": "Пароль",
+  "register": "Регистрация",
+  "forgotPassword": "Забыли пароль?",
+  "changeLanguage": "Изменить язык"
+}

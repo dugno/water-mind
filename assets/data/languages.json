@@ -1,0 +1,102 @@
+[
+    {
+        "id": "en",
+        "name": "English",
+       "abbreviation" : "EN",
+       "image":"images/united_kingdom.png"
+    },
+    {
+        "id": "zh",
+        "name": "Mandarin Chinese",
+        "abbreviation" : "ZH",
+        "image":"images/china.png"
+    },
+    {
+        "id": "hi",
+        "name": "Hindi",
+        "abbreviation" : "HI",
+        "image":"images/india.png"
+    },
+    {
+        "id": "es",
+        "name": "Spanish",
+        "abbreviation" : "ES",
+        "image":"images/spain.png"
+    },
+    {
+
+        "id": "fr",
+        "name": "French",
+        "abbreviation" : "FR",
+        "image":"images/france.png"
+    },
+    {
+
+        "id": "ru",
+        "name": "Russian",
+        "abbreviation" : "RU",
+        "image":"images/russia.png"
+    },
+    {
+        "id": "pt",
+        "name": "Portuguese",
+        "abbreviation" : "PT",
+        "image":"images/portugal.png"
+    },
+    {
+        "id": "id",
+        "name": "Indonesian",
+        "abbreviation" : "ID",
+        "image":"images/indonesia.png"
+    },
+    {
+        "id": "de",
+        "name": "German",
+        "abbreviation" : "DE",
+        "image":"images/germany.png"
+    },
+    {
+        "id": "ja",
+        "name": "Japanese",
+        "abbreviation" : "JA",
+        "image":"images/japan.png"
+    },
+    {
+        "id": "tr",
+        "name": "Turkish",
+        "abbreviation" : "TR",
+        "image":"images/turkey.png"
+
+    },
+    {
+        "id": "ko",
+        "name": "Korean",
+       "abbreviation" : "KO",
+        "image":"images/korea_south.png"
+    },
+    {
+        "id": "vi",
+        "name": "Vietnamese",
+        "abbreviation" : "VI",
+        "image":"images/vietnam.png"
+    },
+    {
+        "id": "th",
+        "name": "Thai",
+        "abbreviation" : "TH",
+        "image":"images/thailand.png"
+
+    },
+    {
+        "id": "ro",
+        "name": "Romanian",
+        "abbreviation" : "RO",
+        "image": "images/romania.png"
+    },
+    {
+        "id": "it",
+        "name": "Italian",
+        "abbreviation" : "IT",
+        "image": "images/italy.png"
+    }
+]

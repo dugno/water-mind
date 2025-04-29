@@ -1,0 +1,21 @@
+{
+  "@@locale": "id",
+  "appTitle": "Water Mind",
+  "hello": "Halo",
+  "welcome": "Selamat datang di Water Mind",
+  "settings": "Pengaturan",
+  "language": "Bahasa",
+  "theme": "Tema",
+  "darkMode": "Mode gelap",
+  "lightMode": "Mode terang",
+  "systemMode": "Mode sistem",
+  "notifications": "Notifikasi",
+  "profile": "Profil",
+  "logout": "Keluar",
+  "login": "Masuk",
+  "email": "Email",
+  "password": "Kata sandi",
+  "register": "Daftar",
+  "forgotPassword": "Lupa kata sandi?",
+  "changeLanguage": "Ubah bahasa"
+}

@@ -1,0 +1,21 @@
+{
+  "@@locale": "ko",
+  "appTitle": "Water Mind",
+  "hello": "안녕하세요",
+  "welcome": "Water Mind에 오신 것을 환영합니다",
+  "settings": "설정",
+  "language": "언어",
+  "theme": "테마",
+  "darkMode": "다크 모드",
+  "lightMode": "라이트 모드",
+  "systemMode": "시스템 모드",
+  "notifications": "알림",
+  "profile": "프로필",
+  "logout": "로그아웃",
+  "login": "로그인",
+  "email": "이메일",
+  "password": "비밀번호",
+  "register": "회원가입",
+  "forgotPassword": "비밀번호를 잊으셨나요?",
+  "changeLanguage": "언어 변경"
+}
