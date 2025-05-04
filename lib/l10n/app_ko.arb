@@ -17,5 +17,13 @@
   "password": "비밀번호",
   "register": "회원가입",
   "forgotPassword": "비밀번호를 잊으셨나요?",
-  "changeLanguage": "언어 변경"
+  "changeLanguage": "언어 변경",
+  "skip": "건너뛰기",
+  "next": "다음",
+  "back": "뒤로",
+  "getStarted": "시작하기",
+  "gender": "성별",
+  "male": "남성",
+  "female": "여성",
+  "other": "기타"
 }

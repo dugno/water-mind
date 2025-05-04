@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// A widget that represents a single page in the introduction screen
-class IntroductionPageItem extends StatelessWidget {
+class IntroductionPageItem extends ConsumerWidget {
   /// The title of the page
   final String title;
-  
   /// The description of the page
   final String description;
-  
   /// The image to display on the page
   final Widget? image;
-  
   /// The color of the page background
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// Creates a new [IntroductionPageItem] instance
   const IntroductionPageItem({
@@ -20,13 +18,17 @@ class IntroductionPageItem extends StatelessWidget {
     required this.title,
     required this.description,
     this.image,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Container(
-      color: backgroundColor,
+      color: backgroundColor ?? colorScheme.surface,
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -46,19 +48,17 @@ class IntroductionPageItem extends StatelessWidget {
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 28.0,
+                  style: textTheme.headlineMedium?.copyWith(
+                    color: colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(height: 16.0),
                 Text(
                   description,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.black87,
+                  style: textTheme.bodyLarge?.copyWith(
+                    color: colorScheme.onSurface.withOpacity(0.8),
                   ),
                 ),
               ],

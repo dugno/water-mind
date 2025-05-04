@@ -189,7 +189,6 @@ class AwesomeNotificationService implements NotificationServiceInterface {
 
   @override
   Future<void> dispose() async {
-    // Close stream controllers if they're not closed already
     if (!_actionController.isClosed) {
       await _actionController.close();
     }

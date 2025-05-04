@@ -17,5 +17,13 @@
   "password": "Password",
   "register": "Registrati",
   "forgotPassword": "Password dimenticata?",
-  "changeLanguage": "Cambia lingua"
+  "changeLanguage": "Cambia lingua",
+  "skip": "Salta",
+  "next": "Avanti",
+  "back": "Indietro",
+  "getStarted": "Inizia",
+  "gender": "Genere",
+  "male": "Maschile",
+  "female": "Femminile",
+  "other": "Altro"
 }

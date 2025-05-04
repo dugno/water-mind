@@ -17,5 +17,13 @@
   "password": "Parolă",
   "register": "Înregistrare",
   "forgotPassword": "Ați uitat parola?",
-  "changeLanguage": "Schimbă limba"
+  "changeLanguage": "Schimbă limba",
+  "skip": "Omite",
+  "next": "Înainte",
+  "back": "Înapoi",
+  "getStarted": "Începe",
+  "gender": "Gen",
+  "male": "Masculin",
+  "female": "Feminin",
+  "other": "Altul"
 }

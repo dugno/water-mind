@@ -17,5 +17,13 @@
   "password": "Kata sandi",
   "register": "Daftar",
   "forgotPassword": "Lupa kata sandi?",
-  "changeLanguage": "Ubah bahasa"
+  "changeLanguage": "Ubah bahasa",
+  "skip": "Lewati",
+  "next": "Selanjutnya",
+  "back": "Kembali",
+  "getStarted": "Mulai",
+  "gender": "Jenis Kelamin",
+  "male": "Laki-laki",
+  "female": "Perempuan",
+  "other": "Lainnya"
 }

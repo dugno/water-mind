@@ -17,5 +17,13 @@
   "password": "पासवर्ड",
   "register": "रजिस्टर",
   "forgotPassword": "पासवर्ड भूल गए?",
-  "changeLanguage": "भाषा बदलें"
+  "changeLanguage": "भाषा बदलें",
+  "skip": "छोड़ें",
+  "next": "अगला",
+  "back": "वापस",
+  "getStarted": "शुरू करें",
+  "gender": "लिंग",
+  "male": "पुरुष",
+  "female": "महिला",
+  "other": "अन्य"
 }

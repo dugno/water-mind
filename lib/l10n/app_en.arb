@@ -71,5 +71,290 @@
   "changeLanguage": "Change Language",
   "@changeLanguage": {
     "description": "Change language button"
+  },
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip button"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next button"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button"
+  },
+  "getStarted": "Get Started",
+  "@getStarted": {
+    "description": "Get started button"
+  },
+  "gender": "Gender",
+  "@gender": {
+    "description": "Gender label"
+  },
+  "male": "Male",
+  "@male": {
+    "description": "Male gender option"
+  },
+  "female": "Female",
+  "@female": {
+    "description": "Female gender option"
+  },
+  "pregnant": "Pregnant",
+  "@pregnant": {
+    "description": "Pregnant gender option"
+  },
+  "breastfeeding": "Breastfeeding",
+  "@breastfeeding": {
+    "description": "Breastfeeding gender option"
+  },
+  "other": "Other",
+  "@other": {
+    "description": "Other gender option"
+  },
+
+  "heightWeight": "HEIGHT & WEIGHT",
+  "@heightWeight": {
+    "description": "Height and weight step title"
+  },
+  "dateOfBirth": "DATE OF BIRTH",
+  "@dateOfBirth": {
+    "description": "Date of birth step title"
+  },
+  "activityLevel": "ACTIVITY LEVEL",
+  "@activityLevel": {
+    "description": "Activity level step title"
+  },
+  "livingEnvironment": "LIVING CONDITIONS",
+  "@livingEnvironment": {
+    "description": "Living conditions step title"
+  },
+  "wakeUpTime": "WAKE UP TIME",
+  "@wakeUpTime": {
+    "description": "Wake up time step title"
+  },
+  "bedTime": "BEDTIME",
+  "@bedTime": {
+    "description": "Bedtime step title"
+  },
+
+  "genderDescription": "This will be used to calibrate your custom plan.",
+  "@genderDescription": {
+    "description": "Gender step description"
+  },
+  "heightWeightDescription": "Your height and weight help us calculate your hydration needs.",
+  "@heightWeightDescription": {
+    "description": "Height and weight step description"
+  },
+  "dateOfBirthDescription": "Your age affects your hydration requirements.",
+  "@dateOfBirthDescription": {
+    "description": "Date of birth step description"
+  },
+  "activityLevelDescription": "More active lifestyles require more hydration.",
+  "@activityLevelDescription": {
+    "description": "Activity level step description"
+  },
+  "livingEnvironmentDescription": "Your living conditions affect your hydration needs.",
+  "@livingEnvironmentDescription": {
+    "description": "Living conditions step description"
+  },
+  "wakeUpTimeDescription": "We'll schedule your first water reminder after you wake up.",
+  "@wakeUpTimeDescription": {
+    "description": "Wake up time step description"
+  },
+  "bedTimeDescription": "We'll stop reminders before your bedtime.",
+  "@bedTimeDescription": {
+    "description": "Bedtime step description"
+  },
+
+  "height": "Height",
+  "@height": {
+    "description": "Height label"
+  },
+  "weight": "Weight",
+  "@weight": {
+    "description": "Weight label"
+  },
+  "metric": "Metric",
+  "@metric": {
+    "description": "Metric measurement unit"
+  },
+  "imperial": "Imperial",
+  "@imperial": {
+    "description": "Imperial measurement unit"
+  },
+
+  "january": "Jan",
+  "@january": {
+    "description": "January abbreviated"
+  },
+  "february": "Feb",
+  "@february": {
+    "description": "February abbreviated"
+  },
+  "march": "Mar",
+  "@march": {
+    "description": "March abbreviated"
+  },
+  "april": "Apr",
+  "@april": {
+    "description": "April abbreviated"
+  },
+  "may": "May",
+  "@may": {
+    "description": "May abbreviated"
+  },
+  "june": "Jun",
+  "@june": {
+    "description": "June abbreviated"
+  },
+  "july": "Jul",
+  "@july": {
+    "description": "July abbreviated"
+  },
+  "august": "Aug",
+  "@august": {
+    "description": "August abbreviated"
+  },
+  "september": "Sep",
+  "@september": {
+    "description": "September abbreviated"
+  },
+  "october": "Oct",
+  "@october": {
+    "description": "October abbreviated"
+  },
+  "november": "Nov",
+  "@november": {
+    "description": "November abbreviated"
+  },
+  "december": "Dec",
+  "@december": {
+    "description": "December abbreviated"
+  },
+
+  "am": "AM",
+  "@am": {
+    "description": "AM time indicator"
+  },
+  "pm": "PM",
+  "@pm": {
+    "description": "PM time indicator"
+  },
+
+  "sedentary": "Sedentary (little or no exercise)",
+  "@sedentary": {
+    "description": "Sedentary activity level"
+  },
+  "lightlyActive": "Lightly active (light exercise 1-3 days/week)",
+  "@lightlyActive": {
+    "description": "Lightly active activity level"
+  },
+  "moderatelyActive": "Moderately active (exercise 3-5 days/week)",
+  "@moderatelyActive": {
+    "description": "Moderately active activity level"
+  },
+  "veryActive": "Very active (hard exercise 6-7 days/week)",
+  "@veryActive": {
+    "description": "Very active activity level"
+  },
+  "extraActive": "Extra active (very hard exercise or physical job)",
+  "@extraActive": {
+    "description": "Extra active activity level"
+  },
+
+  "airConditioned": "Air-conditioned (indoor)",
+  "@airConditioned": {
+    "description": "Air-conditioned living environment"
+  },
+  "hotSunny": "Hot and sunny",
+  "@hotSunny": {
+    "description": "Hot and sunny living environment"
+  },
+  "rainyHumid": "Rainy and humid",
+  "@rainyHumid": {
+    "description": "Rainy and humid living environment"
+  },
+  "cold": "Cold",
+  "@cold": {
+    "description": "Cold living environment"
+  },
+  "moderate": "Moderate (mild temperature)",
+  "@moderate": {
+    "description": "Moderate living environment"
+  },
+
+  "dailyWaterIntake": "Your Daily Water Intake",
+  "@dailyWaterIntake": {
+    "description": "Daily water intake title"
+  },
+  "calculationFactors": "Calculation Factors",
+  "@calculationFactors": {
+    "description": "Calculation factors title"
+  },
+  "baseIntake": "Base intake",
+  "@baseIntake": {
+    "description": "Base water intake factor"
+  },
+  "activityFactor": "Activity level",
+  "@activityFactor": {
+    "description": "Activity level factor"
+  },
+  "environmentFactor": "Environment & Weather",
+  "@environmentFactor": {
+    "description": "Combined environment and weather factor"
+  },
+  "genderFactor": "Gender",
+  "@genderFactor": {
+    "description": "Gender factor"
+  },
+  "ageFactor": "Age",
+  "@ageFactor": {
+    "description": "Age factor"
+  },
+  "awakeHoursFactor": "Awake hours",
+  "@awakeHoursFactor": {
+    "description": "Awake hours factor"
+  },
+  "weatherFactor": "Weather",
+  "@weatherFactor": {
+    "description": "Weather factor"
+  },
+
+  "sunny": "Sunny",
+  "@sunny": {
+    "description": "Sunny weather"
+  },
+  "cloudy": "Cloudy",
+  "@cloudy": {
+    "description": "Cloudy weather"
+  },
+  "rainy": "Rainy",
+  "@rainy": {
+    "description": "Rainy weather"
+  },
+  "hot": "Hot",
+  "@hot": {
+    "description": "Hot weather"
+  },
+  "humid": "Humid",
+  "@humid": {
+    "description": "Humid weather"
+  },
+  "cold": "Cold",
+  "@cold": {
+    "description": "Cold weather"
+  },
+  "coldWeather": "Cold",
+  "@coldWeather": {
+    "description": "Cold weather condition"
+  },
+  "snowy": "Snowy",
+  "@snowy": {
+    "description": "Snowy weather"
+  },
+  "windy": "Windy",
+  "@windy": {
+    "description": "Windy weather"
   }
 }

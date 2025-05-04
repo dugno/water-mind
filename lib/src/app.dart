@@ -3,6 +3,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:water_mind/src/core/routing/app_router.dart';
+import 'package:water_mind/src/core/theme/app_theme.dart';
+import 'package:water_mind/src/core/theme/providers/theme_provider.dart';
+
 /// The main app widget that uses Riverpod for state management and localization.
 class App extends ConsumerWidget {
   /// Creates a new [App] instance.
@@ -10,15 +13,19 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Get the current locale from the provider
-
-    // Get the router from the provider
+    // Lấy router từ provider
     final router = ref.watch(routerProvider);
 
-    return MaterialApp.router(
-      // Set the app's locale based on the current language
+    // Lấy theme data từ provider
+    final themeData = ref.watch(themeDataProvider);
 
-      // Add the localization delegates
+    // Tạo theme dựa trên theme data
+    final theme = AppTheme.createTheme(themeData);
+
+    return MaterialApp.router(
+      // Thiết lập theme cho ứng dụng
+      theme: theme,
+      // Thêm các delegate cho đa ngôn ngữ
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -26,16 +33,12 @@ class App extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
 
-      // Define the supported locales
+      // Định nghĩa các locale được hỗ trợ
       supportedLocales: AppLocalizations.supportedLocales,
 
       title: 'Water Mind',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
 
-      // Configure the router
+      // Cấu hình router
       routerConfig: router.config(),
     );
   }

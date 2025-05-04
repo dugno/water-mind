@@ -1,0 +1,87 @@
+import 'package:flutter/material.dart';
+import 'package:water_mind/src/core/utils/enum/enum.dart';
+
+class ActivitySegment extends StatefulWidget {
+  final Function(ActivityLevel)? onActivitySelected;
+  final ActivityLevel? initialActivity;
+
+  const ActivitySegment({
+    super.key,
+    this.onActivitySelected,
+    this.initialActivity,
+  });
+
+  @override
+  State<ActivitySegment> createState() => _ActivitySegmentState();
+}
+
+class _ActivitySegmentState extends State<ActivitySegment> {
+  ActivityLevel? _selectedActivity;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedActivity = widget.initialActivity;
+  }
+
+  void _selectActivity(ActivityLevel activity) {
+    setState(() {
+      _selectedActivity = activity;
+    });
+
+    if (widget.onActivitySelected != null) {
+      widget.onActivitySelected!(activity);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildActivityOption(context, ActivityLevel.sedentary),
+          const SizedBox(height: 12),
+          _buildActivityOption(context, ActivityLevel.lightlyActive),
+          const SizedBox(height: 12),
+          _buildActivityOption(context, ActivityLevel.moderatelyActive),
+          const SizedBox(height: 12),
+          _buildActivityOption(context, ActivityLevel.veryActive),
+          const SizedBox(height: 12),
+          _buildActivityOption(context, ActivityLevel.extraActive),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActivityOption(BuildContext context, ActivityLevel activity) {
+    final isSelected = _selectedActivity == activity;
+
+    return GestureDetector(
+      onTap: () => _selectActivity(activity),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF03045E) : Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color:
+                isSelected ? const Color(0xFF03045E) : const Color(0xFFE0E0E0),
+            width: 1,
+          ),
+        ),
+        child: Text(
+          activity.getString(context),
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+}

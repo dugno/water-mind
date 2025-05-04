@@ -17,5 +17,13 @@
   "password": "Şifre",
   "register": "Kayıt Ol",
   "forgotPassword": "Şifremi Unuttum?",
-  "changeLanguage": "Dili Değiştir"
+  "changeLanguage": "Dili Değiştir",
+  "skip": "Atla",
+  "next": "İleri",
+  "back": "Geri",
+  "getStarted": "Başla",
+  "gender": "Cinsiyet",
+  "male": "Erkek",
+  "female": "Kadın",
+  "other": "Diğer"
 }

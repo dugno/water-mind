@@ -1,6 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:water_mind/src/pages/getting_started/getting_started.dart';
+import 'package:water_mind/src/pages/getting_started/models/getting_started_step.dart';
+import 'package:water_mind/src/pages/settings/theme_settings_page.dart';
+import 'package:water_mind/src/ui/widgets/hydration/hydration_widgets.dart';
+import 'package:water_mind/src/ui/widgets/wheel_picker/example/wheel_picker_example.dart';
 
 import '../../pages/introduction/introduction.dart';
 
@@ -14,13 +19,33 @@ final routerProvider = Provider<AppRouter>((ref) {
 class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
-        // Introduction page (initial route)
         AutoRoute(
-          path: '/',
+          path: '/introduction',
           page: IntroductionRoute.page,
+          
+        ),
+        AutoRoute(
+          path: '/getting-started',
+          page: GettingStartedRoute.page,
+        ),
+        AutoRoute(
+          path: '/example/wheel-picker',
+          page: WheelPickerExampleRoute.page,
+        ),
+
+        // Water intake example page
+        AutoRoute(
+          path: '/example/water-intake',
+          page: WaterIntakeExampleRoute.page,
           initial: true,
         ),
 
+        // Theme settings page
+        AutoRoute(
+          path: '/settings/theme',
+          page: ThemeSettingsRoute.page,
+          
+        ),
 
         // Add more routes as needed
       ];

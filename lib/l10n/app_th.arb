@@ -17,5 +17,13 @@
   "password": "รหัสผ่าน",
   "register": "ลงทะเบียน",
   "forgotPassword": "ลืมรหัสผ่าน?",
-  "changeLanguage": "เปลี่ยนภาษา"
+  "changeLanguage": "เปลี่ยนภาษา",
+  "skip": "ข้าม",
+  "next": "ถัดไป",
+  "back": "ย้อนกลับ",
+  "getStarted": "เริ่มต้น",
+  "gender": "เพศ",
+  "male": "ชาย",
+  "female": "หญิง",
+  "other": "อื่นๆ"
 }
