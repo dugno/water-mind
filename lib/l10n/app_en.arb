@@ -356,5 +356,158 @@
   "windy": "Windy",
   "@windy": {
     "description": "Windy weather"
+  },
+
+  "partlyCloudy": "Partly Cloudy",
+  "@partlyCloudy": {
+    "description": "Partly cloudy weather"
+  },
+  "overcast": "Overcast",
+  "@overcast": {
+    "description": "Overcast weather"
+  },
+  "mist": "Mist",
+  "@mist": {
+    "description": "Misty weather"
+  },
+  "patchyRain": "Patchy Rain",
+  "@patchyRain": {
+    "description": "Patchy rain weather"
+  },
+  "patchySnow": "Patchy Snow",
+  "@patchySnow": {
+    "description": "Patchy snow weather"
+  },
+  "patchySleet": "Patchy Sleet",
+  "@patchySleet": {
+    "description": "Patchy sleet weather"
+  },
+  "freezingDrizzle": "Freezing Drizzle",
+  "@freezingDrizzle": {
+    "description": "Freezing drizzle weather"
+  },
+  "thunderPossible": "Thunder Possible",
+  "@thunderPossible": {
+    "description": "Thunder possible weather"
+  },
+  "blowingSnow": "Blowing Snow",
+  "@blowingSnow": {
+    "description": "Blowing snow weather"
+  },
+  "blizzard": "Blizzard",
+  "@blizzard": {
+    "description": "Blizzard weather"
+  },
+  "fog": "Fog",
+  "@fog": {
+    "description": "Foggy weather"
+  },
+  "freezingFog": "Freezing Fog",
+  "@freezingFog": {
+    "description": "Freezing fog weather"
+  },
+  "lightDrizzle": "Light Drizzle",
+  "@lightDrizzle": {
+    "description": "Light drizzle weather"
+  },
+  "heavyFreezingDrizzle": "Heavy Freezing Drizzle",
+  "@heavyFreezingDrizzle": {
+    "description": "Heavy freezing drizzle weather"
+  },
+  "lightRain": "Light Rain",
+  "@lightRain": {
+    "description": "Light rain weather"
+  },
+  "moderateRain": "Moderate Rain",
+  "@moderateRain": {
+    "description": "Moderate rain weather"
+  },
+  "heavyRain": "Heavy Rain",
+  "@heavyRain": {
+    "description": "Heavy rain weather"
+  },
+  "lightFreezingRain": "Light Freezing Rain",
+  "@lightFreezingRain": {
+    "description": "Light freezing rain weather"
+  },
+  "heavyFreezingRain": "Heavy Freezing Rain",
+  "@heavyFreezingRain": {
+    "description": "Heavy freezing rain weather"
+  },
+  "lightSleet": "Light Sleet",
+  "@lightSleet": {
+    "description": "Light sleet weather"
+  },
+  "heavySleet": "Heavy Sleet",
+  "@heavySleet": {
+    "description": "Heavy sleet weather"
+  },
+  "lightSnow": "Light Snow",
+  "@lightSnow": {
+    "description": "Light snow weather"
+  },
+  "moderateSnow": "Moderate Snow",
+  "@moderateSnow": {
+    "description": "Moderate snow weather"
+  },
+  "heavySnow": "Heavy Snow",
+  "@heavySnow": {
+    "description": "Heavy snow weather"
+  },
+  "icePellets": "Ice Pellets",
+  "@icePellets": {
+    "description": "Ice pellets weather"
+  },
+  "lightRainShower": "Light Rain Shower",
+  "@lightRainShower": {
+    "description": "Light rain shower weather"
+  },
+  "heavyRainShower": "Heavy Rain Shower",
+  "@heavyRainShower": {
+    "description": "Heavy rain shower weather"
+  },
+  "torrentialRain": "Torrential Rain",
+  "@torrentialRain": {
+    "description": "Torrential rain weather"
+  },
+  "lightSleetShowers": "Light Sleet Showers",
+  "@lightSleetShowers": {
+    "description": "Light sleet showers weather"
+  },
+  "heavySleetShowers": "Heavy Sleet Showers",
+  "@heavySleetShowers": {
+    "description": "Heavy sleet showers weather"
+  },
+  "lightSnowShowers": "Light Snow Showers",
+  "@lightSnowShowers": {
+    "description": "Light snow showers weather"
+  },
+  "heavySnowShowers": "Heavy Snow Showers",
+  "@heavySnowShowers": {
+    "description": "Heavy snow showers weather"
+  },
+  "lightIcePellets": "Light Ice Pellets",
+  "@lightIcePellets": {
+    "description": "Light ice pellets weather"
+  },
+  "heavyIcePellets": "Heavy Ice Pellets",
+  "@heavyIcePellets": {
+    "description": "Heavy ice pellets weather"
+  },
+  "lightRainThunder": "Light Rain with Thunder",
+  "@lightRainThunder": {
+    "description": "Light rain with thunder weather"
+  },
+  "heavyRainThunder": "Heavy Rain with Thunder",
+  "@heavyRainThunder": {
+    "description": "Heavy rain with thunder weather"
+  },
+  "lightSnowThunder": "Light Snow with Thunder",
+  "@lightSnowThunder": {
+    "description": "Light snow with thunder weather"
+  },
+  "heavySnowThunder": "Heavy Snow with Thunder",
+  "@heavySnowThunder": {
+    "description": "Heavy snow with thunder weather"
   }
 }

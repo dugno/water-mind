@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 /// Configuration for API endpoints and settings
 class ApiConfig {
   /// Base URL for the API
-  static const String baseUrl = 'https://api.weatherapi.com';
+  static const String baseUrl = 'http://api.weatherapi.com/v1';
 
   /// API version
   static const String apiVersion = 'v1';

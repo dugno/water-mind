@@ -2,15 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:water_mind/src/core/network/config/api_config.dart';
 import 'package:water_mind/src/core/network/interceptors/error_interceptor.dart';
+import 'package:water_mind/src/core/network/interceptors/logging_interceptor.dart';
 import 'package:water_mind/src/core/network/models/api_error.dart';
 import 'package:water_mind/src/core/network/models/network_result.dart';
 import 'package:water_mind/src/core/network/services/connectivity_service.dart';
+import 'package:water_mind/src/core/services/logger/app_logger.dart';
 
 /// A client for making HTTP requests using Dio
 class DioClient {
   /// The Dio instance
   final Dio _dio;
-  
+
   /// The connectivity service
   final ConnectivityService _connectivityService;
 
@@ -38,8 +40,19 @@ class DioClient {
 
     // Add interceptors
     _dio.interceptors.add(ErrorInterceptor());
-    
-    // Add logger in debug mode
+
+    // Always add our custom logging interceptor that uses AppLogger
+    _dio.interceptors.add(
+      LoggingInterceptor(
+        logRequestHeader: true,
+        logRequestBody: true,
+        logResponseHeader: true,
+        logResponseBody: true,
+        logError: true,
+      ),
+    );
+
+    // Add pretty logger in debug mode for console output
     if (ApiConfig.enableLogging) {
       _dio.interceptors.add(
         PrettyDioLogger(
@@ -177,36 +190,40 @@ class DioClient {
       // Check connectivity first
       final isConnected = await _connectivityService.isConnected();
       if (!isConnected) {
-        return NetworkResult.error(
-          const ApiError(
-            code: 'NO_CONNECTION',
-            message: 'No internet connection',
-          ),
+        const error = ApiError(
+          code: 'NO_CONNECTION',
+          message: 'No internet connection',
         );
+        AppLogger.warning('Network connectivity issue', {'error': 'NO_CONNECTION'});
+        return NetworkResult.error(error);
       }
 
       final response = await request();
       final data = fromJson(response.data);
       return NetworkResult.success(data);
     } on DioException catch (e) {
+      // The LoggingInterceptor will handle detailed logging of the error
       if (e.error is ApiError) {
         return NetworkResult.error(e.error as ApiError);
       }
-      
-      return NetworkResult.error(
-        ApiError(
-          code: 'UNKNOWN_ERROR',
-          message: e.message ?? 'An unexpected error occurred',
-          data: e.response?.data,
-        ),
+
+      final error = ApiError(
+        code: 'UNKNOWN_ERROR',
+        message: e.message ?? 'An unexpected error occurred',
+        data: e.response?.data,
       );
-    } catch (e) {
-      return NetworkResult.error(
-        ApiError(
-          code: 'UNKNOWN_ERROR',
-          message: e.toString(),
-        ),
+
+      return NetworkResult.error(error);
+    } catch (e, stackTrace) {
+      // Log unexpected errors that aren't caught by the interceptor
+      AppLogger.reportError(e, stackTrace, 'Unexpected API error');
+
+      final error = ApiError(
+        code: 'UNKNOWN_ERROR',
+        message: e.toString(),
       );
+
+      return NetworkResult.error(error);
     }
   }
 }

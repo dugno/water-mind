@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_mind/src/core/network/config/api_config.dart';
+import 'package:water_mind/src/core/services/kv_store/kv_store.dart';
 import 'package:water_mind/src/core/services/weather/models/forecast_data.dart';
 
 /// Manager for caching weather data
@@ -9,21 +9,19 @@ class WeatherCacheManager {
   /// Key for storing the last weather data
   static const String _weatherCacheKey = 'weather_cache';
 
-  /// Shared preferences instance
-  final SharedPreferences _prefs;
-
   /// Constructor for WeatherCacheManager
-  WeatherCacheManager(this._prefs);
+  WeatherCacheManager();
 
   /// Save forecast data to cache
   Future<bool> saveForecastData(ForecastData data) async {
     final jsonData = json.encode(data.toJson());
-    return await _prefs.setString(_weatherCacheKey, jsonData);
+    await KVStoreService.sharedPreferences.setString(_weatherCacheKey, jsonData);
+    return true;
   }
 
   /// Get forecast data from cache
   ForecastData? getForecastData() {
-    final jsonData = _prefs.getString(_weatherCacheKey);
+    final jsonData = KVStoreService.sharedPreferences.getString(_weatherCacheKey);
     if (jsonData == null) {
       return null;
     }
@@ -53,6 +51,6 @@ class WeatherCacheManager {
 
   /// Clear the cache
   Future<void> clearCache() async {
-    await _prefs.remove(_weatherCacheKey);
+    await KVStoreService.sharedPreferences.remove(_weatherCacheKey);
   }
 }

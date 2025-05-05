@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
+import 'package:water_mind/src/core/utils/weather/weather_icon_mapper.dart';
 import 'package:water_mind/src/pages/getting_started/models/user_onboarding_model.dart';
 import 'water_intake_display.dart';
 
@@ -276,7 +277,16 @@ class _WaterIntakeExamplePageState
           runSpacing: 8,
           children: commonWeatherConditions.map((weather) {
             return ChoiceChip(
-              avatar: Icon(weather.getIcon(), size: 18),
+              avatar: SizedBox(
+                width: 18,
+                height: 18,
+                child: WeatherIconMapper.getWeatherIconFromCondition(
+                  weather,
+                  isDay: true,
+                ).svg(
+                  fit: BoxFit.contain,
+                ),
+              ),
               label: Text(weather.getString(context)),
               selected: _weatherCondition == weather,
               onSelected: (selected) {
@@ -301,7 +311,16 @@ class _WaterIntakeExamplePageState
                   .where((w) => !commonWeatherConditions.contains(w))
                   .map((weather) {
                 return ChoiceChip(
-                  avatar: Icon(weather.getIcon(), size: 18),
+                  avatar: SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: WeatherIconMapper.getWeatherIconFromCondition(
+                      weather,
+                      isDay: true,
+                    ).svg(
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                   label: Text(weather.getString(context)),
                   selected: _weatherCondition == weather,
                   onSelected: (selected) {

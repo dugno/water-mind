@@ -164,109 +164,109 @@ enum WeatherCondition {
 
   /// Returns the localized string representation of the weather condition
   String getString(BuildContext context) {
-    // For simplicity, we'll return a basic representation
-    // In a real app, you would add all these strings to your ARB files
+    final l10n = context.l10n;
+
     switch (this) {
       case WeatherCondition.sunny:
-        return context.l10n.sunny;
+        return l10n.sunny;
       case WeatherCondition.partlyCloudy:
-        return "Partly Cloudy";
+        return l10n.partlyCloudy;
       case WeatherCondition.cloudy:
-        return context.l10n.cloudy;
+        return l10n.cloudy;
       case WeatherCondition.overcast:
-        return "Overcast";
+        return l10n.overcast;
       case WeatherCondition.mist:
-        return "Mist";
+        return l10n.mist;
       case WeatherCondition.patchyRainPossible:
-        return "Patchy Rain";
+        return l10n.patchyRain;
       case WeatherCondition.patchySnowPossible:
-        return "Patchy Snow";
+        return l10n.patchySnow;
       case WeatherCondition.patchySleetPossible:
-        return "Patchy Sleet";
+        return l10n.patchySleet;
       case WeatherCondition.patchyFreezingDrizzlePossible:
-        return "Freezing Drizzle";
+        return l10n.freezingDrizzle;
       case WeatherCondition.thunderyOutbreaksPossible:
-        return "Thunder Possible";
+        return l10n.thunderPossible;
       case WeatherCondition.blowingSnow:
-        return "Blowing Snow";
+        return l10n.blowingSnow;
       case WeatherCondition.blizzard:
-        return "Blizzard";
+        return l10n.blizzard;
       case WeatherCondition.fog:
-        return "Fog";
+        return l10n.fog;
       case WeatherCondition.freezingFog:
-        return "Freezing Fog";
+        return l10n.freezingFog;
       case WeatherCondition.patchyLightDrizzle:
-        return "Light Drizzle";
+        return l10n.lightDrizzle;
       case WeatherCondition.lightDrizzle:
-        return "Light Drizzle";
+        return l10n.lightDrizzle;
       case WeatherCondition.freezingDrizzle:
-        return "Freezing Drizzle";
+        return l10n.freezingDrizzle;
       case WeatherCondition.heavyFreezingDrizzle:
-        return "Heavy Freezing Drizzle";
+        return l10n.heavyFreezingDrizzle;
       case WeatherCondition.patchyLightRain:
-        return "Light Rain";
+        return l10n.lightRain;
       case WeatherCondition.lightRain:
-        return "Light Rain";
+        return l10n.lightRain;
       case WeatherCondition.moderateRainAtTimes:
-        return "Moderate Rain";
+        return l10n.moderateRain;
       case WeatherCondition.moderateRain:
-        return "Moderate Rain";
+        return l10n.moderateRain;
       case WeatherCondition.heavyRainAtTimes:
-        return "Heavy Rain";
+        return l10n.heavyRain;
       case WeatherCondition.heavyRain:
-        return "Heavy Rain";
+        return l10n.heavyRain;
       case WeatherCondition.lightFreezingRain:
-        return "Light Freezing Rain";
+        return l10n.lightFreezingRain;
       case WeatherCondition.moderateOrHeavyFreezingRain:
-        return "Heavy Freezing Rain";
+        return l10n.heavyFreezingRain;
       case WeatherCondition.lightSleet:
-        return "Light Sleet";
+        return l10n.lightSleet;
       case WeatherCondition.moderateOrHeavySleet:
-        return "Heavy Sleet";
+        return l10n.heavySleet;
       case WeatherCondition.patchyLightSnow:
-        return "Light Snow";
+        return l10n.lightSnow;
       case WeatherCondition.lightSnow:
-        return "Light Snow";
+        return l10n.lightSnow;
       case WeatherCondition.patchyModerateSnow:
-        return "Moderate Snow";
+        return l10n.moderateSnow;
       case WeatherCondition.moderateSnow:
-        return "Moderate Snow";
+        return l10n.moderateSnow;
       case WeatherCondition.patchyHeavySnow:
-        return "Heavy Snow";
+        return l10n.heavySnow;
       case WeatherCondition.heavySnow:
-        return "Heavy Snow";
+        return l10n.heavySnow;
       case WeatherCondition.icePellets:
-        return "Ice Pellets";
+        return l10n.icePellets;
       case WeatherCondition.lightRainShower:
-        return "Light Rain Shower";
+        return l10n.lightRainShower;
       case WeatherCondition.moderateOrHeavyRainShower:
-        return "Heavy Rain Shower";
+        return l10n.heavyRainShower;
       case WeatherCondition.torrentialRainShower:
-        return "Torrential Rain";
+        return l10n.torrentialRain;
       case WeatherCondition.lightSleetShowers:
-        return "Light Sleet Showers";
+        return l10n.lightSleetShowers;
       case WeatherCondition.moderateOrHeavySleetShowers:
-        return "Heavy Sleet Showers";
+        return l10n.heavySleetShowers;
       case WeatherCondition.lightSnowShowers:
-        return "Light Snow Showers";
+        return l10n.lightSnowShowers;
       case WeatherCondition.moderateOrHeavySnowShowers:
-        return "Heavy Snow Showers";
+        return l10n.heavySnowShowers;
       case WeatherCondition.lightShowersOfIcePellets:
-        return "Light Ice Pellets";
+        return l10n.lightIcePellets;
       case WeatherCondition.moderateOrHeavyShowersOfIcePellets:
-        return "Heavy Ice Pellets";
+        return l10n.heavyIcePellets;
       case WeatherCondition.patchyLightRainWithThunder:
-        return "Light Rain with Thunder";
+        return l10n.lightRainThunder;
       case WeatherCondition.moderateOrHeavyRainWithThunder:
-        return "Heavy Rain with Thunder";
+        return l10n.heavyRainThunder;
       case WeatherCondition.patchyLightSnowWithThunder:
-        return "Light Snow with Thunder";
+        return l10n.lightSnowThunder;
       case WeatherCondition.moderateOrHeavySnowWithThunder:
-        return "Heavy Snow with Thunder";
+        return l10n.heavySnowThunder;
       case WeatherCondition.hot:
-        return context.l10n.hot;
+        return l10n.hot;
       case WeatherCondition.humid:
-        return context.l10n.humid;
+        return l10n.humid;
     }
   }
 
@@ -275,42 +275,6 @@ enum WeatherCondition {
     // The hydration factor is now stored as a property
     return hydrationFactor;
   }
-
-  /// Get the icon for this weather condition
-  IconData getIcon() {
-    // For simplicity, we'll map weather conditions to basic icons
-    // In a real app, you would have more specific icons
-    if (code == 1000) {
-      // Sunny
-      return Icons.wb_sunny;
-    } else if (code >= 1003 && code <= 1009) {
-      // Cloudy conditions
-      return Icons.cloud;
-    } else if (code >= 1030 && code <= 1135) {
-      // Fog, mist
-      return Icons.cloud;
-    } else if (code >= 1150 && code <= 1201) {
-      // Rain, drizzle
-      return Icons.water_drop;
-    } else if (code >= 1204 && code <= 1237) {
-      // Snow, sleet, ice
-      return Icons.ac_unit;
-    } else if (code >= 1240 && code <= 1264) {
-      // Showers
-      return Icons.water_drop;
-    } else if (code >= 1273 && code <= 1282) {
-      // Thunder
-      return Icons.thunderstorm;
-    } else if (this == WeatherCondition.hot) {
-      return Icons.thermostat;
-    } else if (this == WeatherCondition.humid) {
-      return Icons.water;
-    } else {
-      return Icons.cloud;
-    }
-  }
-
-  /// Find a weather condition by its code
   static WeatherCondition fromCode(int code) {
     try {
       return WeatherCondition.values

@@ -288,8 +288,8 @@ class GettingStartedPage extends ConsumerWidget {
               children: [
                 Image.asset(
                   isEnglish
-                      ? 'assets/images/flags/us.png'
-                      : 'assets/images/flags/vn.png',
+                      ? 'assets/images/language/united_kingdom.png'
+                      : 'assets/images/language/vietnam.png',
                   width: 16,
                   height: 12,
                   errorBuilder: (context, error, stackTrace) {

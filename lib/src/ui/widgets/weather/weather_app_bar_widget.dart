@@ -4,6 +4,7 @@ import 'package:water_mind/src/core/network/models/network_result.dart';
 import 'package:water_mind/src/core/network/providers/weather_providers.dart';
 import 'package:water_mind/src/core/services/weather/models/forecast_data.dart';
 import 'package:water_mind/src/core/utils/enum/weather_condition.dart';
+import 'package:water_mind/src/core/utils/weather/weather_icon_mapper.dart';
 
 /// Widget to display current weather in the app bar
 class WeatherAppBarWidget extends ConsumerWidget {
@@ -46,9 +47,19 @@ class WeatherAppBarWidget extends ConsumerWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
-          condition.getIcon(),
-          color: Theme.of(context).colorScheme.onPrimary,
+        SizedBox(
+          width: 24,
+          height: 24,
+          child: WeatherIconMapper.getWeatherIconFromCondition(
+            condition,
+            isDay: true,
+          ).svg(
+            fit: BoxFit.contain,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.onPrimary,
+              BlendMode.srcIn,
+            ),
+          ),
         ),
         const SizedBox(width: 4),
         Text(

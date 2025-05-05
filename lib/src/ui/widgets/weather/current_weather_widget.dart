@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:water_mind/src/core/services/hydration/hydration.dart';
 import 'package:water_mind/src/core/services/weather/weather.dart';
 import 'package:water_mind/src/core/utils/enum/weather_condition.dart';
+import 'package:water_mind/src/core/utils/weather/weather_icon_mapper.dart';
 import 'package:water_mind/src/pages/getting_started/models/user_onboarding_model.dart';
 
 
@@ -71,10 +72,19 @@ class CurrentWeatherWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              weather.getIcon(),
-              size: 48,
-              color: Theme.of(context).colorScheme.primary,
+            SizedBox(
+              width: 48,
+              height: 48,
+              child: WeatherIconMapper.getWeatherIconFromCondition(
+                weather,
+                isDay: true,
+              ).svg(
+                fit: BoxFit.contain,
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.primary,
+                  BlendMode.srcIn,
+                ),
+              ),
             ),
             const SizedBox(width: 16),
             Text(

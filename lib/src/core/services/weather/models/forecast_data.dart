@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:water_mind/src/core/services/weather/models/weather_data.dart';
+import 'package:water_mind/src/core/utils/enum/weather_condition.dart';
 part 'forecast_data.freezed.dart';
 part 'forecast_data.g.dart';
 
@@ -24,17 +25,26 @@ String _getDayIcon(String iconUrl) {
 
 /// Helper function to transform current weather JSON to match WeatherData model
 Map<String, dynamic> _transformCurrentJson(Map<String, dynamic> current, Map<String, dynamic> location) {
+  // Get the numeric weather code
+  final int weatherCode = current['condition']['code'];
+
+  // Convert the numeric code to the corresponding enum value using fromCode method
+  final weatherCondition = WeatherCondition.fromCode(weatherCode);
+
+  // Get the string representation of the enum value for JSON serialization
+  final weatherConditionString = weatherCondition.name;
+
   return {
     'temperature': current['temp_c'],
     'feelsLike': current['feelslike_c'],
     'humidity': current['humidity'],
     'windSpeed': current['wind_kph'],
-    'condition': current['condition']['code'],
+    'condition': weatherConditionString, // Use the string representation of the enum
     'description': current['condition']['text'],
     'iconUrl': current['condition']['icon'].startsWith('//')
         ? 'https:${current['condition']['icon']}'
         : current['condition']['icon'],
-    'timestamp': DateTime.parse(current['last_updated']),
+    'timestamp': DateTime.parse(current['last_updated']).toIso8601String(),
     'cityName': location['name'],
     'countryCode': location['country'],
     'isDay': current.containsKey('is_day')
@@ -81,11 +91,14 @@ class ForecastData with _$ForecastData {
 
     final location = LocationData.fromWeatherApi(json['location']);
 
+    // Create a ForecastData object with the current timestamp
+    // Convert DateTime.now() to ISO 8601 string and then parse it back to ensure proper serialization
+    final now = DateTime.now();
     return ForecastData(
       current: current,
       forecast: forecastDays,
       location: location,
-      lastUpdated: DateTime.now(),
+      lastUpdated: DateTime.parse(now.toIso8601String()),
     );
   }
 }
@@ -155,6 +168,9 @@ class DailyForecast with _$DailyForecast {
     // Parse the forecast date
     final forecastDate = DateTime.parse(json['date'] as String);
 
+    // Get the weather condition code and convert it to the enum
+    final int conditionCode = day['condition']['code'] as int;
+
     return DailyForecast(
       date: forecastDate,
       maxTemp: (day['maxtemp_c'] as num).toDouble(),
@@ -163,7 +179,7 @@ class DailyForecast with _$DailyForecast {
       maxWind: (day['maxwind_kph'] as num).toDouble(),
       totalPrecip: (day['totalprecip_mm'] as num).toDouble(),
       avgHumidity: (day['avghumidity'] as num).toDouble(),
-      conditionCode: day['condition']['code'] as int,
+      conditionCode: conditionCode,
       conditionText: day['condition']['text'] as String,
       conditionIcon: _getDayIcon(day['condition']['icon'] as String),
       hourly: hourlyData,
@@ -241,6 +257,9 @@ class HourlyForecast with _$HourlyForecast {
       iconUrl = iconUrl.replaceAll('night', 'day');
     }
 
+    // Get the weather condition code
+    final int conditionCode = json['condition']['code'] as int;
+
     return HourlyForecast(
       time: hourTime,
       temp: (json['temp_c'] as num).toDouble(),
@@ -251,7 +270,7 @@ class HourlyForecast with _$HourlyForecast {
       precip: (json['precip_mm'] as num).toDouble(),
       humidity: json['humidity'] as int,
       cloud: json['cloud'] as int,
-      conditionCode: json['condition']['code'] as int,
+      conditionCode: conditionCode,
       conditionText: json['condition']['text'] as String,
       conditionIcon: iconUrl,
     );
