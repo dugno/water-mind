@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/pages/getting_started/models/user_onboarding_model.dart';
-import 'package:water_mind/src/ui/widgets/weather/weather_widgets.dart';
 import 'water_intake_display.dart';
 
 /// Example page to demonstrate water intake calculation

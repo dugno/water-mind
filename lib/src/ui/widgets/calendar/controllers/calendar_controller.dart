@@ -51,30 +51,54 @@ class CalendarController extends ChangeNotifier {
     DateTime? initialMonth,
     DateTime? initialWeek,
     DateTime? selectedDay,
+    DateTime? initialDate,
     CalendarViewMode initialViewMode = CalendarViewMode.month,
   }) :
     _config = config ?? const CalendarConfig(),
     _currentMonth = initialMonth ?? DateTime.now(),
-    _selectedDay = selectedDay,
+    _selectedDay = selectedDay ?? initialDate,
     _viewMode = initialViewMode,
     monthPageController = PageController(initialPage: 500), // Bắt đầu từ giữa để có thể scroll cả 2 hướng
     weekPageController = PageController(initialPage: 500) {
 
+    // Sử dụng initialDate nếu được cung cấp
+    final effectiveDate = initialDate ?? DateTime.now();
+
     // Khởi tạo năm hiện tại
-    _currentYear = initialYear ?? DateTime(_currentMonth.year, 1, 1);
+    _currentYear = initialYear ?? DateTime(effectiveDate.year, 1, 1);
 
     // Khởi tạo tuần hiện tại
     _currentWeek = initialWeek ??
         CalendarDateUtils.firstDayOfWeek(
-          _selectedDay ?? DateTime.now(),
+          _selectedDay ?? effectiveDate,
           _config.firstDayOfWeek
         );
 
     // Chuẩn hóa tháng hiện tại (ngày 1 của tháng)
-    _currentMonth = DateTime(_currentMonth.year, _currentMonth.month, 1);
+    _currentMonth = initialMonth != null
+        ? DateTime(initialMonth.year, initialMonth.month, 1)
+        : DateTime(effectiveDate.year, effectiveDate.month, 1);
 
     // Chuẩn hóa năm hiện tại (ngày 1 tháng 1)
     _currentYear = DateTime(_currentYear.year, 1, 1);
+
+    // Thiết lập các page controller để hiển thị đúng tháng và tuần
+    if (initialDate != null) {
+      // Tính toán offset cho PageView tháng và tuần
+      final monthOffset = getMonthOffset(_currentMonth);
+      final weekOffset = getWeekOffset(_currentWeek);
+
+      // Thiết lập trang ban đầu cho các PageController
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (monthPageController.hasClients) {
+          monthPageController.jumpToPage(monthOffset);
+        }
+
+        if (weekPageController.hasClients) {
+          weekPageController.jumpToPage(weekOffset);
+        }
+      });
+    }
   }
 
   /// Getter cho config
@@ -115,6 +139,44 @@ class CalendarController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Cập nhật ngày hiện tại và các giá trị liên quan
+  void updateCurrentDate(DateTime date) {
+    // Cập nhật ngày được chọn
+    _selectedDay = date;
+
+    // Cập nhật tuần hiện tại
+    final newWeek = CalendarDateUtils.firstDayOfWeek(date, _config.firstDayOfWeek);
+    if (!CalendarDateUtils.isSameDay(newWeek, _currentWeek)) {
+      _currentWeek = newWeek;
+
+      // Cập nhật PageController cho tuần
+      final weekOffset = getWeekOffset(newWeek);
+      if (weekPageController.hasClients) {
+        weekPageController.jumpToPage(weekOffset);
+      }
+    }
+
+    // Cập nhật tháng hiện tại nếu cần
+    final newMonth = DateTime(date.year, date.month, 1);
+    if (newMonth.month != _currentMonth.month || newMonth.year != _currentMonth.year) {
+      _currentMonth = newMonth;
+
+      // Cập nhật PageController cho tháng
+      final monthOffset = getMonthOffset(newMonth);
+      if (monthPageController.hasClients) {
+        monthPageController.jumpToPage(monthOffset);
+      }
+    }
+
+    // Cập nhật năm hiện tại nếu cần
+    final newYear = DateTime(date.year, 1, 1);
+    if (newYear.year != _currentYear.year) {
+      _currentYear = newYear;
+    }
+
+    notifyListeners();
+  }
+
   /// Chuyển đến tháng cụ thể
   void goToMonth(DateTime month) {
     final normalizedMonth = DateTime(month.year, month.month, 1);
@@ -148,15 +210,7 @@ class CalendarController extends ChangeNotifier {
   /// Chuyển đến tuần chứa ngày hôm nay
   void goToToday() {
     final today = DateTime.now();
-    selectDay(today);
-
-    if (_viewMode == CalendarViewMode.week) {
-      goToWeek(today);
-    } else if (_viewMode == CalendarViewMode.month) {
-      goToMonth(today);
-    } else {
-      goToYear(today);
-    }
+    updateCurrentDate(today);
   }
 
   /// Chuyển đến năm cụ thể

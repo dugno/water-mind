@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:water_mind/src/pages/getting_started/getting_started.dart';
 import 'package:water_mind/src/pages/getting_started/models/getting_started_step.dart';
+import 'package:water_mind/src/pages/home/home_page.dart';
+import 'package:water_mind/src/pages/introduction/introduction.dart';
 import 'package:water_mind/src/pages/settings/theme_settings_page.dart';
 import 'package:water_mind/src/ui/widgets/hydration/hydration_widgets.dart';
 import 'package:water_mind/src/ui/widgets/wheel_picker/example/wheel_picker_example.dart';
 
-import '../../pages/introduction/introduction.dart';
 
 part 'app_router.gr.dart';
 
@@ -22,7 +23,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(
           path: '/introduction',
           page: IntroductionRoute.page,
-          
+
         ),
         AutoRoute(
           path: '/getting-started',
@@ -33,18 +34,23 @@ class AppRouter extends _$AppRouter {
           page: WheelPickerExampleRoute.page,
         ),
 
+        // Home page
+        AutoRoute(
+          path: '/',
+          page: HomeRoute.page,
+          initial: true,
+        ),
+
         // Water intake example page
         AutoRoute(
           path: '/example/water-intake',
           page: WaterIntakeExampleRoute.page,
-          initial: true,
         ),
 
         // Theme settings page
         AutoRoute(
           path: '/settings/theme',
           page: ThemeSettingsRoute.page,
-          
         ),
 
         // Add more routes as needed

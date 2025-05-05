@@ -1,0 +1,22 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "water-mind-bd0ec",
+                    "appId": "1:847893616343:android:bd9a113945a99ddacb4292",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "water-mind-bd0ec",
+                    "configurations": {
+                        "android": "1:847893616343:android:bd9a113945a99ddacb4292",
+                        "ios": "1:847893616343:ios:ee3afb5ba9eb01efcb4292"
+                    }
+                }
+            }
+        }
+    }
+}

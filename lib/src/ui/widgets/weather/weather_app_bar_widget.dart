@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:water_mind/src/core/network/models/network_result.dart';
+import 'package:water_mind/src/core/network/providers/weather_providers.dart';
+import 'package:water_mind/src/core/services/weather/models/forecast_data.dart';
+import 'package:water_mind/src/core/utils/enum/weather_condition.dart';
+
+/// Widget to display current weather in the app bar
+class WeatherAppBarWidget extends ConsumerWidget {
+  /// Constructor
+  const WeatherAppBarWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Use the optimized provider that fetches weather data using IP-based location
+    final weatherData = ref.watch(weatherAndForecastProvider());
+
+    return weatherData.when(
+      data: (result) => _buildWeatherContent(context, result),
+      loading: () => const SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+        ),
+      ),
+      error: (_, __) => const Icon(Icons.cloud_off),
+    );
+  }
+
+  Widget _buildWeatherContent(BuildContext context, NetworkResult<ForecastData> result) {
+    return result.when(
+      success: (data) => _buildWeatherIcon(context, data.current.condition),
+      error: (error) => const Icon(Icons.cloud_off),
+      loading: () => const SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWeatherIcon(BuildContext context, WeatherCondition condition) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          condition.getIcon(),
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          condition.getString(context),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+        ),
+      ],
+    );
+  }
+}

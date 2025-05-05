@@ -1,4 +1,4 @@
-package vie.tech.water.mind.water_mind
+package vie.tech.water.mind
 
 import io.flutter.embedding.android.FlutterActivity
 

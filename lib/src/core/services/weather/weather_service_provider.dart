@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:water_mind/src/core/network/config/api_config.dart';
 import 'package:water_mind/src/core/utils/enum/weather_condition.dart';
 import 'weather_service.dart';
 
 /// Provider for the weather service
 final weatherServiceProvider = Provider<WeatherService>((ref) {
-  // In a real app, you would get this from environment variables or secure storage
-  const apiKey = 'YOUR_WEATHER_API_KEY';
-  return WeatherService(apiKey: apiKey);
+  // Use the API key from ApiConfig which is set from Firebase Remote Config
+  return WeatherService(apiKey: ApiConfig.apiKey);
 });
 
 /// Provider for the current weather condition

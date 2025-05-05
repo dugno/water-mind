@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "847893616343",
+    "project_id": "water-mind-bd0ec",
+    "storage_bucket": "water-mind-bd0ec.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847893616343:android:bd9a113945a99ddacb4292",
+        "android_client_info": {
+          "package_name": "vie.tech.water.mind"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIRpr8Y6_cZ_1UwupTUTohanYqxR70uqY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

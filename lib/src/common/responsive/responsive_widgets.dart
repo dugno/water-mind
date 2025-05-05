@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screen_utils.dart';
-import 'responsive_extension.dart';
+import 'package:water_mind/src/common/responsive/responsive.dart';
 
 /// A widget that builds different widgets based on the screen size
 class ResponsiveBuilder extends StatelessWidget {
@@ -241,7 +240,7 @@ class ResponsiveContainer extends StatelessWidget {
       width = maxWidth;
     }
 
-    return Container(
+    return SizedBox(
       width: width,
       child: child,
     );
