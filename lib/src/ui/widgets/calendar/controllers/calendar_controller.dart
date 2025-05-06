@@ -33,6 +33,8 @@ class CalendarController extends ChangeNotifier {
   /// Ngày được chọn
   DateTime? _selectedDay;
 
+  /// Map lưu trữ tiến trình cho các ngày
+  final Map<String, double> _progressMap = {};
 
 
   /// Chế độ xem hiện tại
@@ -284,6 +286,7 @@ class CalendarController extends ChangeNotifier {
         isWeekend: CalendarDateUtils.isWeekend(currentDay),
         isSelected: _selectedDay != null &&
             CalendarDateUtils.isSameDay(currentDay, _selectedDay!),
+        progress: getProgressForDay(currentDay),
       ));
       currentDay = currentDay.add(const Duration(days: 1));
     }
@@ -308,6 +311,7 @@ class CalendarController extends ChangeNotifier {
         isWeekend: CalendarDateUtils.isWeekend(currentDay),
         isSelected: _selectedDay != null &&
             CalendarDateUtils.isSameDay(currentDay, _selectedDay!),
+        progress: getProgressForDay(currentDay),
       ));
       currentDay = currentDay.add(const Duration(days: 1));
     }
@@ -337,11 +341,43 @@ class CalendarController extends ChangeNotifier {
         isWeekend: CalendarDateUtils.isWeekend(currentDay),
         isSelected: _selectedDay != null &&
             CalendarDateUtils.isSameDay(currentDay, _selectedDay!),
+        progress: getProgressForDay(currentDay),
       ));
       currentDay = currentDay.add(const Duration(days: 1));
     }
 
     return days;
+  }
+
+  /// Lấy giá trị tiến trình cho một ngày cụ thể
+  /// Trả về giá trị từ 0.0 đến 1.0
+  double getProgressForDay(DateTime day) {
+    // Tạo key từ ngày (yyyy-MM-dd)
+    final key = _formatDateKey(day);
+
+    // Trả về giá trị tiến trình nếu có, nếu không trả về 0.0
+    return _progressMap[key] ?? 0.0;
+  }
+
+  /// Cập nhật tiến trình cho một ngày cụ thể
+  /// progress: giá trị từ 0.0 đến 1.0
+  void updateProgressForDay(DateTime day, double progress) {
+    // Đảm bảo giá trị progress nằm trong khoảng [0.0, 1.0]
+    final validProgress = progress.clamp(0.0, 1.0);
+
+    // Tạo key từ ngày (yyyy-MM-dd)
+    final key = _formatDateKey(day);
+
+    // Cập nhật giá trị tiến trình
+    _progressMap[key] = validProgress;
+
+    // Thông báo thay đổi
+    notifyListeners();
+  }
+
+  /// Định dạng ngày thành key cho map (yyyy-MM-dd)
+  String _formatDateKey(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
 
 

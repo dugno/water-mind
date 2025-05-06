@@ -321,6 +321,114 @@
     "description": "Weather factor"
   },
 
+  "dailyGoal": "Daily Goal",
+  "@dailyGoal": {
+    "description": "Daily water intake goal"
+  },
+  "useCustomDailyGoal": "Use custom daily goal",
+  "@useCustomDailyGoal": {
+    "description": "Option to use a custom daily water intake goal"
+  },
+  "setDailyGoal": "Set daily goal",
+  "@setDailyGoal": {
+    "description": "Button to set daily water intake goal"
+  },
+  "dailyGoalDescription": "Set your custom daily water intake goal",
+  "@dailyGoalDescription": {
+    "description": "Description for daily goal setting"
+  },
+  "recommendedRangeMetric": "Recommended range: 2000-3500 ml",
+  "@recommendedRangeMetric": {
+    "description": "Recommended water intake range in metric units"
+  },
+  "recommendedRangeImperial": "Recommended range: 68-118 oz",
+  "@recommendedRangeImperial": {
+    "description": "Recommended water intake range in imperial units"
+  },
+
+  "soundAndVibration": "Sound & Vibration",
+  "@soundAndVibration": {
+    "description": "Sound and vibration settings"
+  },
+  "enableSound": "Enable sound",
+  "@enableSound": {
+    "description": "Option to enable notification sounds"
+  },
+  "enableVibration": "Enable vibration",
+  "@enableVibration": {
+    "description": "Option to enable vibration for notifications"
+  },
+
+  "units": "Units",
+  "@units": {
+    "description": "Measurement units settings"
+  },
+  "measurementUnit": "Measurement unit",
+  "@measurementUnit": {
+    "description": "Option to select measurement unit system"
+  },
+
+  "physicalAttributes": "Physical Attributes",
+  "@physicalAttributes": {
+    "description": "Physical attributes settings"
+  },
+  "genderWeightHeight": "Gender, weight & height",
+  "@genderWeightHeight": {
+    "description": "Gender, weight and height settings"
+  },
+
+  "timeSettings": "Time Settings",
+  "@timeSettings": {
+    "description": "Time-related settings"
+  },
+
+  "about": "About",
+  "@about": {
+    "description": "About section"
+  },
+  "sendFeedback": "Send feedback",
+  "@sendFeedback": {
+    "description": "Option to send feedback"
+  },
+  "privacyPolicy": "Privacy policy",
+  "@privacyPolicy": {
+    "description": "Privacy policy link"
+  },
+  "shareApp": "Share app",
+  "@shareApp": {
+    "description": "Option to share the app"
+  },
+  "aboutApp": "About app",
+  "@aboutApp": {
+    "description": "About app information"
+  },
+
+  "yourProfile": "Your Profile",
+  "@yourProfile": {
+    "description": "Profile header"
+  },
+  "tapToEdit": "Tap to edit",
+  "@tapToEdit": {
+    "description": "Hint to tap for editing"
+  },
+  "reminderSettings": "Reminder settings",
+  "@reminderSettings": {
+    "description": "Reminder settings option"
+  },
+
+  "save": "Save",
+  "@save": {
+    "description": "Save button"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+  "notSet": "Not set",
+  "@notSet": {
+    "description": "Indicates a value is not set"
+  },
+
   "sunny": "Sunny",
   "@sunny": {
     "description": "Sunny weather"
@@ -509,5 +617,155 @@
   "heavySnowThunder": "Heavy Snow with Thunder",
   "@heavySnowThunder": {
     "description": "Heavy snow with thunder weather"
+  },
+
+  "reminders": "Reminders",
+  "@reminders": {
+    "description": "Reminders title"
+  },
+  "enableReminders": "Enable Reminders",
+  "@enableReminders": {
+    "description": "Enable reminders switch"
+  },
+  "enableRemindersDescription": "Get notifications to drink water throughout the day",
+  "@enableRemindersDescription": {
+    "description": "Enable reminders description"
+  },
+  "reminderMode": "Reminder Mode",
+  "@reminderMode": {
+    "description": "Reminder mode title"
+  },
+  "standardModeDescription": "Optimal reminders based on your wake-up and bedtime",
+  "@standardModeDescription": {
+    "description": "Standard mode description"
+  },
+  "intervalModeDescription": "Reminders at regular intervals throughout your day",
+  "@intervalModeDescription": {
+    "description": "Interval mode description"
+  },
+  "customModeDescription": "Set your own specific reminder times",
+  "@customModeDescription": {
+    "description": "Custom mode description"
+  },
+  "wakeUpAndBedtime": "Wake Up & Bedtime",
+  "@wakeUpAndBedtime": {
+    "description": "Wake up and bedtime section title"
+  },
+  "wakeUpAndBedtimeDescription": "We'll schedule reminders during your active hours",
+  "@wakeUpAndBedtimeDescription": {
+    "description": "Wake up and bedtime section description"
+  },
+  "advancedSettings": "Advanced Settings",
+  "@advancedSettings": {
+    "description": "Advanced settings section title"
+  },
+  "skipIfGoalMet": "Skip If Goal Met",
+  "@skipIfGoalMet": {
+    "description": "Skip if goal met option"
+  },
+  "skipIfGoalMetDescription": "Don't send reminders if you've already met your daily goal",
+  "@skipIfGoalMetDescription": {
+    "description": "Skip if goal met description"
+  },
+  "doNotDisturb": "Do Not Disturb",
+  "@doNotDisturb": {
+    "description": "Do not disturb option"
+  },
+  "doNotDisturbDescription": "Pause reminders during specific hours",
+  "@doNotDisturbDescription": {
+    "description": "Do not disturb description"
+  },
+  "doNotDisturbStart": "Do Not Disturb Start",
+  "@doNotDisturbStart": {
+    "description": "Do not disturb start time"
+  },
+  "doNotDisturbEnd": "Do Not Disturb End",
+  "@doNotDisturbEnd": {
+    "description": "Do not disturb end time"
+  },
+  "reminderInterval": "Reminder Interval",
+  "@reminderInterval": {
+    "description": "Reminder interval title"
+  },
+  "customTimes": "Custom Times",
+  "@customTimes": {
+    "description": "Custom times title"
+  },
+  "addTime": "Add Time",
+  "@addTime": {
+    "description": "Add time button"
+  },
+  "maxTimesReached": "Maximum number of times reached",
+  "@maxTimesReached": {
+    "description": "Maximum times reached message"
+  },
+  "needAtLeastOneTime": "You need at least one reminder time",
+  "@needAtLeastOneTime": {
+    "description": "Need at least one time message"
+  },
+  "timeAlreadyExists": "This time already exists",
+  "@timeAlreadyExists": {
+    "description": "Time already exists message"
+  },
+  "hour": "hour",
+  "@hour": {
+    "description": "Hour (singular)"
+  },
+  "hours": "hours",
+  "@hours": {
+    "description": "Hours (plural)"
+  },
+  "minute": "minute",
+  "@minute": {
+    "description": "Minute (singular)"
+  },
+  "minutes": "minutes",
+  "@minutes": {
+    "description": "Minutes (plural)"
+  },
+  "hourShort": "h",
+  "@hourShort": {
+    "description": "Hour abbreviation"
+  },
+  "minuteShort": "m",
+  "@minuteShort": {
+    "description": "Minute abbreviation"
+  },
+
+  "congratulations": "Congratulations!",
+  "@congratulations": {
+    "description": "Congratulations message"
+  },
+  "profileSetupComplete": "Your profile has been set up successfully",
+  "@profileSetupComplete": {
+    "description": "Profile setup complete message"
+  },
+  "yourProfile": "Your Profile",
+  "@yourProfile": {
+    "description": "Your profile title"
+  },
+  "yourDailyWaterIntake": "Your Daily Water Intake",
+  "@yourDailyWaterIntake": {
+    "description": "Your daily water intake title"
+  },
+  "perDay": "per day",
+  "@perDay": {
+    "description": "Per day text"
+  },
+  "basedOnWeather": "Based on current weather",
+  "@basedOnWeather": {
+    "description": "Based on weather text"
+  },
+  "waterIntakeExplanation": "This recommendation is based on your profile and current weather conditions. It will adjust as conditions change.",
+  "@waterIntakeExplanation": {
+    "description": "Water intake explanation"
+  },
+  "liters": "liters",
+  "@liters": {
+    "description": "Liters unit"
+  },
+  "fluidOunces": "fl oz",
+  "@fluidOunces": {
+    "description": "Fluid ounces unit"
   }
 }

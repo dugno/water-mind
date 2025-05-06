@@ -1,4 +1,3 @@
-import 'package:water_mind/src/core/network/dio_client.dart';
 import 'package:water_mind/src/core/network/models/network_result.dart';
 import 'package:water_mind/src/core/network/repositories/base_repository.dart';
 import 'package:water_mind/src/core/services/weather/models/weather_data.dart';
@@ -22,7 +21,7 @@ abstract class WeatherRepository {
 /// Implementation of WeatherRepository
 class WeatherRepositoryImpl extends BaseRepositoryImpl implements WeatherRepository {
   /// Constructor for WeatherRepositoryImpl
-  WeatherRepositoryImpl(DioClient dioClient) : super(dioClient);
+  WeatherRepositoryImpl(super.dioClient);
 
   @override
   Future<NetworkResult<WeatherData>> getCurrentWeather({

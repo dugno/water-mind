@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:water_mind/src/core/models/drink_type.dart';
+import 'package:water_mind/src/core/routing/app_router.dart';
 import 'package:water_mind/src/core/utils/utils.dart';
 import 'package:water_mind/src/pages/home/home_view_model.dart';
 import 'package:water_mind/src/ui/widgets/calendar/widgets/week_view.dart';
@@ -27,9 +28,19 @@ class HomePage extends ConsumerWidget {
         title: const WeatherAppBarWidget(),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.notifications_outlined),
+            tooltip: 'Reminder Settings',
             onPressed: () {
-              // Navigate to profile setup
+              // Navigate to reminder settings
+              context.router.push(const ReminderSettingsRoute());
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.person),
+            tooltip: 'Profile',
+            onPressed: () {
+              // Navigate to profile page
+              context.router.push(const ProfileRoute());
             },
           ),
         ],
@@ -58,9 +69,9 @@ class HomePage extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: SizedBox(
-                      height: 100,
+                      height: 90,
                       child: WeekView(controller: viewModel.calendarController),
                     ),
                   ),

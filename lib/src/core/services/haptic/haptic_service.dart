@@ -37,14 +37,10 @@ class HapticService {
   }
 
   /// Flag để enable/disable haptic feedback
-  bool _enabled = true;
+  bool enabled = true;
 
   /// Flag để check thiết bị có hỗ trợ haptic không
   bool _isSupported = false;
-
-  /// Getter và setter cho trạng thái enabled
-  bool get enabled => _enabled;
-  set enabled(bool value) => _enabled = value;
 
   /// Getter cho trạng thái hỗ trợ haptic
   bool get isSupported => _isSupported;
@@ -75,7 +71,7 @@ class HapticService {
   /// Phát haptic feedback theo type
   void feedback(HapticFeedbackType type) {
     // Kiểm tra điều kiện để phát haptic
-    if (!_enabled || !_isSupported) return;
+    if (!enabled || !_isSupported) return;
 
     try {
       switch (type) {

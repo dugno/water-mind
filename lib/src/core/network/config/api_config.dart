@@ -40,9 +40,15 @@ class ApiConfig {
   /// Whether to enable logging
   static bool get enableLogging => kDebugMode;
 
-  /// Cache duration in minutes
+  /// Cache duration in minutes (used for regular cache validation)
   static const int cacheDurationMinutes = 30;
 
   /// Maximum forecast days (free tier allows up to 3 days)
   static const int maxForecastDays = 3;
+
+  /// Whether to reset cache at midnight
+  static const bool resetCacheAtMidnight = true;
+
+  /// Whether to fetch weather only once per day
+  static const bool fetchWeatherOncePerDay = true;
 }

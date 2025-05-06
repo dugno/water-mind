@@ -35,8 +35,7 @@ class WeekView extends StatelessWidget {
     final days = controller.getDaysInWeek(week);
 
     // Lấy danh sách tên các ngày trong tuần
-    final locale = controller.config.locale ?? Localizations.localeOf(context);
-    final weekdayNames = controller.getWeekdayNames(locale, short: true);
+    final weekdayNames = _getCustomWeekdayNames(week);
 
     return Column(
       children: [
@@ -62,7 +61,7 @@ class WeekView extends StatelessWidget {
 
         // Hàng hiển thị các ngày trong tuần
         SizedBox(
-          height: 60,
+          height: 50, // Chiều cao cố định
           child: Row(
             children: days
                 .map((day) => Expanded(
@@ -82,9 +81,25 @@ class WeekView extends StatelessWidget {
 
 
 
-  // Lấy danh sách tên các ngày trong tuần
-  List<String> get weekdayNames {
-    final locale = controller.config.locale ?? const Locale('vi');
-    return controller.getWeekdayNames(locale, short: true);
+  // Lấy danh sách tên các ngày trong tuần theo định dạng "Th 2", "Th 3", v.v.
+  List<String> _getCustomWeekdayNames(DateTime week) {
+    final List<String> names = [];
+    final days = controller.getDaysInWeek(week);
+
+    for (final day in days) {
+      final weekday = day.date.weekday;
+
+      // Tạo tên ngày theo định dạng "Th 2", "Th 3", v.v.
+      String name;
+      if (weekday == 7) {
+        name = 'CN'; // Chủ nhật
+      } else {
+        name = 'Th $weekday'; // Thứ 2, Thứ 3, v.v.
+      }
+
+      names.add(name);
+    }
+
+    return names;
   }
 }

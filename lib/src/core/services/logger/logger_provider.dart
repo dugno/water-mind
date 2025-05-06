@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:water_mind/src/core/services/logger/app_logger.dart';
 
@@ -5,7 +6,7 @@ part 'logger_provider.g.dart';
 
 /// Provider for AppLogger initialization
 @riverpod
-bool appLoggerInitialized(AppLoggerInitializedRef ref) {
+bool appLoggerInitialized(Ref ref) {
   // This provider is used to track if the logger has been initialized
   // It's initialized in main.dart, so we just return true here
   return true;

@@ -15,8 +15,4 @@ final currentWeatherProvider = FutureProvider.family<WeatherCondition, String>((
   return await weatherService.getCurrentWeather(location);
 });
 
-/// Provider for the weather forecast
-final forecastProvider = FutureProvider.family<List<WeatherCondition>, String>((ref, location) async {
-  final weatherService = ref.watch(weatherServiceProvider);
-  return await weatherService.getForecast(location);
-});
+

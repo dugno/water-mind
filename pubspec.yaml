@@ -37,15 +37,21 @@ dependencies:
   auto_route: ^7.5.0
 
   # Firebase
-  firebase_core: ^2.15.1
-  firebase_remote_config: ^4.2.5
+  firebase_core: ^3.13.0
+  firebase_remote_config: ^5.4.3
   # UI Components
   wheel_picker: ^0.2.1
   vector_graphics: ^1.1.18
   flutter_svg: ^2.1.0
-  
+  share_plus: ^7.2.1
+
   uuid: ^4.5.1
   flutter_secure_storage: ^4.2.1
+  path: ^1.9.0
+
+  # Database
+  drift: ^2.16.0
+  sqlite3_flutter_libs: ^0.5.20
 
 dev_dependencies:
   flutter_test:
@@ -60,7 +66,9 @@ dev_dependencies:
   json_serializable: ^6.7.1
   auto_route_generator: ^7.3.2
   flutter_gen_runner: 5.10.0
-  
+  drift_dev: ^2.16.0
+  mockito: ^5.4.4
+
 
 flutter_gen:
   output: lib/gen/

@@ -2,8 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:water_mind/src/core/services/user/user_provider.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/pages/getting_started/models/getting_started_step.dart';
+import 'package:water_mind/src/pages/getting_started/models/user_onboarding_model.dart';
 import 'package:water_mind/src/pages/getting_started/segments/activity_segment.dart';
 import 'package:water_mind/src/pages/getting_started/segments/born_segment.dart';
 import 'package:water_mind/src/pages/getting_started/segments/end_a_day_segment.dart';
@@ -11,6 +13,7 @@ import 'package:water_mind/src/pages/getting_started/segments/gender_segment.dar
 import 'package:water_mind/src/pages/getting_started/segments/height_weight_segment.dart';
 import 'package:water_mind/src/pages/getting_started/segments/living_environment_segment.dart';
 import 'package:water_mind/src/pages/getting_started/segments/wake_up_segment.dart';
+import 'package:water_mind/src/pages/getting_started/summary_page.dart';
 import 'package:water_mind/src/pages/getting_started/viewmodels/getting_started_viewmodel.dart';
 import 'package:water_mind/src/ui/widgets/progress_bar/progress_bar_theme.dart';
 import 'package:water_mind/src/ui/widgets/progress_bar/segmented_progress_bar.dart';
@@ -69,16 +72,38 @@ class GettingStartedPage extends ConsumerWidget {
   }
 
   void _completeOnboarding(WidgetRef ref) {
-    // Save user data and navigate to home screen
-    final viewModel = ref.read(
-        gettingStartedViewModelProvider(initialStep: initialStep).notifier);
-    final userData = viewModel.completeOnboarding();
+    // Get the current user model from the view model
+    final userModel = ref.read(gettingStartedViewModelProvider(initialStep: initialStep));
+    final context = ref.context;
 
-    // TODO: Save userData to storage
-    // This is a placeholder, replace with actual implementation
+    // Save user data to storage using UserNotifier
+    final userNotifier = ref.read(userNotifierProvider.notifier);
 
-    // Navigate back to the previous screen or home
-    Navigator.of(ref.context).pop(userData);
+    // Use a separate async function to avoid BuildContext across async gaps
+    _saveUserDataAndNavigate(userNotifier, userModel, context);
+  }
+
+  // Helper method to save data and navigate
+  Future<void> _saveUserDataAndNavigate(
+    UserNotifier userNotifier,
+    UserOnboardingModel userModel,
+    BuildContext context
+  ) async {
+    // Save user data
+    await userNotifier.saveUserData(userModel);
+
+    // Do NOT mark getting started as completed yet
+    // This will be done in the summary page when the user clicks "Get Started"
+
+    // Check if context is still valid before navigating
+    if (context.mounted) {
+      // Navigate to the summary page
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => SummaryPage(userModel: userModel),
+        ),
+      );
+    }
   }
 
   void _showLanguageSelector() {
@@ -233,9 +258,7 @@ class GettingStartedPage extends ConsumerWidget {
             // No auto-navigation for wheel picker segments
           },
         );
-      default:
-        return const SizedBox.shrink();
-    }
+      }
   }
 
   /// Build the status bar with back button and progress bar

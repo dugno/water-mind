@@ -65,40 +65,77 @@ class NotificationManager {
   /// Initialize the notification system.
   ///
   /// This should be called early in the app lifecycle, typically in main.dart.
-  Future<void> initialize() async {
+  Future<bool> initialize() async {
     try {
       // Initialize the notification service
       final initialized = await _notificationService.initialize();
 
       if (!initialized) {
         debugPrint('Failed to initialize notification service');
-        return;
+        return false;
       }
 
       // Create default channels
       await _notificationService.createNotificationChannels(_defaultChannels);
 
-      // Request permission if not already granted
+      // Check if notifications are allowed
       final allowed = await _notificationService.isNotificationAllowed();
-      if (!allowed) {
-        final permissionGranted = await _notificationService.requestNotificationPermission();
-        debugPrint('Notification permission ${permissionGranted ? 'granted' : 'denied'}');
-      }
+
+      // Return current permission status
+      return allowed;
     } catch (e) {
       debugPrint('Error initializing notification service: $e');
+      return false;
+    }
+  }
+
+  /// Ensure notifications are allowed, requesting permission if needed.
+  /// Returns true if permission is granted, false otherwise.
+  Future<bool> ensureNotificationsAllowed() async {
+    try {
+      // Check if notifications are already allowed
+      final allowed = await _notificationService.isNotificationAllowed();
+      if (allowed) {
+        return true;
+      }
+
+      // Request permission if not already granted
+      final permissionGranted = await _notificationService.requestNotificationPermission();
+      debugPrint('Notification permission ${permissionGranted ? 'granted' : 'denied'}');
+
+      return permissionGranted;
+    } catch (e) {
+      debugPrint('Error checking notification permissions: $e');
+      return false;
     }
   }
 
   /// Show a notification immediately.
+  /// Returns true if notification was shown, false otherwise.
   Future<bool> showNotification(AppNotificationModel notification) async {
+    // Check if notifications are allowed
+    final allowed = await ensureNotificationsAllowed();
+    if (!allowed) {
+      debugPrint('Cannot show notification: permission not granted');
+      return false;
+    }
+
     return await _notificationService.showNotification(notification);
   }
 
   /// Schedule a notification for a future time.
+  /// Returns true if notification was scheduled, false otherwise.
   Future<bool> scheduleNotification(
     AppNotificationModel notification,
     DateTime scheduledDate,
   ) async {
+    // Check if notifications are allowed
+    final allowed = await ensureNotificationsAllowed();
+    if (!allowed) {
+      debugPrint('Cannot schedule notification: permission not granted');
+      return false;
+    }
+
     return await _notificationService.scheduleNotification(
       notification,
       scheduledDate,

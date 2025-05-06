@@ -44,7 +44,7 @@ class HydrationCalculationExample extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Example 1: Direct calculation'),
+        const Text('Example 1: Direct calculation'),
         Text(
             'Daily water intake: ${hydrationResult.getFormattedWaterIntake()}'),
         Text(
@@ -52,7 +52,7 @@ class HydrationCalculationExample extends ConsumerWidget {
         Text(
             'In fluid ounces: ${hydrationResult.waterIntakeInFluidOunces.toStringAsFixed(1)} fl oz'),
         const SizedBox(height: 20),
-        Text('Example 2: From user model'),
+        const Text('Example 2: From user model'),
         Text(
             'Daily water intake: ${hydrationFromModel.getFormattedWaterIntake()}'),
         Text(
@@ -60,7 +60,7 @@ class HydrationCalculationExample extends ConsumerWidget {
         Text(
             'In fluid ounces: ${hydrationFromModel.waterIntakeInFluidOunces.toStringAsFixed(1)} fl oz'),
         const SizedBox(height: 20),
-        Text('Calculation factors:'),
+        const Text('Calculation factors:'),
         ...hydrationFromModel.calculationFactors.entries.map(
           (entry) => Text('${entry.key}: ${entry.value.toStringAsFixed(2)}'),
         ),

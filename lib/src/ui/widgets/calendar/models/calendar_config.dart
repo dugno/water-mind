@@ -40,6 +40,29 @@ class CalendarConfig {
   /// Text color for weekend days
   final Color? weekendTextColor;
 
+  /// Whether to use dashed borders for day circles
+  final bool useDashedBorders;
+
+  /// Color for dashed borders
+  final Color? dashedBorderColor;
+
+  /// Width for dashed borders
+  final double dashedBorderWidth;
+
+  /// Dash length for dashed borders
+  final double dashedBorderDashLength;
+
+  /// Gap length for dashed borders
+  final double dashedBorderGapLength;
+
+  /// Whether to show date numbers below the circles
+  final bool showDateBelowCircle;
+
+  /// Progress indicator color
+  final Color? progressColor;
+
+  /// Size of day circles
+  final double dayCircleSize;
 
 
   /// Whether to enable horizontal scrolling in week view
@@ -62,6 +85,14 @@ class CalendarConfig {
     this.selectedDayTextColor,
     this.weekendBackgroundColor,
     this.weekendTextColor,
+    this.useDashedBorders = false,
+    this.dashedBorderColor,
+    this.dashedBorderWidth = 1.0,
+    this.dashedBorderDashLength = 5.0,
+    this.dashedBorderGapLength = 3.0,
+    this.showDateBelowCircle = false,
+    this.progressColor,
+    this.dayCircleSize = 36.0,
     this.enableWeekViewScrolling = true,
     this.animationDuration = const Duration(milliseconds: 300),
   }) : assert(firstDayOfWeek >= 1 && firstDayOfWeek <= 7,
@@ -81,6 +112,14 @@ class CalendarConfig {
     Color? selectedDayTextColor,
     Color? weekendBackgroundColor,
     Color? weekendTextColor,
+    bool? useDashedBorders,
+    Color? dashedBorderColor,
+    double? dashedBorderWidth,
+    double? dashedBorderDashLength,
+    double? dashedBorderGapLength,
+    bool? showDateBelowCircle,
+    Color? progressColor,
+    double? dayCircleSize,
     bool? enableWeekViewScrolling,
     Duration? animationDuration,
   }) {
@@ -97,6 +136,14 @@ class CalendarConfig {
       selectedDayTextColor: selectedDayTextColor ?? this.selectedDayTextColor,
       weekendBackgroundColor: weekendBackgroundColor ?? this.weekendBackgroundColor,
       weekendTextColor: weekendTextColor ?? this.weekendTextColor,
+      useDashedBorders: useDashedBorders ?? this.useDashedBorders,
+      dashedBorderColor: dashedBorderColor ?? this.dashedBorderColor,
+      dashedBorderWidth: dashedBorderWidth ?? this.dashedBorderWidth,
+      dashedBorderDashLength: dashedBorderDashLength ?? this.dashedBorderDashLength,
+      dashedBorderGapLength: dashedBorderGapLength ?? this.dashedBorderGapLength,
+      showDateBelowCircle: showDateBelowCircle ?? this.showDateBelowCircle,
+      progressColor: progressColor ?? this.progressColor,
+      dayCircleSize: dayCircleSize ?? this.dayCircleSize,
       enableWeekViewScrolling: enableWeekViewScrolling ?? this.enableWeekViewScrolling,
       animationDuration: animationDuration ?? this.animationDuration,
     );
@@ -115,6 +162,14 @@ class CalendarConfig {
     Color? selectedDayTextColor,
     Color? weekendBackgroundColor,
     Color? weekendTextColor,
+    bool useDashedBorders = false,
+    Color? dashedBorderColor,
+    double dashedBorderWidth = 1.0,
+    double dashedBorderDashLength = 5.0,
+    double dashedBorderGapLength = 3.0,
+    bool showDateBelowCircle = false,
+    Color? progressColor,
+    double dayCircleSize = 36.0,
     bool enableWeekViewScrolling = true,
     Duration animationDuration = const Duration(milliseconds: 300),
   }) {
@@ -131,6 +186,14 @@ class CalendarConfig {
       selectedDayTextColor: selectedDayTextColor,
       weekendBackgroundColor: weekendBackgroundColor,
       weekendTextColor: weekendTextColor,
+      useDashedBorders: useDashedBorders,
+      dashedBorderColor: dashedBorderColor,
+      dashedBorderWidth: dashedBorderWidth,
+      dashedBorderDashLength: dashedBorderDashLength,
+      dashedBorderGapLength: dashedBorderGapLength,
+      showDateBelowCircle: showDateBelowCircle,
+      progressColor: progressColor,
+      dayCircleSize: dayCircleSize,
       enableWeekViewScrolling: enableWeekViewScrolling,
       animationDuration: animationDuration,
     );
@@ -149,6 +212,14 @@ class CalendarConfig {
     Color? selectedDayTextColor,
     Color? weekendBackgroundColor,
     Color? weekendTextColor,
+    bool useDashedBorders = false,
+    Color? dashedBorderColor,
+    double dashedBorderWidth = 1.0,
+    double dashedBorderDashLength = 5.0,
+    double dashedBorderGapLength = 3.0,
+    bool showDateBelowCircle = false,
+    Color? progressColor,
+    double dayCircleSize = 36.0,
     bool enableWeekViewScrolling = true,
     Duration animationDuration = const Duration(milliseconds: 300),
   }) {
@@ -165,6 +236,64 @@ class CalendarConfig {
       selectedDayTextColor: selectedDayTextColor,
       weekendBackgroundColor: weekendBackgroundColor,
       weekendTextColor: weekendTextColor,
+      useDashedBorders: useDashedBorders,
+      dashedBorderColor: dashedBorderColor,
+      dashedBorderWidth: dashedBorderWidth,
+      dashedBorderDashLength: dashedBorderDashLength,
+      dashedBorderGapLength: dashedBorderGapLength,
+      showDateBelowCircle: showDateBelowCircle,
+      progressColor: progressColor,
+      dayCircleSize: dayCircleSize,
+      enableWeekViewScrolling: enableWeekViewScrolling,
+      animationDuration: animationDuration,
+    );
+  }
+
+  /// Create a config with dashed borders for day circles
+  factory CalendarConfig.withDashedBorders({
+    int firstDayOfWeek = 1,
+    Locale? locale,
+    bool showWeekNumbers = false,
+    bool highlightToday = true,
+    Color? todayHighlightColor,
+    TextStyle? dayTextStyle,
+    TextStyle? monthTextStyle,
+    TextStyle? weekdayTextStyle,
+    Color? selectedDayBackgroundColor,
+    Color? selectedDayTextColor,
+    Color? weekendBackgroundColor,
+    Color? weekendTextColor,
+    Color? dashedBorderColor,
+    double dashedBorderWidth = 1.0,
+    double dashedBorderDashLength = 5.0,
+    double dashedBorderGapLength = 3.0,
+    bool showDateBelowCircle = true,
+    Color? progressColor,
+    double dayCircleSize = 36.0,
+    bool enableWeekViewScrolling = true,
+    Duration animationDuration = const Duration(milliseconds: 300),
+  }) {
+    return CalendarConfig(
+      firstDayOfWeek: firstDayOfWeek,
+      locale: locale,
+      showWeekNumbers: showWeekNumbers,
+      highlightToday: highlightToday,
+      todayHighlightColor: todayHighlightColor,
+      dayTextStyle: dayTextStyle,
+      monthTextStyle: monthTextStyle,
+      weekdayTextStyle: weekdayTextStyle,
+      selectedDayBackgroundColor: selectedDayBackgroundColor,
+      selectedDayTextColor: selectedDayTextColor,
+      weekendBackgroundColor: weekendBackgroundColor,
+      weekendTextColor: weekendTextColor,
+      useDashedBorders: true,
+      dashedBorderColor: dashedBorderColor,
+      dashedBorderWidth: dashedBorderWidth,
+      dashedBorderDashLength: dashedBorderDashLength,
+      dashedBorderGapLength: dashedBorderGapLength,
+      showDateBelowCircle: showDateBelowCircle,
+      progressColor: progressColor,
+      dayCircleSize: dayCircleSize,
       enableWeekViewScrolling: enableWeekViewScrolling,
       animationDuration: animationDuration,
     );

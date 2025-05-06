@@ -228,9 +228,6 @@ class WeatherIconMapper {
       case WeatherCondition.humid:
         return isDay ? weather.partlyCloudy : weather.partlyCloudyNight;
       
-      // Default case
-      default:
-        return isDay ? weather.cloudy : weather.cloudyNight;
-    }
+      }
   }
 }

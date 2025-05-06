@@ -15,6 +15,12 @@ class CalendarDay {
   /// Whether this day is selected
   final bool isSelected;
 
+  /// Progress value for this day (0.0 to 1.0)
+  final double progress;
+
+  /// Whether this day has any progress
+  bool get hasProgress => progress > 0.0;
+
   /// Constructor
   const CalendarDay({
     required this.date,
@@ -22,6 +28,7 @@ class CalendarDay {
     this.isToday = false,
     this.isWeekend = false,
     this.isSelected = false,
+    this.progress = 0.0,
   });
 
   /// Create a copy of this day with some fields replaced
@@ -31,6 +38,7 @@ class CalendarDay {
     bool? isToday,
     bool? isWeekend,
     bool? isSelected,
+    double? progress,
   }) {
     return CalendarDay(
       date: date ?? this.date,
@@ -38,6 +46,7 @@ class CalendarDay {
       isToday: isToday ?? this.isToday,
       isWeekend: isWeekend ?? this.isWeekend,
       isSelected: isSelected ?? this.isSelected,
+      progress: progress ?? this.progress,
     );
   }
 
@@ -50,6 +59,6 @@ class CalendarDay {
 
   @override
   String toString() {
-    return 'CalendarDay(date: $date, isCurrentMonth: $isCurrentMonth, isToday: $isToday, isWeekend: $isWeekend, isSelected: $isSelected)';
+    return 'CalendarDay(date: $date, isCurrentMonth: $isCurrentMonth, isToday: $isToday, isWeekend: $isWeekend, isSelected: $isSelected, progress: $progress)';
   }
 }

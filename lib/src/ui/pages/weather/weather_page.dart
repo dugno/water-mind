@@ -97,8 +97,8 @@ class _WeatherPageState extends ConsumerState<WeatherPage> {
             const LinearProgressIndicator(),
 
           // Weather display
-          Expanded(
-            child: const WeatherWidgetV2() //  parameters means it will use IP lookup
+          const Expanded(
+            child: WeatherWidgetV2() //  parameters means it will use IP lookup
       
           ),
         ],

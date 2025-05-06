@@ -4,6 +4,7 @@ import 'dart:isolate';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart' as logger;
 import 'package:logging/logging.dart' as logging;
 import 'package:path/path.dart';
@@ -243,5 +244,19 @@ class AppLogger {
         mode: FileMode.writeOnlyAppend,
       );
     }
+  }
+}
+
+class AppLoggerProviderObserver extends ProviderObserver {
+  const AppLoggerProviderObserver();
+
+  @override
+  void providerDidFail(
+    ProviderBase<Object?> provider,
+    Object error,
+    StackTrace stackTrace,
+    ProviderContainer container,
+  ) {
+    AppLogger.reportError(error, stackTrace);
   }
 }
