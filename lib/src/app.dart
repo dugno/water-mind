@@ -6,6 +6,7 @@ import 'package:water_mind/src/core/routing/app_router.dart';
 import 'package:water_mind/src/core/theme/app_theme.dart';
 import 'package:water_mind/src/core/theme/providers/theme_provider.dart';
 import 'package:water_mind/src/core/services/notifications/notification_handler_widget.dart';
+import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 
 /// The main app widget that uses Riverpod for state management and localization.
 class App extends ConsumerWidget {

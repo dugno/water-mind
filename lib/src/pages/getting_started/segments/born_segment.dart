@@ -103,12 +103,23 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
           // Days wheel
           Expanded(
             child: WheelPicker(
-              builder: (context, index) => Text(
-                '${index + 1}',
-                style: const TextStyle(fontSize: 20),
-              ),
+              builder: (context, index) {
+                final value = index + 1;
+                final isSelected = value == _selectedDay;
+
+                return Text(
+                  '$value',
+                  style: TextStyle(
+                    fontSize: isSelected ? 22 : 20,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    color: isSelected
+                        ? const Color(0xFF4361EE) // Blue color for selected item
+                        : Colors.grey.shade800,   // Even darker grey for better visibility
+                  ),
+                );
+              },
               controller: daysController,
-              selectedIndexColor: const Color(0xFF03045E),
+              selectedIndexColor: Colors.transparent,
               looping: false,
               style: const WheelPickerStyle(
                 itemExtent: 40,
@@ -133,12 +144,22 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
           // Months wheel
           Expanded(
             child: WheelPicker(
-              builder: (context, index) => Text(
-                monthNames[index],
-                style: const TextStyle(fontSize: 20),
-              ),
+              builder: (context, index) {
+                final isSelected = (index + 1) == _selectedMonth;
+
+                return Text(
+                  monthNames[index],
+                  style: TextStyle(
+                    fontSize: isSelected ? 22 : 20,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    color: isSelected
+                        ? const Color(0xFF4361EE) // Blue color for selected item
+                        : Colors.grey.shade800,   // Even darker grey for better visibility
+                  ),
+                );
+              },
               controller: monthsController,
-              selectedIndexColor: const Color(0xFF03045E),
+              selectedIndexColor: Colors.transparent,
               looping: false,
               style: const WheelPickerStyle(
                 itemExtent: 40,
@@ -163,12 +184,23 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
           // Years wheel
           Expanded(
             child: WheelPicker(
-              builder: (context, index) => Text(
-                '${currentYear - index}',
-                style: const TextStyle(fontSize: 20),
-              ),
+              builder: (context, index) {
+                final value = currentYear - index;
+                final isSelected = value == _selectedYear;
+
+                return Text(
+                  '$value',
+                  style: TextStyle(
+                    fontSize: isSelected ? 22 : 20,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    color: isSelected
+                        ? const Color(0xFF4361EE) // Blue color for selected item
+                        : Colors.grey.shade800,   // Even darker grey for better visibility
+                  ),
+                );
+              },
               controller: yearsController,
-              selectedIndexColor: const Color(0xFF03045E),
+              selectedIndexColor: Colors.transparent,
               looping: false,
               style: const WheelPickerStyle(
                 itemExtent: 40,

@@ -207,10 +207,18 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
   }
 
   Widget _buildHeightPicker() {
-    // Generate height whole number values based on unit
-    final int minHeight = _selectedUnit == MeasureUnit.metric ? 50 : 2;
-    final int maxHeight = _selectedUnit == MeasureUnit.metric ? 250 : 8;
-    final int heightItemCount = maxHeight - minHeight + 1;
+    if (_selectedUnit == MeasureUnit.metric) {
+      return _buildMetricHeightPicker();
+    } else {
+      return _buildImperialHeightPicker();
+    }
+  }
+
+  Widget _buildMetricHeightPicker() {
+    // Generate height values for metric (cm)
+    const int minHeight = 50;
+    const int maxHeight = 250;
+    const int heightItemCount = maxHeight - minHeight + 1;
 
     // Create controller for whole numbers
     final wholeNumbersController = WheelPickerController(
@@ -218,72 +226,187 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
       initialIndex: _heightWhole - minHeight,
     );
 
-    // Create controller for decimals
-    final decimalsController = WheelPickerController(
-      itemCount: 10,
+    return Center(
+      child: WheelPicker(
+        builder: (context, index) {
+          final value = minHeight + index;
+          final isSelected = value == _heightWhole;
+
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '$value',
+                style: TextStyle(
+                  fontSize: isSelected ? 22 : 20,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: isSelected
+                      ? const Color(0xFF4361EE) // Blue color for selected item
+                      : Colors.grey.shade800,   // Even darker grey for better visibility
+                ),
+              ),
+              if (isSelected)
+                const Text(
+                  ' cm',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF4361EE), // Blue color for selected item
+                  ),
+                ),
+            ],
+          );
+        },
+        controller: wholeNumbersController,
+        selectedIndexColor: Colors.transparent, // Make the default selection indicator transparent
+        looping: false,
+        style: const WheelPickerStyle(
+          itemExtent: 40,
+          squeeze: 1.0,
+          diameterRatio: 1.5,
+          magnification: 1.2,
+          surroundingOpacity: 0.3,
+        ),
+        onIndexChanged: (index, _) {
+          haptic(HapticFeedbackType.selection);
+          setState(() {
+            _heightWhole = minHeight + index;
+            _heightDecimal = 0; // Reset decimal to 0 since we're not showing it anymore
+          });
+          _notifyHeightWeightChanged();
+        },
+      ),
+    );
+  }
+
+  Widget _buildImperialHeightPicker() {
+    // For imperial, we need feet and inches
+    // Feet range (typically 2-8 feet)
+    const int minFeet = 2;
+    const int maxFeet = 8;
+    const int feetItemCount = maxFeet - minFeet + 1;
+
+    // Inches range (0-11 inches)
+    const int maxInches = 11;
+    const int inchesItemCount = maxInches + 1;
+
+    // Create controllers
+    final feetController = WheelPickerController(
+      itemCount: feetItemCount,
+      initialIndex: _heightWhole - minFeet,
+    );
+
+    final inchesController = WheelPickerController(
+      itemCount: inchesItemCount,
       initialIndex: _heightDecimal,
     );
 
     return Row(
       children: [
-        // Whole numbers wheel
+        // Feet wheel
         Expanded(
-          flex: 2,
-          child: WheelPicker(
-            builder: (context, index) => Text(
-              '${minHeight + index}',
-              style: const TextStyle(fontSize: 20),
+          child: Center(
+            child: WheelPicker(
+              builder: (context, index) {
+                final value = minFeet + index;
+                final isSelected = value == _heightWhole;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$value',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? const Color(0xFF4361EE) // Blue color for selected item
+                            : Colors.grey.shade400,   // Grey color for unselected items
+                      ),
+                    ),
+                    if (isSelected)
+                      const Text(
+                        ' ft',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF4361EE), // Blue color for selected item
+                        ),
+                      ),
+                  ],
+                );
+              },
+              controller: feetController,
+              selectedIndexColor: Colors.transparent,
+              looping: false,
+              style: const WheelPickerStyle(
+                itemExtent: 40,
+                squeeze: 1.0,
+                diameterRatio: 1.5,
+                magnification: 1.2,
+                surroundingOpacity: 0.3,
+              ),
+              onIndexChanged: (index, _) {
+                haptic(HapticFeedbackType.selection);
+                setState(() {
+                  _heightWhole = minFeet + index;
+                });
+                _notifyHeightWeightChanged();
+              },
             ),
-            controller: wholeNumbersController,
-            selectedIndexColor: const Color(0xFF03045E),
-            looping: false,
-            style: const WheelPickerStyle(
-              itemExtent: 40,
-              squeeze: 1.0,
-              diameterRatio: 1.5,
-              magnification: 1.2,
-              surroundingOpacity: 0.3,
-            ),
-            onIndexChanged: (index, _) {
-              haptic(HapticFeedbackType.selection);
-              setState(() {
-                _heightWhole = minHeight + index;
-              });
-              _notifyHeightWeightChanged();
-            },
           ),
         ),
 
-        // Decimal point
-        const Text(
-          '.',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-
-        // Decimals wheel
+        // Inches wheel
         Expanded(
-          child: WheelPicker(
-            builder: (context, index) => Text(
-              '$index',
-              style: const TextStyle(fontSize: 20),
+          child: Center(
+            child: WheelPicker(
+              builder: (context, index) {
+                final isSelected = index == _heightDecimal;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$index',
+                      style: TextStyle(
+                        fontSize: isSelected ? 22 : 20,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? const Color(0xFF4361EE) // Blue color for selected item
+                            : Colors.grey.shade800,   // Even darker grey for better visibility
+                      ),
+                    ),
+                    if (isSelected)
+                      const Text(
+                        ' in',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF4361EE), // Blue color for selected item
+                        ),
+                      ),
+                  ],
+                );
+              },
+              controller: inchesController,
+              selectedIndexColor: Colors.transparent,
+              looping: false,
+              style: const WheelPickerStyle(
+                itemExtent: 40,
+                squeeze: 1.0,
+                diameterRatio: 1.5,
+                magnification: 1.2,
+                surroundingOpacity: 0.3,
+              ),
+              onIndexChanged: (index, _) {
+                haptic(HapticFeedbackType.selection);
+                setState(() {
+                  _heightDecimal = index;
+                });
+                _notifyHeightWeightChanged();
+              },
             ),
-            controller: decimalsController,
-            selectedIndexColor: const Color(0xFF03045E),
-            looping: false,
-            style: const WheelPickerStyle(
-              itemExtent: 40,
-              squeeze: 1.0,
-              diameterRatio: 1.5,
-              magnification: 1.2,
-              surroundingOpacity: 0.3,
-            ),
-            onIndexChanged: (index, _) {
-              haptic(HapticFeedbackType.selection);
-              setState(() {
-                _heightDecimal = index;
-              });
-              _notifyHeightWeightChanged();
-            },
           ),
         ),
       ],
@@ -295,6 +418,7 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
     final int minWeight = _selectedUnit == MeasureUnit.metric ? 20 : 40;
     final int maxWeight = _selectedUnit == MeasureUnit.metric ? 200 : 440;
     final int weightItemCount = maxWeight - minWeight + 1;
+    final String unit = _selectedUnit == MeasureUnit.metric ? 'kg' : 'lbs';
 
     // Create controller for whole numbers
     final wholeNumbersController = WheelPickerController(
@@ -302,75 +426,56 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
       initialIndex: _weightWhole - minWeight,
     );
 
-    // Create controller for decimals
-    final decimalsController = WheelPickerController(
-      itemCount: 10,
-      initialIndex: _weightDecimal,
-    );
+    return Center(
+      child: WheelPicker(
+        builder: (context, index) {
+          final value = minWeight + index;
+          final isSelected = value == _weightWhole;
 
-    return Row(
-      children: [
-        // Whole numbers wheel
-        Expanded(
-          flex: 2,
-          child: WheelPicker(
-            builder: (context, index) => Text(
-              '${minWeight + index}',
-              style: const TextStyle(fontSize: 20),
-            ),
-            controller: wholeNumbersController,
-            selectedIndexColor: const Color(0xFF03045E),
-            looping: false,
-            style: const WheelPickerStyle(
-              itemExtent: 40,
-              squeeze: 1.0,
-              diameterRatio: 1.5,
-              magnification: 1.2,
-              surroundingOpacity: 0.3,
-            ),
-            onIndexChanged: (index, _) {
-              haptic(HapticFeedbackType.selection);
-              setState(() {
-                _weightWhole = minWeight + index;
-              });
-              _notifyHeightWeightChanged();
-            },
-          ),
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '$value',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: isSelected
+                      ? const Color(0xFF4361EE) // Blue color for selected item
+                      : Colors.grey.shade700,   // Darker grey for better visibility
+                ),
+              ),
+              if (isSelected)
+                Text(
+                  ' $unit',
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF4361EE), // Blue color for selected item
+                  ),
+                ),
+            ],
+          );
+        },
+        controller: wholeNumbersController,
+        selectedIndexColor: Colors.transparent, // Make the default selection indicator transparent
+        looping: false,
+        style: const WheelPickerStyle(
+          itemExtent: 40,
+          squeeze: 1.0,
+          diameterRatio: 1.5,
+          magnification: 1.2,
+          surroundingOpacity: 0.3,
         ),
-
-        // Decimal point
-        const Text(
-          '.',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-
-        // Decimals wheel
-        Expanded(
-          child: WheelPicker(
-            builder: (context, index) => Text(
-              '$index',
-              style: const TextStyle(fontSize: 20),
-            ),
-            controller: decimalsController,
-            selectedIndexColor: const Color(0xFF03045E),
-            looping: false,
-            style: const WheelPickerStyle(
-              itemExtent: 40,
-              squeeze: 1.0,
-              diameterRatio: 1.5,
-              magnification: 1.2,
-              surroundingOpacity: 0.3,
-            ),
-            onIndexChanged: (index, _) {
-              haptic(HapticFeedbackType.selection);
-              setState(() {
-                _weightDecimal = index;
-              });
-              _notifyHeightWeightChanged();
-            },
-          ),
-        ),
-      ],
+        onIndexChanged: (index, _) {
+          haptic(HapticFeedbackType.selection);
+          setState(() {
+            _weightWhole = minWeight + index;
+            _weightDecimal = 0; // Reset decimal to 0 since we're not showing it anymore
+          });
+          _notifyHeightWeightChanged();
+        },
+      ),
     );
   }
 }

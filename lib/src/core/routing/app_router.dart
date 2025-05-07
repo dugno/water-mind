@@ -6,8 +6,10 @@ import 'package:water_mind/src/pages/getting_started/getting_started.dart';
 import 'package:water_mind/src/pages/getting_started/models/getting_started_step.dart';
 import 'package:water_mind/src/pages/getting_started/models/user_onboarding_model.dart';
 import 'package:water_mind/src/pages/getting_started/summary_page.dart';
+import 'package:water_mind/src/pages/history/water_history_page.dart';
 import 'package:water_mind/src/pages/home/home_page.dart';
 import 'package:water_mind/src/pages/introduction/introduction.dart';
+import 'package:water_mind/src/pages/main_navigation_page.dart';
 import 'package:water_mind/src/pages/profile/profile_page.dart';
 import 'package:water_mind/src/pages/reminders/reminder_settings_page.dart';
 import 'package:water_mind/src/pages/settings/theme_settings_page.dart';
@@ -51,10 +53,10 @@ class AppRouter extends _$AppRouter {
           page: WheelPickerExampleRoute.page,
         ),
 
-        // Home page
+        // Main navigation page
         AutoRoute(
           path: '/',
-          page: HomeRoute.page,
+          page: MainNavigationRoute.page,
           initial: true,
           guards: [GettingStartedGuard()],
         ),

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/routing/app_router.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
@@ -31,113 +32,404 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
     final profileSettingsAsync = ref.watch(profileSettingsProvider);
 
     return Scaffold(
+      backgroundColor: AppColor.secondaryColor,
       appBar: AppBar(
-        title: Text(context.l10n.profile),
+        backgroundColor: AppColor.secondaryColor,
+        elevation: 0,
+        title: Text(
+          context.l10n.profile,
+          style: const TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: profileSettingsAsync.when(
         data: (settings) => _buildProfileContent(settings),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: CircularProgressIndicator(color: Colors.white)),
         error: (error, stack) => Center(
-          child: Text('Error loading profile: $error'),
+          child: Text(
+            'Error loading profile: $error',
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildProfileContent( ProfileSettingsModel profileSettings) {
+  Widget _buildProfileContent(ProfileSettingsModel profileSettings) {
     return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       children: [
-        // User info card
-        _buildUserInfoCard(profileSettings),
+        // REMINDER SETTINGS SECTION
+        _buildSectionTitle(context.l10n.reminders),
 
-        const SizedBox(height: 16),
-
-        // Reminders section
-        _buildSection(
-          title: context.l10n.reminders,
-          icon: Icons.notifications_outlined,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.access_alarm),
-              title: Text(context.l10n.reminderSettings),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                haptic(HapticFeedbackType.selection);
-                context.router.push(const ReminderSettingsRoute());
-              },
+        _buildSettingsCard([
+          // Reminder Settings
+          ListTile(
+            leading: const Icon(Icons.access_alarm, color: Colors.white),
+            title: Text(
+              context.l10n.reminderSettings,
+              style: const TextStyle(color: Colors.white),
             ),
-          ],
+            subtitle: const Text(
+              'Standard Mode',
+              style: TextStyle(color: Colors.white70),
+            ),
+            trailing: const Icon(Icons.chevron_right, color: Colors.white),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              context.router.push(const ReminderSettingsRoute());
+            },
+          ),
+
+          // Sound
+          SwitchListTile(
+            secondary: const Icon(Icons.volume_up_outlined, color: Colors.white),
+            title: Text(
+              context.l10n.enableSound,
+              style: const TextStyle(color: Colors.white),
+            ),
+            value: profileSettings.soundEnabled,
+            activeColor: Colors.white,
+            activeTrackColor: AppColor.thirdColor,
+            onChanged: (value) {
+              haptic(HapticFeedbackType.selection);
+              ref.read(profileSettingsProvider.notifier).updateSoundEnabled(value);
+            },
+          ),
+
+          // Vibration
+          SwitchListTile(
+            secondary: const Icon(Icons.vibration, color: Colors.white),
+            title: Text(
+              context.l10n.enableVibration,
+              style: const TextStyle(color: Colors.white),
+            ),
+            value: profileSettings.vibrationEnabled,
+            activeColor: Colors.white,
+            activeTrackColor: AppColor.thirdColor,
+            onChanged: (value) {
+              haptic(HapticFeedbackType.selection);
+              ref.read(profileSettingsProvider.notifier).updateVibrationEnabled(value);
+            },
+          ),
+        ]),
+
+        const SizedBox(height: 24),
+
+        // DRINK SECTION
+        _buildSectionTitle('Drink'),
+
+        _buildSettingsCard([
+          // Daily Goal
+          ListTile(
+            leading: const Icon(Icons.water_drop_outlined, color: Colors.white),
+            title: Text(
+              context.l10n.dailyGoal,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '${profileSettings.customDailyGoal?.toInt() ?? 2500} ${profileSettings.measureUnit == MeasureUnit.metric ? 'ml' : 'oz'}',
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.chevron_right, color: Colors.white),
+              ],
+            ),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              _showDailyGoalDialog(profileSettings);
+            },
+          ),
+
+          // Custom Daily Goal Switch
+          SwitchListTile(
+            secondary: const Icon(Icons.edit, color: Colors.white),
+            title: Text(
+              context.l10n.useCustomDailyGoal,
+              style: const TextStyle(color: Colors.white),
+            ),
+            value: profileSettings.useCustomDailyGoal,
+            activeColor: Colors.white,
+            activeTrackColor: AppColor.thirdColor,
+            onChanged: (value) {
+              haptic(HapticFeedbackType.selection);
+              ref.read(profileSettingsProvider.notifier).updateDailyGoal(
+                profileSettings.customDailyGoal ?? 2500,
+                value,
+              );
+            },
+          ),
+
+          // Physical Attributes
+          ListTile(
+            leading: const Icon(Icons.person_outline, color: Colors.white),
+            title: const Text(
+              'Physical Attributes',
+              style: TextStyle(color: Colors.white),
+            ),
+            trailing: const Icon(Icons.chevron_right, color: Colors.white),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              _showPhysicalAttributesDialog(profileSettings);
+            },
+          ),
+
+          // Gender
+          ListTile(
+            leading: Icon(_getGenderIcon(profileSettings.gender), color: Colors.white),
+            title: Text(
+              context.l10n.gender,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  profileSettings.gender?.getString(context) ?? context.l10n.notSet,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.chevron_right, color: Colors.white),
+              ],
+            ),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              _showPhysicalAttributesDialog(profileSettings);
+            },
+          ),
+
+          // Weight
+          ListTile(
+            leading: const Icon(Icons.monitor_weight_outlined, color: Colors.white),
+            title: Text(
+              context.l10n.weight,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  profileSettings.weight != null
+                      ? '${profileSettings.weight!.toStringAsFixed(1)} ${profileSettings.measureUnit == MeasureUnit.metric ? 'kg' : 'lb'}'
+                      : context.l10n.notSet,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.chevron_right, color: Colors.white),
+              ],
+            ),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              _showPhysicalAttributesDialog(profileSettings);
+            },
+          ),
+
+          // Height
+          ListTile(
+            leading: const Icon(Icons.straighten_outlined, color: Colors.white),
+            title: Text(
+              context.l10n.height,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  profileSettings.height != null
+                      ? '${profileSettings.height!.toStringAsFixed(1)} ${profileSettings.measureUnit == MeasureUnit.metric ? 'cm' : 'in'}'
+                      : context.l10n.notSet,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.chevron_right, color: Colors.white),
+              ],
+            ),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              _showPhysicalAttributesDialog(profileSettings);
+            },
+          ),
+        ]),
+
+        const SizedBox(height: 24),
+
+        // GENERAL SECTION
+        _buildSectionTitle('General'),
+
+        _buildSettingsCard([
+          // Units
+          ListTile(
+            leading: const Icon(Icons.straighten_outlined, color: Colors.white),
+            title: Text(
+              context.l10n.units,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  profileSettings.measureUnit == MeasureUnit.metric ? 'ml, kg' : 'oz, lb',
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.chevron_right, color: Colors.white),
+              ],
+            ),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              _showUnitSelectorDialog(profileSettings);
+            },
+          ),
+
+          // Language
+          ListTile(
+            leading: const Icon(Icons.language_outlined, color: Colors.white),
+            title: Text(
+              context.l10n.language,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _getLanguageFlag(profileSettings.language),
+                const SizedBox(width: 8),
+                Text(
+                  _getLanguageName(profileSettings.language),
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.chevron_right, color: Colors.white),
+              ],
+            ),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              _showLanguageSelector(profileSettings);
+            },
+          ),
+
+          // Time settings
+          ListTile(
+            leading: const Icon(Icons.access_time_outlined, color: Colors.white),
+            title: Text(
+              context.l10n.timeSettings,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: const Icon(Icons.chevron_right, color: Colors.white),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              _showTimeSettingsDialog(profileSettings);
+            },
+          ),
+
+          // Feedback
+          ListTile(
+            leading: const Icon(Icons.feedback_outlined, color: Colors.white),
+            title: Text(
+              context.l10n.sendFeedback,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: const Icon(Icons.chevron_right, color: Colors.white),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              // TODO: Implement feedback functionality
+            },
+          ),
+
+          // Privacy Policy
+          ListTile(
+            leading: const Icon(Icons.privacy_tip_outlined, color: Colors.white),
+            title: Text(
+              context.l10n.privacyPolicy,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: const Icon(Icons.chevron_right, color: Colors.white),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              // TODO: Implement privacy policy
+            },
+          ),
+
+          // Share App
+          ListTile(
+            leading: const Icon(Icons.share_outlined, color: Colors.white),
+            title: Text(
+              context.l10n.shareApp,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: const Icon(Icons.chevron_right, color: Colors.white),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              _shareApp();
+            },
+          ),
+
+          // About App
+          ListTile(
+            leading: const Icon(Icons.info_outline, color: Colors.white),
+            title: Text(
+              context.l10n.aboutApp,
+              style: const TextStyle(color: Colors.white),
+            ),
+            trailing: const Icon(Icons.chevron_right, color: Colors.white),
+            onTap: () {
+              haptic(HapticFeedbackType.selection);
+              // TODO: Implement about app
+            },
+          ),
+        ]),
+
+        const SizedBox(height: 32),
+      ],
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, bottom: 8),
+      child: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
         ),
+      ),
+    );
+  }
 
-        // Daily goal section
-        _buildSection(
-          title: context.l10n.dailyGoal,
-          icon: Icons.water_drop_outlined,
+  Widget _buildSettingsCard(List<Widget> children) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: AppColor.thirdColor.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: children,
+      ),
+    );
+  }
+
+  void _showUnitSelectorDialog(ProfileSettingsModel profileSettings) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColor.thirdColor,
+        title: Text(
+          context.l10n.units,
+          style: const TextStyle(color: Colors.white),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            SwitchListTile(
-              title: Text(context.l10n.useCustomDailyGoal),
-              value: profileSettings.useCustomDailyGoal,
-              onChanged: (value) {
-                haptic(HapticFeedbackType.selection);
-                ref.read(profileSettingsProvider.notifier).updateDailyGoal(
-                  profileSettings.customDailyGoal ?? 2500,
-                  value,
-                );
-              },
-            ),
             ListTile(
-              title: Text(context.l10n.setDailyGoal),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    '${profileSettings.customDailyGoal?.toInt() ?? 2500} ${profileSettings.measureUnit == MeasureUnit.metric ? 'ml' : 'oz'}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.chevron_right),
-                ],
+              title: Text(
+                context.l10n.measurementUnit,
+                style: const TextStyle(color: Colors.white),
               ),
-              enabled: profileSettings.useCustomDailyGoal,
-              onTap: profileSettings.useCustomDailyGoal ? () {
-                haptic(HapticFeedbackType.selection);
-                _showDailyGoalDialog(profileSettings);
-              } : null,
-            ),
-          ],
-        ),
-
-        // Sound and vibration section
-        _buildSection(
-          title: context.l10n.soundAndVibration,
-          icon: Icons.volume_up_outlined,
-          children: [
-            SwitchListTile(
-              title: Text(context.l10n.enableSound),
-              value: profileSettings.soundEnabled,
-              onChanged: (value) {
-                haptic(HapticFeedbackType.selection);
-                ref.read(profileSettingsProvider.notifier).updateSoundEnabled(value);
-              },
-            ),
-            SwitchListTile(
-              title: Text(context.l10n.enableVibration),
-              value: profileSettings.vibrationEnabled,
-              onChanged: (value) {
-                haptic(HapticFeedbackType.selection);
-                ref.read(profileSettingsProvider.notifier).updateVibrationEnabled(value);
-              },
-            ),
-          ],
-        ),
-
-        // Units section
-        _buildSection(
-          title: context.l10n.units,
-          icon: Icons.straighten_outlined,
-          children: [
-            ListTile(
-              title: Text(context.l10n.measurementUnit),
               trailing: SegmentedButton<MeasureUnit>(
                 segments: [
                   ButtonSegment<MeasureUnit>(
@@ -158,288 +450,101 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
                       profileSettings.weight ?? 70,
                       selection.first,
                     );
+                    Navigator.of(context).pop();
                   }
                 },
               ),
             ),
           ],
         ),
-
-        // Physical attributes section
-        _buildSection(
-          title: context.l10n.physicalAttributes,
-          icon: Icons.person_outline,
-          children: [
-            // Gender row
-            ListTile(
-              leading: Icon(_getGenderIcon(profileSettings.gender)),
-              title: Text(context.l10n.gender),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    profileSettings.gender?.getString(context) ?? context.l10n.notSet,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.chevron_right),
-                ],
-              ),
-              onTap: () {
-                haptic(HapticFeedbackType.selection);
-                _showPhysicalAttributesDialog(profileSettings);
-              },
-            ),
-
-            // Weight row
-            ListTile(
-              leading: const Icon(Icons.monitor_weight_outlined),
-              title: Text(context.l10n.weight),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    profileSettings.weight != null
-                        ? '${profileSettings.weight!.toStringAsFixed(1)} ${profileSettings.measureUnit == MeasureUnit.metric ? 'kg' : 'lb'}'
-                        : context.l10n.notSet,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.chevron_right),
-                ],
-              ),
-              onTap: () {
-                haptic(HapticFeedbackType.selection);
-                _showPhysicalAttributesDialog(profileSettings);
-              },
-            ),
-
-            // Height row
-            ListTile(
-              leading: const Icon(Icons.straighten_outlined),
-              title: Text(context.l10n.height),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    profileSettings.height != null
-                        ? '${profileSettings.height!.toStringAsFixed(1)} ${profileSettings.measureUnit == MeasureUnit.metric ? 'cm' : 'in'}'
-                        : context.l10n.notSet,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.chevron_right),
-                ],
-              ),
-              onTap: () {
-                haptic(HapticFeedbackType.selection);
-                _showPhysicalAttributesDialog(profileSettings);
-              },
-            ),
-          ],
-        ),
-
-        // Language section
-        _buildSection(
-          title: context.l10n.language,
-          icon: Icons.language_outlined,
-          children: [
-            ListTile(
-              title: Text(context.l10n.changeLanguage),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _getLanguageFlag(profileSettings.language),
-                  const SizedBox(width: 8),
-                  Text(_getLanguageName(profileSettings.language)),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.chevron_right),
-                ],
-              ),
-              onTap: () {
-                haptic(HapticFeedbackType.selection);
-                _showLanguageSelector(profileSettings);
-              },
-            ),
-          ],
-        ),
-
-        // Time settings section
-        _buildSection(
-          title: context.l10n.timeSettings,
-          icon: Icons.access_time_outlined,
-          children: [
-            ListTile(
-              title: Text(context.l10n.wakeUpTime),
-              trailing: TextButton(
-                onPressed: () => _selectWakeUpTime(profileSettings),
-                child: Text(
-                  profileSettings.wakeUpTime != null
-                      ? '${profileSettings.wakeUpTime!.hour}:${profileSettings.wakeUpTime!.minute.toString().padLeft(2, '0')}'
-                      : '7:00',
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text(context.l10n.bedTime),
-              trailing: TextButton(
-                onPressed: () => _selectBedTime(profileSettings),
-                child: Text(
-                  profileSettings.bedTime != null
-                      ? '${profileSettings.bedTime!.hour}:${profileSettings.bedTime!.minute.toString().padLeft(2, '0')}'
-                      : '23:00',
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-        ),
-
-        // About section
-        _buildSection(
-          title: context.l10n.about,
-          icon: Icons.info_outline,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.feedback_outlined),
-              title: Text(context.l10n.sendFeedback),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                haptic(HapticFeedbackType.selection);
-                // TODO: Implement feedback functionality
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.privacy_tip_outlined),
-              title: Text(context.l10n.privacyPolicy),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                haptic(HapticFeedbackType.selection);
-                // TODO: Implement privacy policy
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.share_outlined),
-              title: Text(context.l10n.shareApp),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                haptic(HapticFeedbackType.selection);
-                _shareApp();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: Text(context.l10n.aboutApp),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                haptic(HapticFeedbackType.selection);
-                // TODO: Implement about app
-              },
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 32),
-      ],
-    );
-  }
-
-  Widget _buildUserInfoCard(ProfileSettingsModel profileSettings) {
-    return Card(
-      margin: const EdgeInsets.all(16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 40,
-              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-              child: Icon(
-                _getGenderIcon(profileSettings.gender),
-                size: 40,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    context.l10n.yourProfile,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    profileSettings.gender != null
-                        ? profileSettings.gender!.getString(context)
-                        : context.l10n.tapToEdit,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSection({
-    required String title,
-    required IconData icon,
-    required List<Widget> children,
-  }) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Icon(icon, color: Theme.of(context).colorScheme.primary),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              context.l10n.cancel,
+              style: const TextStyle(color: Colors.white),
             ),
           ),
-          ...children,
         ],
       ),
     );
   }
 
-  Future<void> _selectWakeUpTime(ProfileSettingsModel profileSettings) async {
-    final TimeOfDay? picked = await showTimeOfDayPicker(
+  void _showTimeSettingsDialog(ProfileSettingsModel profileSettings) {
+    showDialog(
       context: context,
-      initialTime: profileSettings.wakeUpTime ?? const TimeOfDay(hour: 7, minute: 0),
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColor.thirdColor,
+        title: Text(
+          context.l10n.timeSettings,
+          style: const TextStyle(color: Colors.white),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: Text(
+                context.l10n.wakeUpTime,
+                style: const TextStyle(color: Colors.white),
+              ),
+              trailing: TextButton(
+                onPressed: () async {
+                  final TimeOfDay? picked = await showTimeOfDayPicker(
+                    context: context,
+                    initialTime: profileSettings.wakeUpTime ?? const TimeOfDay(hour: 7, minute: 0),
+                  );
+
+                  if (picked != null && context.mounted) {
+                    haptic(HapticFeedbackType.selection);
+                    ref.read(profileSettingsProvider.notifier).updateWakeUpTime(picked);
+                  }
+                },
+                child: Text(
+                  profileSettings.wakeUpTime != null
+                      ? '${profileSettings.wakeUpTime!.hour}:${profileSettings.wakeUpTime!.minute.toString().padLeft(2, '0')}'
+                      : '7:00',
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                context.l10n.bedTime,
+                style: const TextStyle(color: Colors.white),
+              ),
+              trailing: TextButton(
+                onPressed: () async {
+                  final TimeOfDay? picked = await showTimeOfDayPicker(
+                    context: context,
+                    initialTime: profileSettings.bedTime ?? const TimeOfDay(hour: 23, minute: 0),
+                  );
+
+                  if (picked != null && context.mounted) {
+                    haptic(HapticFeedbackType.selection);
+                    ref.read(profileSettingsProvider.notifier).updateBedTime(picked);
+                  }
+                },
+                child: Text(
+                  profileSettings.bedTime != null
+                      ? '${profileSettings.bedTime!.hour}:${profileSettings.bedTime!.minute.toString().padLeft(2, '0')}'
+                      : '23:00',
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              context.l10n.cancel,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
     );
-
-    if (picked != null && context.mounted) {
-      haptic(HapticFeedbackType.selection);
-      ref.read(profileSettingsProvider.notifier).updateWakeUpTime(picked);
-    }
-  }
-
-  Future<void> _selectBedTime(ProfileSettingsModel profileSettings) async {
-    final TimeOfDay? picked = await showTimeOfDayPicker(
-      context: context,
-      initialTime: profileSettings.bedTime ?? const TimeOfDay(hour: 23, minute: 0),
-    );
-
-    if (picked != null && context.mounted) {
-      haptic(HapticFeedbackType.selection);
-      ref.read(profileSettingsProvider.notifier).updateBedTime(picked);
-    }
   }
 
   void _showDailyGoalDialog(ProfileSettingsModel profileSettings) {

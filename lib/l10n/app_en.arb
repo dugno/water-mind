@@ -767,5 +767,33 @@
   "fluidOunces": "fl oz",
   "@fluidOunces": {
     "description": "Fluid ounces unit"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Home tab label"
+  },
+  "history": "History",
+  "@history": {
+    "description": "History tab label"
+  },
+  "waterHistory": "Water History",
+  "@waterHistory": {
+    "description": "Water history page title"
+  },
+  "day": "Day",
+  "@day": {
+    "description": "Day tab label"
+  },
+  "week": "Week",
+  "@week": {
+    "description": "Week tab label"
+  },
+  "month": "Month",
+  "@month": {
+    "description": "Month tab label"
+  },
+  "year": "Year",
+  "@year": {
+    "description": "Year tab label"
   }
 }

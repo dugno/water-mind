@@ -101,12 +101,28 @@ class _WakeUpSegmentState extends State<WakeUpSegment>
           // Hours wheel
           Expanded(
             child: WheelPicker(
-              builder: (context, index) => Text(
-                '${index + 1}',
-                style: const TextStyle(fontSize: 20),
-              ),
+              builder: (context, index) {
+                final value = index + 1;
+                final isSelected = value == _selectedHour;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$value',
+                      style: TextStyle(
+                        fontSize: isSelected ? 22 : 20,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? const Color(0xFF4361EE) // Blue color for selected item
+                            : Colors.grey.shade800,   // Even darker grey for better visibility
+                      ),
+                    ),
+                  ],
+                );
+              },
               controller: hoursController,
-              selectedIndexColor: const Color(0xFF03045E),
+              selectedIndexColor: Colors.transparent,
               looping: false,
               style: const WheelPickerStyle(
                 itemExtent: 40,
@@ -130,12 +146,27 @@ class _WakeUpSegmentState extends State<WakeUpSegment>
           // Minutes wheel
           Expanded(
             child: WheelPicker(
-              builder: (context, index) => Text(
-                index.toString().padLeft(2, '0'),
-                style: const TextStyle(fontSize: 20),
-              ),
+              builder: (context, index) {
+                final isSelected = index == _selectedMinute;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      index.toString().padLeft(2, '0'),
+                      style: TextStyle(
+                        fontSize: isSelected ? 22 : 20,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? const Color(0xFF4361EE) // Blue color for selected item
+                            : Colors.grey.shade800,   // Even darker grey for better visibility
+                      ),
+                    ),
+                  ],
+                );
+              },
               controller: minutesController,
-              selectedIndexColor: const Color(0xFF03045E),
+              selectedIndexColor: Colors.transparent,
               looping: false,
               style: const WheelPickerStyle(
                 itemExtent: 40,
@@ -159,12 +190,28 @@ class _WakeUpSegmentState extends State<WakeUpSegment>
           // AM/PM wheel
           Expanded(
             child: WheelPicker(
-              builder: (context, index) => Text(
-                index == 0 ? context.l10n.am : context.l10n.pm,
-                style: const TextStyle(fontSize: 20),
-              ),
+              builder: (context, index) {
+                final value = index == 0 ? context.l10n.am : context.l10n.pm;
+                final isSelected = value == _selectedAmPm;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      value,
+                      style: TextStyle(
+                        fontSize: isSelected ? 22 : 20,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? const Color(0xFF4361EE) // Blue color for selected item
+                            : Colors.grey.shade800,   // Even darker grey for better visibility
+                      ),
+                    ),
+                  ],
+                );
+              },
               controller: amPmController,
-              selectedIndexColor: const Color(0xFF03045E),
+              selectedIndexColor: Colors.transparent,
               looping: false,
               style: const WheelPickerStyle(
                 itemExtent: 40,
