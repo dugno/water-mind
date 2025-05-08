@@ -71,8 +71,8 @@ class HomeViewModelState {
   /// Constructor
   HomeViewModelState({
     required this.userModel,
-    this.selectedDrinkType,
-    this.selectedAmount,
+    this.selectedDrinkType = DrinkTypes.water,
+    this.selectedAmount = 200.0,
     required this.todayHistory,
     required this.calendarController,
     this.wavePhase = 0.0,
@@ -200,6 +200,9 @@ class HomeViewModel extends StateNotifier<HomeViewModelState> {
 
     // Load water intake history for the week and update calendar progress
     await _updateCalendarProgress();
+
+    // Set up calendar controller listener
+    _setupCalendarListener();
   }
 
   /// Load today's water intake history
@@ -472,6 +475,36 @@ class HomeViewModel extends StateNotifier<HomeViewModelState> {
 
   /// Flag to track if the notifier has been disposed
   bool disposed = false;
+
+  /// Set up listener for calendar controller
+  void _setupCalendarListener() {
+    state.calendarController.addListener(() {
+      if (!mounted) return;
+
+      // When a day is selected in the calendar, update the selected date
+      if (state.calendarController.selectedDay != null) {
+        final selectedDay = state.calendarController.selectedDay!;
+        _loadHistoryForDate(selectedDay);
+      }
+    });
+  }
+
+  /// Load history for a specific date
+  Future<void> _loadHistoryForDate(DateTime date) async {
+    if (!mounted) return;
+
+    try {
+      final history = await _waterIntakeRepository.getWaterIntakeHistory(date);
+
+      if (!mounted) return;
+
+      if (history != null) {
+        state = state.copyWith(todayHistory: history);
+      }
+    } catch (e) {
+      debugPrint('Error loading history for date $date: $e');
+    }
+  }
 
   @override
   void dispose() {

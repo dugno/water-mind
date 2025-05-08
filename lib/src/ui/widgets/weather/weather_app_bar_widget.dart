@@ -23,21 +23,23 @@ class WeatherAppBarWidget extends ConsumerWidget {
         height: 24,
         child: CircularProgressIndicator(
           strokeWidth: 2,
+          color: Colors.white,
         ),
       ),
-      error: (_, __) => const Icon(Icons.cloud_off),
+      error: (_, __) => const Icon(Icons.cloud_off, color: Colors.white),
     );
   }
 
   Widget _buildWeatherContent(BuildContext context, NetworkResult<ForecastData> result) {
     return result.when(
       success: (data) => _buildWeatherIcon(context, data.current.condition),
-      error: (error) => const Icon(Icons.cloud_off),
+      error: (error) => const Icon(Icons.cloud_off, color: Colors.white),
       loading: () => const SizedBox(
         width: 24,
         height: 24,
         child: CircularProgressIndicator(
           strokeWidth: 2,
+          color: Colors.white,
         ),
       ),
     );
@@ -55,8 +57,8 @@ class WeatherAppBarWidget extends ConsumerWidget {
             isDay: true,
           ).svg(
             fit: BoxFit.contain,
-            colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.onPrimary,
+            colorFilter: const ColorFilter.mode(
+              Colors.white,
               BlendMode.srcIn,
             ),
           ),
@@ -65,7 +67,8 @@ class WeatherAppBarWidget extends ConsumerWidget {
         Text(
           condition.getString(context),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
         ),
       ],
