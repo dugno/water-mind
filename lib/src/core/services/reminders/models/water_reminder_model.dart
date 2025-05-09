@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'reminder_mode.dart';
+import 'standard_reminder_time.dart';
 
 part 'water_reminder_model.freezed.dart';
 part 'water_reminder_model.g.dart';
@@ -47,6 +48,22 @@ class TimeOfDayListConverter implements JsonConverter<List<TimeOfDay>, List<dyna
   }
 }
 
+/// JSON converter for List<StandardReminderTime>
+class StandardReminderTimeListConverter implements JsonConverter<List<StandardReminderTime>, List<dynamic>> {
+  /// Constructor
+  const StandardReminderTimeListConverter();
+
+  @override
+  List<StandardReminderTime> fromJson(List<dynamic> json) {
+    return json.map((item) => StandardReminderTime.fromJson(item as Map<String, dynamic>)).toList();
+  }
+
+  @override
+  List<dynamic> toJson(List<StandardReminderTime> object) {
+    return object.map((item) => item.toJson()).toList();
+  }
+}
+
 /// Model for water reminder settings
 @freezed
 class WaterReminderModel with _$WaterReminderModel {
@@ -69,6 +86,12 @@ class WaterReminderModel with _$WaterReminderModel {
 
     /// Custom reminder times (for custom mode)
     @TimeOfDayListConverter() @Default([]) List<TimeOfDay> customTimes,
+
+    /// Disabled custom reminder times (for custom mode)
+    @TimeOfDayListConverter() @Default([]) List<TimeOfDay> disabledCustomTimes,
+
+    /// Standard reminder times (for standard mode)
+    @StandardReminderTimeListConverter() @Default([]) List<StandardReminderTime> standardTimes,
 
     /// Whether to skip reminders if the user has already met their daily goal
     @Default(false) bool skipIfGoalMet,

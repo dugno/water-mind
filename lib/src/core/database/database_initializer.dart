@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:water_mind/src/core/database/database.dart';
@@ -11,6 +12,19 @@ class DatabaseInitializer {
 
   // Flag to track if initialization has been completed
   static bool _initialized = false;
+
+  // Completer to track initialization process
+  static final Completer<void> _initCompleter = Completer<void>();
+
+  // Flag to track if initialization is in progress
+  static bool _isInitializing = false;
+
+  // Counter for open connections
+  static int _openConnections = 0;
+
+  // Constants for retry mechanism
+  static const int _maxRetries = 3;
+  static const Duration _retryDelay = Duration(milliseconds: 500);
 
   /// Getter cho database instance
   /// This will throw an error if accessed before initialization
@@ -28,25 +42,61 @@ class DatabaseInitializer {
   /// This should be called only once at app startup
   static Future<void> initialize() async {
     if (_initialized) {
-      AppLogger.warning('Database already initialized. Skipping initialization.');
+      AppLogger.info('Database already initialized. Returning existing instance.');
       return;
     }
 
-    try {
-      // Set drift runtime options to avoid multiple database warnings
-      // Only do this if you're sure your app is properly handling database access
-      driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
+    if (_isInitializing) {
+      AppLogger.info('Database initialization in progress. Waiting for completion.');
+      return _initCompleter.future;
+    }
 
-      // Khởi tạo cơ sở dữ liệu as a singleton
-      _instance = AppDatabase();
-      _initialized = true;
+    _isInitializing = true;
+    int retryCount = 0;
 
-      AppLogger.info('Database initialized successfully');
-    } catch (e) {
-      _initialized = false;
-      _instance = null;
-      AppLogger.reportError(e, StackTrace.current, 'Error initializing database');
-      debugPrint('Error initializing database: $e');
+    while (retryCount < _maxRetries) {
+      try {
+        // Set drift runtime options to avoid multiple database warnings
+        driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
+
+        // Khởi tạo cơ sở dữ liệu as a singleton
+        _instance = AppDatabase();
+
+        // Kiểm tra kết nối
+        await _instance!.validateDatabaseIntegrity();
+
+        _initialized = true;
+        _isInitializing = false;
+        _openConnections = 1;
+
+        if (!_initCompleter.isCompleted) {
+          _initCompleter.complete();
+        }
+
+        AppLogger.info('Database initialized successfully');
+        return;
+      } catch (e) {
+        retryCount++;
+
+        if (retryCount >= _maxRetries) {
+          _initialized = false;
+          _isInitializing = false;
+          _instance = null;
+
+          final error = 'Error initializing database after $_maxRetries attempts: $e';
+          AppLogger.reportError(e, StackTrace.current, error);
+          debugPrint(error);
+
+          if (!_initCompleter.isCompleted) {
+            _initCompleter.completeError(e);
+          }
+
+          rethrow;
+        } else {
+          AppLogger.warning('Database initialization failed, retrying (${retryCount}/$_maxRetries): $e');
+          await Future.delayed(_retryDelay * retryCount);
+        }
+      }
     }
   }
 
@@ -62,10 +112,42 @@ class DatabaseInitializer {
       await _instance!.close();
       _instance = null;
       _initialized = false;
+      _openConnections = 0;
       AppLogger.info('Database closed successfully');
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error closing database');
       debugPrint('Error closing database: $e');
+    }
+  }
+
+  /// Đăng ký một kết nối mới
+  static void registerConnection() {
+    _openConnections++;
+    AppLogger.info('Database connection registered. Total connections: $_openConnections');
+  }
+
+  /// Hủy đăng ký một kết nối
+  static void unregisterConnection() {
+    if (_openConnections > 0) {
+      _openConnections--;
+      AppLogger.info('Database connection unregistered. Total connections: $_openConnections');
+    }
+  }
+
+  /// Xóa dữ liệu cũ
+  static Future<void> cleanupOldData(int daysToKeep) async {
+    if (!_initialized || _instance == null) {
+      AppLogger.warning('Cannot cleanup old data: Database not initialized');
+      return;
+    }
+
+    try {
+      final cutoffDate = DateTime.now().subtract(Duration(days: daysToKeep));
+      await _instance!.deleteWaterIntakeHistoryOlderThan(cutoffDate);
+      AppLogger.info('Cleaned up water intake history older than $daysToKeep days');
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error cleaning up old data');
+      debugPrint('Error cleaning up old data: $e');
     }
   }
 }

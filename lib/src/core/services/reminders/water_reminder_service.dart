@@ -1,16 +1,15 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:water_mind/src/core/services/kv_store/kv_store.dart';
+import 'package:water_mind/src/core/services/logger/app_logger.dart';
 import 'package:water_mind/src/core/services/notifications/notification_factory.dart';
 import 'package:water_mind/src/core/services/notifications/notification_manager.dart';
+import 'package:water_mind/src/core/services/reminders/reminder_repository.dart';
 import 'models/reminder_mode.dart';
 import 'models/water_reminder_model.dart';
 import 'reminder_service_interface.dart';
 
 /// Implementation of the reminder service for water intake reminders
 class WaterReminderService implements ReminderServiceInterface {
-  /// Key for storing reminder settings in KVStore
-  static const String _reminderSettingsKey = 'water_reminder_settings';
+
 
   /// Notification channel key for water reminders
   static const String _notificationChannelKey = 'reminders_channel';
@@ -21,10 +20,15 @@ class WaterReminderService implements ReminderServiceInterface {
   /// Current reminder settings
   WaterReminderModel? _settings;
 
+  /// Repository for reminder settings
+  final ReminderRepository _reminderRepository;
+
   /// Constructor
   WaterReminderService({
     required NotificationManager notificationManager,
-  }) : _notificationManager = notificationManager;
+    required ReminderRepository reminderRepository,
+  }) : _notificationManager = notificationManager,
+       _reminderRepository = reminderRepository;
 
   @override
   Future<void> initialize() async {
@@ -45,9 +49,11 @@ class WaterReminderService implements ReminderServiceInterface {
         }
       }
     } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error initializing water reminder service');
       debugPrint('Error initializing water reminder service: $e');
     }
   }
+
 
   @override
   Future<WaterReminderModel> getReminderSettings() async {
@@ -55,90 +61,53 @@ class WaterReminderService implements ReminderServiceInterface {
       return _settings!;
     }
 
-    // Try to load from storage
-    final prefs = KVStoreService.sharedPreferences;
-    final settingsJson = prefs.getString(_reminderSettingsKey);
+    try {
+      // Try to load from repository
+      final settings = await _reminderRepository.getReminderSettings();
 
-    if (settingsJson != null) {
-      try {
-        final Map<String, dynamic> jsonMap = json.decode(settingsJson);
-
-        // Convert TimeOfDay objects from strings
-        if (jsonMap.containsKey('wakeUpTime')) {
-          final timeString = jsonMap['wakeUpTime'] as String;
-          jsonMap['wakeUpTime'] = WaterReminderModel.timeOfDayFromString(timeString);
-        }
-
-        if (jsonMap.containsKey('bedTime')) {
-          final timeString = jsonMap['bedTime'] as String;
-          jsonMap['bedTime'] = WaterReminderModel.timeOfDayFromString(timeString);
-        }
-
-        if (jsonMap.containsKey('doNotDisturbStart') && jsonMap['doNotDisturbStart'] != null) {
-          final timeString = jsonMap['doNotDisturbStart'] as String;
-          jsonMap['doNotDisturbStart'] = WaterReminderModel.timeOfDayFromString(timeString);
-        }
-
-        if (jsonMap.containsKey('doNotDisturbEnd') && jsonMap['doNotDisturbEnd'] != null) {
-          final timeString = jsonMap['doNotDisturbEnd'] as String;
-          jsonMap['doNotDisturbEnd'] = WaterReminderModel.timeOfDayFromString(timeString);
-        }
-
-        if (jsonMap.containsKey('customTimes') && jsonMap['customTimes'] != null) {
-          final timeStrings = (jsonMap['customTimes'] as List).cast<String>();
-          jsonMap['customTimes'] = timeStrings
-              .map((t) => WaterReminderModel.timeOfDayFromString(t))
-              .toList();
-        }
-
-        _settings = WaterReminderModel.fromJson(jsonMap);
+      if (settings != null) {
+        _settings = settings;
         return _settings!;
-      } catch (e) {
-        debugPrint('Error loading reminder settings: $e');
       }
-    }
 
-    // Return default settings if none are saved
-    _settings = WaterReminderModel.defaultSettings();
-    return _settings!;
+      // Return default settings if none are saved
+      _settings = WaterReminderModel.defaultSettings();
+
+      // Save default settings to repository
+      await _reminderRepository.saveReminderSettings(_settings!);
+
+      return _settings!;
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error loading reminder settings');
+      debugPrint('Error loading reminder settings: $e');
+
+      // Return default settings in case of error
+      _settings = WaterReminderModel.defaultSettings();
+      return _settings!;
+    }
   }
 
   @override
   Future<void> saveReminderSettings(WaterReminderModel settings) async {
-    _settings = settings;
+    try {
+      _settings = settings;
 
-    // Convert to JSON-compatible format
-    final Map<String, dynamic> jsonMap = settings.toJson();
+      // Save to repository
+      await _reminderRepository.saveReminderSettings(settings);
 
-    // Convert TimeOfDay objects to strings
-    jsonMap['wakeUpTime'] = WaterReminderModel.timeOfDayToString(settings.wakeUpTime);
-    jsonMap['bedTime'] = WaterReminderModel.timeOfDayToString(settings.bedTime);
-
-    if (settings.doNotDisturbStart != null) {
-      jsonMap['doNotDisturbStart'] = WaterReminderModel.timeOfDayToString(settings.doNotDisturbStart!);
-    }
-
-    if (settings.doNotDisturbEnd != null) {
-      jsonMap['doNotDisturbEnd'] = WaterReminderModel.timeOfDayToString(settings.doNotDisturbEnd!);
-    }
-
-    if (settings.customTimes.isNotEmpty) {
-      jsonMap['customTimes'] = settings.customTimes
-          .map((t) => WaterReminderModel.timeOfDayToString(t))
-          .toList();
-    }
-
-    // Save to storage
-    final prefs = KVStoreService.sharedPreferences;
-    await prefs.setString(_reminderSettingsKey, json.encode(jsonMap));
-
-    // Reschedule reminders if enabled
-    if (settings.enabled) {
-      await scheduleReminders();
-    } else {
-      await cancelAllReminders();
+      // Reschedule reminders if enabled
+      if (settings.enabled) {
+        await scheduleReminders();
+      } else {
+        await cancelAllReminders();
+      }
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error saving reminder settings');
+      debugPrint('Error saving reminder settings: $e');
     }
   }
+
+
 
   @override
   Future<bool> scheduleReminders() async {

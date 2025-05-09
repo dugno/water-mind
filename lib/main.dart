@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'firebase_options.dart';
 import 'src/app.dart';
-import 'src/core/database/database_initializer.dart';
+import 'src/core/database/utils/database_service.dart';
 import 'src/core/network/config/api_config.dart';
 import 'src/core/services/firebase/firebase_remote_config_service.dart';
 import 'src/core/services/kv_store/kv_store.dart';
@@ -26,9 +26,14 @@ void main() async {
     await KVStoreService.init();
     AppLogger.info('KVStore initialized');
 
-    // Initialize Database
-    await DatabaseInitializer.initialize();
-    AppLogger.info('Database initialized');
+    // Initialize Database Service
+    final databaseService = DatabaseService();
+    await databaseService.initialize(
+      daysToKeep: 90, // Giữ dữ liệu 90 ngày
+      enableCleanup: true,
+      runCleanupImmediately: false,
+    );
+    AppLogger.info('Database service initialized');
 
     // Initialize Firebase
     await Firebase.initializeApp(
@@ -96,13 +101,20 @@ void main() async {
 
 /// Observer for app lifecycle events to properly handle database cleanup
 class AppLifecycleObserver extends WidgetsBindingObserver {
+  final DatabaseService _databaseService = DatabaseService();
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.detached) {
       // App is about to be terminated
       // Close the database to prevent any data corruption
-      AppLogger.info('App is being terminated. Closing database...');
-      DatabaseInitializer.close();
+      AppLogger.info('App is being terminated. Closing database service...');
+      _databaseService.close();
+    } else if (state == AppLifecycleState.resumed) {
+      // App is resumed from background
+      // This is a good time to clean up old data
+      AppLogger.info('App is resumed. Checking for old data to clean up...');
+      _databaseService.cleanupOldData();
     }
   }
 }

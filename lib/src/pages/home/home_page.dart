@@ -5,7 +5,6 @@ import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/models/drink_type.dart';
 import 'package:water_mind/src/core/routing/app_router.dart';
 import 'package:water_mind/src/core/utils/utils.dart';
-import 'package:water_mind/src/pages/home/home_view_model.dart';
 import 'package:water_mind/src/ui/widgets/calendar/widgets/week_view.dart';
 import 'package:water_mind/src/ui/widgets/hydration/drink_type_selector.dart';
 import 'package:water_mind/src/ui/widgets/hydration/water_amount_selector.dart';
@@ -21,8 +20,8 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(homeViewModelProvider);
-    final notifier = ref.read(homeViewModelProvider.notifier);
+    // final viewModel = ref.watch(homeViewModelProvider);
+    // final notifier = ref.read(homeViewModelProvider.notifier);
 
     return Scaffold(
       backgroundColor: AppColor.secondaryColor,
@@ -43,20 +42,23 @@ class HomePage extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          // Fixed Calendar Header
           Container(
             color: AppColor.secondaryColor,
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: AppColor.thirdColor.withAlpha(51), // 0.2 opacity = 51 alpha
+                color: AppColor.thirdColor.withAlpha(51),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 90,
-                  child: WeekView(controller: viewModel.calendarController),
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    return SizedBox(
+                      height: 90,
+                      // child: WeekView(controller: calendarController),
+                    );
+                  },
                 ),
               ),
             ),
@@ -84,37 +86,38 @@ class HomePage extends ConsumerWidget {
                     Center(
                       child: SizedBox(
                         height: 250,
-                        child: WaterCup(
-                          waterLevel: viewModel.todayHistory.progressPercentage.clamp(0.0, 1.0),
-                          plantGrowth: viewModel.todayHistory.progressPercentage.clamp(0.0, 1.0),
-                          wavePhase: viewModel.wavePhase,
-                          dailyGoal: viewModel.todayHistory.dailyGoal,
-                          majorTickInterval: viewModel.todayHistory.measureUnit == MeasureUnit.metric ? 500 : 16,
-                          minorTickInterval: viewModel.todayHistory.measureUnit == MeasureUnit.metric ? 100 : 4,
-                        ),
+                        // child: WaterCup(
+                        //   waterLevel: viewModel.todayHistory.progressPercentage.clamp(0.0, 1.0),
+                        //   plantGrowth: viewModel.todayHistory.progressPercentage.clamp(0.0, 1.0),
+                        //   wavePhase: viewModel.wavePhase,
+                        //   dailyGoal: viewModel.todayHistory.dailyGoal,
+                        //   majorTickInterval: viewModel.todayHistory.measureUnit == MeasureUnit.metric ? 500 : 16,
+                        //   minorTickInterval: viewModel.todayHistory.measureUnit == MeasureUnit.metric ? 100 : 4,
+                        // ),
                       ),
                     ),
                     const SizedBox(height: 16),
 
                     // Drink type selector
-                    DrinkTypeSelector(
-                      drinkTypes: DrinkTypes.all,
-                      selectedDrinkType: viewModel.selectedDrinkType ?? DrinkTypes.water,
-                      onDrinkTypeSelected: notifier.setSelectedDrinkType,
-                    ),
+                    // DrinkTypeSelector(
+                    //   drinkTypes: DrinkTypes.all,
+                    //   selectedDrinkType: viewModel.selectedDrinkType ?? DrinkTypes.water,
+                    //   onDrinkTypeSelected: notifier.setSelectedDrinkType,
+                    // ),
                     const SizedBox(height: 16),
 
                     // Water amount selector
-                    WaterAmountSelector(
-                      selectedAmount: viewModel.selectedAmount ?? 200.0,
-                      measureUnit: viewModel.userModel.measureUnit,
-                      onAmountSelected: notifier.setSelectedAmount,
-                    ),
+                    // WaterAmountSelector(
+                    //   selectedAmount: viewModel.selectedAmount ?? 200.0,
+                    //   measureUnit: viewModel.userModel.measureUnit,
+                    //   onAmountSelected: notifier.setSelectedAmount,
+                    // ),
                     const SizedBox(height: 16),
 
                     // Add button
                     ElevatedButton.icon(
-                      onPressed: notifier.addWaterIntakeEntry,
+                      onPressed: () {},
+                      // onPressed: notifier.addWaterIntakeEntry,
                       icon: const Icon(Icons.add),
                       label: const Text('Add Water Intake'),
                       style: ElevatedButton.styleFrom(
@@ -129,10 +132,10 @@ class HomePage extends ConsumerWidget {
                     const SizedBox(height: 16),
 
                     // Water history list
-                    WaterHistoryList(
-                      history: viewModel.todayHistory,
-                      onEntryDeleted: notifier.deleteWaterIntakeEntry,
-                    ),
+                    // WaterHistoryList(
+                    //   history: viewModel.todayHistory,
+                    //   onEntryDeleted: notifier.deleteWaterIntakeEntry,
+                    // ),
                   ],
                 ),
               ),

@@ -1,18 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:water_mind/src/core/database/providers/database_providers.dart';
 import 'package:water_mind/src/core/services/user/user_repository.dart';
 import 'package:water_mind/src/core/utils/enum/weather_condition.dart';
 import 'package:water_mind/src/pages/getting_started/models/user_onboarding_model.dart';
 
-/// Provider for the user repository
+/// Provider cho user repository
 final userRepositoryProvider = Provider<UserRepository>((ref) {
-  return UserRepositoryImpl();
+  final dao = ref.watch(userDataDaoProvider);
+  return UserRepositoryImpl(dao);
 });
 
-/// Provider for user data
-final userDataProvider = FutureProvider<UserOnboardingModel?>((ref) async {
-  final repository = ref.watch(userRepositoryProvider);
-  return repository.getUserData();
-});
+/// Provider cho user data
+// Sử dụng provider từ database_providers.dart
 
 /// Notifier for user data
 class UserNotifier extends StateNotifier<AsyncValue<UserOnboardingModel?>> {
@@ -49,6 +48,16 @@ class UserNotifier extends StateNotifier<AsyncValue<UserOnboardingModel?>> {
         weatherCondition: weatherCondition,
       );
       await saveUserData(updatedData);
+    }
+  }
+
+  /// Clear user data
+  Future<void> clearUserData() async {
+    try {
+      await _repository.clearUserData();
+      state = const AsyncValue.data(null);
+    } catch (e, stack) {
+      state = AsyncValue.error(e, stack);
     }
   }
 }

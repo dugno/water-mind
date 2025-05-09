@@ -1,122 +1,159 @@
-# Local Storage trong Water Mind
+# Drift Database Implementation
 
-Ứng dụng Water Mind sử dụng hai cơ chế lưu trữ dữ liệu cục bộ:
+## Tổng quan
 
-1. **SharedPreferences**: Cho dữ liệu đơn giản, cài đặt và trạng thái ứng dụng
-2. **Drift (SQLite)**: Cho dữ liệu có cấu trúc phức tạp và cần truy vấn
+Drift là một thư viện ORM (Object-Relational Mapping) cho SQLite trong Flutter, giúp tạo ra các truy vấn type-safe và tự động tạo code cho các bảng và truy vấn.
 
 ## Cấu trúc thư mục
 
 ```
-lib/src/core/
-├── database/                  # Drift database
-│   ├── daos/                  # Data Access Objects
-│   │   └── water_intake_dao.dart
-│   ├── database.dart          # Định nghĩa cơ sở dữ liệu
-│   ├── database_initializer.dart # Khởi tạo cơ sở dữ liệu
-│   └── tables.dart            # Định nghĩa các bảng
-├── services/
-│   ├── kv_store/              # SharedPreferences
-│   │   └── kv_store.dart
-│   ├── hydration/
-│   │   ├── water_intake_provider.dart # Providers cho water intake
-│   │   └── water_intake_repository.dart # Repository cho water intake
+lib/src/core/database/
+├── converters/                # TypeConverter cho các kiểu dữ liệu phức tạp
+│   └── type_converters.dart   # Các TypeConverter
+├── daos/                      # Data Access Objects
+│   ├── reminder_settings_dao.dart  # DAO cho cài đặt nhắc nhở
+│   ├── user_data_dao.dart     # DAO cho dữ liệu người dùng
+│   └── water_intake_dao.dart  # DAO cho dữ liệu uống nước
+├── providers/                 # Riverpod providers
+│   └── database_providers.dart # Các provider cho database
+├── utils/                     # Các tiện ích
+│   ├── database_cleanup_service.dart # Dịch vụ xóa dữ liệu cũ
+│   ├── database_generator.dart # Tiện ích tạo cơ sở dữ liệu mới
+│   └── database_service.dart  # Dịch vụ quản lý cơ sở dữ liệu
+├── database.dart              # Định nghĩa cơ sở dữ liệu
+├── database.g.dart            # File được tạo tự động bởi Drift
+├── database_initializer.dart  # Khởi tạo cơ sở dữ liệu
+└── tables.dart                # Định nghĩa các bảng
 ```
 
-## Dữ liệu được lưu trữ
+## Các bảng dữ liệu
 
-### Sử dụng SharedPreferences
+### WaterIntakeHistoryTable
+Lưu trữ lịch sử uống nước theo ngày.
 
-1. **Thông tin người dùng (UserRepository)**
-   - Giới tính, chiều cao, cân nặng, đơn vị đo lường
-   - Ngày sinh, mức độ hoạt động, môi trường sống
-   - Thời gian thức dậy, thời gian đi ngủ
+### WaterIntakeEntryTable
+Lưu trữ các lần uống nước.
 
-2. **Cài đặt nhắc nhở (WaterReminderService)**
-   - Trạng thái bật/tắt, chế độ nhắc nhở
-   - Thời gian thức dậy, thời gian đi ngủ
-   - Khoảng thời gian nhắc nhở, thời gian tùy chỉnh
-   - Cài đặt bỏ qua nếu đã đạt mục tiêu, không làm phiền
+### UserDataTable
+Lưu trữ thông tin người dùng.
 
-3. **Cài đặt giao diện (ThemeRepository)**
-   - Kiểu giao diện
-
-4. **Cache dữ liệu thời tiết (WeatherCacheManager)**
-   - Dữ liệu thời tiết hiện tại và dự báo
-
-5. **Trạng thái hoàn thành màn hình giới thiệu (KVStoreService)**
-   - Đã hoàn thành hay chưa
-
-### Sử dụng Drift (SQLite)
-
-1. **Lịch sử uống nước (WaterIntakeRepository)**
-   - Bảng `WaterIntakeHistoryTable`: Lưu thông tin lịch sử theo ngày
-     - ID, ngày, mục tiêu hàng ngày, đơn vị đo lường
-   - Bảng `WaterIntakeEntryTable`: Lưu thông tin từng lần uống nước
-     - ID, historyId, thời gian, lượng nước, loại đồ uống, ghi chú
+### ReminderSettingsTable
+Lưu trữ cài đặt nhắc nhở uống nước.
 
 ## Cách sử dụng
 
-### Khởi tạo
-
-Cơ sở dữ liệu được khởi tạo trong `main.dart`:
+### Khởi tạo cơ sở dữ liệu
 
 ```dart
-void main() async {
-  // ...
-  await KVStoreService.init();
-  await DatabaseInitializer.initialize();
-  // ...
+// Trong main.dart
+final databaseService = DatabaseService();
+await databaseService.initialize(
+  daysToKeep: 90, // Giữ dữ liệu 90 ngày
+  enableCleanup: true,
+  runCleanupImmediately: false,
+);
+```
+
+### Sử dụng các provider
+
+```dart
+// Sử dụng provider cho database
+final database = ref.watch(databaseProvider);
+
+// Sử dụng provider cho DAO
+final waterIntakeDao = ref.watch(waterIntakeDaoProvider);
+final userDataDao = ref.watch(userDataDaoProvider);
+final reminderSettingsDao = ref.watch(reminderSettingsDaoProvider);
+
+// Sử dụng provider cho repository
+final waterIntakeRepository = ref.watch(waterIntakeRepositoryProvider);
+final userRepository = ref.watch(userRepositoryProvider);
+final reminderRepository = ref.watch(reminderRepositoryProvider);
+
+// Sử dụng provider cho dữ liệu
+final waterIntakeHistory = ref.watch(waterIntakeHistoryProvider(date));
+final allWaterIntakeHistory = ref.watch(allWaterIntakeHistoryProvider);
+final userData = ref.watch(userDataProvider);
+final reminderSettings = ref.watch(reminderSettingsProvider);
+```
+
+### Sử dụng các repository
+
+```dart
+// Lấy dữ liệu
+final waterIntakeHistory = await waterIntakeRepository.getWaterIntakeHistory(date);
+final userData = await userRepository.getUserData();
+final reminderSettings = await reminderRepository.getReminderSettings();
+
+// Lưu dữ liệu
+await waterIntakeRepository.saveWaterIntakeHistory(history);
+await userRepository.saveUserData(userData);
+await reminderRepository.saveReminderSettings(settings);
+
+// Xóa dữ liệu
+await waterIntakeRepository.clearAllWaterIntakeHistory();
+await userRepository.clearUserData();
+await reminderRepository.clearReminderSettings();
+```
+
+## Các tính năng nâng cao
+
+### TypeConverter
+
+TypeConverter giúp chuyển đổi giữa các kiểu dữ liệu phức tạp và kiểu dữ liệu cơ bản mà SQLite hỗ trợ.
+
+```dart
+// Sử dụng TypeConverter trong định nghĩa bảng
+TextColumn get wakeUpTime => text().map(const TimeOfDayConverter())();
+```
+
+### Migration
+
+Migration giúp nâng cấp schema của cơ sở dữ liệu khi có thay đổi.
+
+```dart
+// Trong database.dart
+@override
+MigrationStrategy get migration {
+  return MigrationStrategy(
+    onCreate: (Migrator m) {
+      return m.createAll();
+    },
+    onUpgrade: (Migrator m, int from, int to) async {
+      // Nâng cấp từ phiên bản 1 lên 2
+      if (from < 2 && to >= 2) {
+        await m.createTable(userDataTable);
+        await m.createTable(reminderSettingsTable);
+      }
+    },
+  );
 }
 ```
 
-### Sử dụng Repository
+### Xử lý lỗi
 
-Các repository được cung cấp thông qua Riverpod providers:
-
-```dart
-// Lấy repository
-final repository = ref.watch(waterIntakeRepositoryProvider);
-
-// Lấy lịch sử uống nước theo ngày
-final history = await repository.getWaterIntakeHistory(date);
-
-// Lưu lịch sử uống nước
-await repository.saveWaterIntakeHistory(history);
-
-// Thêm một lần uống nước mới
-await repository.addWaterIntakeEntry(date, entry);
-
-// Xóa một lần uống nước
-await repository.deleteWaterIntakeEntry(date, entryId);
-```
-
-### Sử dụng Providers
-
-Các providers được cung cấp để truy cập dữ liệu một cách reactive:
+Tất cả các phương thức trong DAO và Repository đều có xử lý lỗi để đảm bảo tính ổn định của ứng dụng.
 
 ```dart
-// Lấy lịch sử uống nước theo ngày
-final historyAsync = ref.watch(waterIntakeHistoryProvider(date));
-
-// Lấy tất cả lịch sử uống nước
-final allHistoryAsync = ref.watch(allWaterIntakeHistoryProvider);
+try {
+  // Thực hiện truy vấn
+} catch (e) {
+  AppLogger.reportError(e, StackTrace.current, 'Error message');
+  rethrow;
+}
 ```
 
-## Nguyên tắc thiết kế
+### Tự động xóa dữ liệu cũ
 
-Thiết kế local storage tuân thủ các nguyên tắc SOLID và DRY:
+Dịch vụ `DatabaseCleanupService` giúp tự động xóa dữ liệu cũ để tránh cơ sở dữ liệu phình to theo thời gian.
 
-1. **Single Responsibility**: Mỗi repository chỉ chịu trách nhiệm cho một loại dữ liệu
-2. **Open/Closed**: Các interface mở rộng nhưng không sửa đổi
-3. **Liskov Substitution**: Các implementation có thể thay thế interface
-4. **Interface Segregation**: Client chỉ phụ thuộc vào các phương thức cần thiết
-5. **Dependency Inversion**: Module cấp cao phụ thuộc vào abstraction, không phụ thuộc vào implementation
-
-## Code Generation
-
-Để tạo các file cần thiết cho Drift, chạy lệnh:
-
-```bash
-flutter pub run build_runner build --delete-conflicting-outputs
+```dart
+final cleanupService = DatabaseCleanupService();
+cleanupService.initialize(daysToKeep: 90);
 ```
+
+## Các lưu ý
+
+- Luôn sử dụng các provider để truy cập vào cơ sở dữ liệu thay vì truy cập trực tiếp.
+- Sử dụng transaction khi thực hiện nhiều thao tác liên quan đến nhau để đảm bảo tính toàn vẹn của dữ liệu.
+- Đảm bảo đóng cơ sở dữ liệu khi ứng dụng kết thúc để tránh rò rỉ bộ nhớ.

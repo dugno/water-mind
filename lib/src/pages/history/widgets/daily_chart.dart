@@ -1,12 +1,16 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:water_mind/src/core/models/water_intake_entry.dart';
 import 'package:water_mind/src/core/models/water_intake_history.dart';
 import 'package:water_mind/src/core/utils/date_time_utils.dart';
+import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/pages/history/water_history_view_model.dart';
+import 'package:water_mind/src/ui/widgets/bottom_sheets/water_intake_editor_sheet.dart';
 
 /// Tab biểu đồ ngày
-class DailyChartTab extends StatelessWidget {
+class DailyChartTab extends StatefulWidget {
   /// View model
   final WaterHistoryState viewModel;
 
@@ -21,6 +25,14 @@ class DailyChartTab extends StatelessWidget {
   });
 
   @override
+  State<DailyChartTab> createState() => _DailyChartTabState();
+}
+
+class _DailyChartTabState extends State<DailyChartTab> {
+  WaterHistoryState get viewModel => widget.viewModel;
+  Function(DateTime) get onDateChanged => widget.onDateChanged;
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -31,13 +43,15 @@ class DailyChartTab extends StatelessWidget {
           _buildDateSelector(context),
           const SizedBox(height: 24),
 
-          // Chart
+          // Chart and list in a scrollable container
           Expanded(
             child: viewModel.dailyHistory.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : viewModel.dailyHistory.hasError
                     ? Center(child: Text('Error: ${viewModel.dailyHistory.error}'))
-                    : _buildDailyChart(context),
+                    : SingleChildScrollView(
+                        child: _buildDailyChart(context),
+                      ),
           ),
         ],
       ),
@@ -122,7 +136,8 @@ class DailyChartTab extends StatelessWidget {
         const SizedBox(height: 16),
 
         // Biểu đồ
-        Expanded(
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 250),
           child: LineChart(
             LineChartData(
               gridData: FlGridData(
@@ -132,7 +147,7 @@ class DailyChartTab extends StatelessWidget {
                 verticalInterval: 4,
                 getDrawingHorizontalLine: (value) {
                   return FlLine(
-                    color: Colors.grey.withOpacity(0.3),
+                    color: Colors.grey.withAlpha(77), // 0.3 opacity = 77 alpha
                     strokeWidth: 1,
                   );
                 },
@@ -140,14 +155,14 @@ class DailyChartTab extends StatelessWidget {
                   // Kiểm tra xem có phải là thời gian nhắc nhở không
                   if (reminderSpots.contains(value)) {
                     return FlLine(
-                      color: Colors.red.withOpacity(0.5),
+                      color: Colors.red.withAlpha(128), // 0.5 opacity = 128 alpha
                       strokeWidth: 1,
                       dashArray: [5, 5],
                     );
                   }
 
                   return FlLine(
-                    color: Colors.grey.withOpacity(0.3),
+                    color: Colors.grey.withAlpha(77), // 0.3 opacity = 77 alpha
                     strokeWidth: 1,
                   );
                 },
@@ -196,7 +211,7 @@ class DailyChartTab extends StatelessWidget {
               ),
               borderData: FlBorderData(
                 show: true,
-                border: Border.all(color: Colors.grey.withOpacity(0.5)),
+                border: Border.all(color: Colors.grey.withAlpha(128)), // 0.5 opacity = 128 alpha
               ),
               minX: 0,
               maxX: 23,
@@ -208,7 +223,7 @@ class DailyChartTab extends StatelessWidget {
                   isCurved: true,
                   gradient: LinearGradient(
                     colors: [
-                      Colors.blue.withOpacity(0.8),
+                      Colors.blue.withAlpha(204), // 0.8 opacity = 204 alpha
                       Colors.blue,
                     ],
                   ),
@@ -232,7 +247,7 @@ class DailyChartTab extends StatelessWidget {
                         radius: 4,
                         color: isReminderTime ? Colors.red : Colors.blue,
                         strokeWidth: 2,
-                        strokeColor: isReminderTime ? Colors.red.withOpacity(0.5) : Colors.white,
+                        strokeColor: isReminderTime ? Colors.red.withAlpha(128) : Colors.white, // 0.5 opacity = 128 alpha
                       );
                     },
                   ),
@@ -240,8 +255,8 @@ class DailyChartTab extends StatelessWidget {
                     show: true,
                     gradient: LinearGradient(
                       colors: [
-                        Colors.blue.withOpacity(0.3),
-                        Colors.blue.withOpacity(0.1),
+                        Colors.blue.withAlpha(77), // 0.3 opacity = 77 alpha
+                        Colors.blue.withAlpha(26), // 0.1 opacity = 26 alpha
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
@@ -251,7 +266,7 @@ class DailyChartTab extends StatelessWidget {
               ],
               lineTouchData: LineTouchData(
                 touchTooltipData: LineTouchTooltipData(
-                  tooltipBgColor: Colors.blueAccent.withOpacity(0.8),
+                  tooltipBgColor: Colors.blueAccent.withAlpha(204), // 0.8 opacity = 204 alpha
                   getTooltipItems: (touchedSpots) {
                     return touchedSpots.map((touchedSpot) {
                       final hour = touchedSpot.x.toInt();
@@ -310,8 +325,179 @@ class DailyChartTab extends StatelessWidget {
             ],
           ),
         ),
+
+        // Danh sách các lần uống nước
+        const SizedBox(height: 24),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Water Intake Entries',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+        const SizedBox(height: 8),
+        _buildWaterIntakeList(context, history),
+        // Add some padding at the bottom for better scrolling experience
+        const SizedBox(height: 16),
       ],
     );
+  }
+
+  /// Xây dựng danh sách các lần uống nước
+  Widget _buildWaterIntakeList(BuildContext context, WaterIntakeHistory history) {
+    if (history.entries.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        child: Center(
+          child: Text('No water intake entries for this day'),
+        ),
+      );
+    }
+
+    // Sắp xếp entries theo thời gian (mới nhất lên đầu)
+    final sortedEntries = List<WaterIntakeEntry>.from(history.entries)
+      ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: sortedEntries.length,
+      separatorBuilder: (context, index) => const Divider(),
+      itemBuilder: (context, index) {
+        final entry = sortedEntries[index];
+        return _buildWaterIntakeItem(context, entry, history.measureUnit);
+      },
+    );
+  }
+
+  /// Xây dựng một mục trong danh sách uống nước
+  Widget _buildWaterIntakeItem(BuildContext context, WaterIntakeEntry entry, MeasureUnit measureUnit) {
+    final timeFormat = DateFormat.Hm();
+    final String unit = measureUnit == MeasureUnit.metric ? 'ml' : 'fl oz';
+
+    return ListTile(
+      leading: Icon(
+        entry.drinkType.icon,
+        color: entry.drinkType.color,
+        size: 32,
+      ),
+      title: Text(
+        '${entry.amount.toStringAsFixed(0)} $unit of ${entry.drinkType.name}',
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        'at ${timeFormat.format(entry.timestamp)}${entry.note != null ? ' • ${entry.note}' : ''}',
+        style: Theme.of(context).textTheme.bodySmall,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      trailing: SizedBox(
+        width: 100,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Edit button
+            IconButton(
+              icon: const Icon(Icons.edit_outlined),
+              onPressed: () => _showEditEntryDialog(context, entry),
+              tooltip: 'Edit entry',
+              constraints: const BoxConstraints(),
+              padding: const EdgeInsets.all(8),
+            ),
+            // Delete button
+            IconButton(
+              icon: const Icon(Icons.delete_outline),
+              onPressed: () => _showDeleteConfirmation(context, entry),
+              tooltip: 'Delete entry',
+              constraints: const BoxConstraints(),
+              padding: const EdgeInsets.all(8),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Hiển thị hộp thoại xác nhận xóa
+  void _showDeleteConfirmation(BuildContext context, WaterIntakeEntry entry) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Entry'),
+        content: const Text('Are you sure you want to delete this water intake entry?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('CANCEL'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Call the delete method from view model
+              final container = ProviderScope.containerOf(context);
+              final notifier = container.read(waterHistoryViewModelProvider.notifier);
+              notifier.deleteWaterIntakeEntry(entry);
+            },
+            child: const Text('DELETE'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Hiển thị hộp thoại chỉnh sửa
+  void _showEditEntryDialog(BuildContext context, WaterIntakeEntry entry) {
+    // Show the water intake editor bottom sheet
+    _showWaterAmountAndTimeEditor(context, entry);
+  }
+
+  /// Hiển thị bottom sheet chỉnh sửa thông tin uống nước
+  Future<void> _showWaterAmountAndTimeEditor(
+    BuildContext context,
+    WaterIntakeEntry entry
+  ) async {
+    // Get the history to determine the measurement unit
+    final history = viewModel.dailyHistory.value;
+    if (history == null) return;
+
+    // Lưu trữ notifier trước khi gọi async
+    final notifier = ProviderScope.containerOf(context).read(waterHistoryViewModelProvider.notifier);
+
+    final result = await WaterIntakeEditorSheet.show(
+      context: context,
+      initialAmount: entry.amount,
+      initialTime: TimeOfDay.fromDateTime(entry.timestamp),
+      initialDrinkType: entry.drinkType,
+      initialNote: entry.note,
+      measureUnit: history.measureUnit,
+    );
+
+    if (result != null && mounted) {
+      // Tạo DateTime mới từ TimeOfDay
+      final newDateTime = DateTime(
+        entry.timestamp.year,
+        entry.timestamp.month,
+        entry.timestamp.day,
+        result.time.hour,
+        result.time.minute,
+      );
+
+      // Create updated entry
+      final updatedEntry = WaterIntakeEntry(
+        id: entry.id,
+        timestamp: newDateTime,
+        amount: result.amount,
+        drinkType: result.drinkType,
+        note: result.note,
+      );
+
+      // Call the edit method from view model
+      notifier.updateWaterIntakeEntry(updatedEntry);
+    }
   }
 
   Widget _buildSummaryInfo(WaterIntakeHistory? history) {
@@ -361,7 +547,7 @@ class DailyChartTab extends StatelessWidget {
             const SizedBox(height: 8),
             LinearProgressIndicator(
               value: history.progressPercentage.clamp(0.0, 1.0),
-              backgroundColor: Colors.grey.withOpacity(0.3),
+              backgroundColor: Colors.grey.withAlpha(77), // 0.3 opacity = 77 alpha
               valueColor: AlwaysStoppedAnimation<Color>(
                 history.goalMet ? Colors.green : Colors.blue,
               ),

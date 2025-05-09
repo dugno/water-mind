@@ -15,11 +15,13 @@ export 'controllers/calendar_controller.dart';
 
 // Models
 export 'models/calendar_day.dart';
-
 export 'models/calendar_config.dart';
 
 // Utils
 export 'utils/date_utils.dart';
+
+// Providers
+
 
 // Widgets
 export 'widgets/calendar_view.dart';

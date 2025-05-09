@@ -795,5 +795,13 @@
   "year": "Year",
   "@year": {
     "description": "Year tab label"
+  },
+  "reminderTimes": "Reminder Times",
+  "@reminderTimes": {
+    "description": "Reminder times section title"
+  },
+  "tapToToggleHint": "Tap to enable or disable a reminder time",
+  "@tapToToggleHint": {
+    "description": "Hint for tapping to toggle reminder times"
   }
 }

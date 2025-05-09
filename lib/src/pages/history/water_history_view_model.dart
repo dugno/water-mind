@@ -8,11 +8,10 @@ import 'package:water_mind/src/core/models/water_intake_entry.dart';
 import 'package:water_mind/src/core/models/water_intake_history.dart';
 import 'package:water_mind/src/core/services/hydration/water_intake_provider.dart';
 import 'package:water_mind/src/core/services/hydration/water_intake_repository.dart';
-import 'package:water_mind/src/core/services/reminders/models/water_reminder_model.dart';
-import 'package:water_mind/src/core/services/reminders/reminder_service_provider.dart';
 import 'package:water_mind/src/core/services/reminders/reminders.dart';
 import 'package:water_mind/src/core/utils/date_time_utils.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
+import 'package:water_mind/src/core/services/logger/app_logger.dart';
 
 /// State cho water history view model
 class WaterHistoryState {
@@ -604,7 +603,7 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
     await _waterIntakeRepository.clearAllWaterIntakeHistory();
 
     final random = Random();
-    final uuid = const Uuid();
+    const uuid = Uuid();
     final today = DateTime.now();
 
     // Tạo dữ liệu cho 30 ngày gần đây
@@ -723,5 +722,82 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
     ];
 
     return notes[random.nextInt(notes.length)];
+  }
+
+  /// Xóa một lần uống nước
+  Future<void> deleteWaterIntakeEntry(WaterIntakeEntry entry) async {
+    try {
+      // Lấy lịch sử hiện tại
+      final history = state.dailyHistory.valueOrNull;
+      if (history == null) {
+        return;
+      }
+
+      // Xóa entry từ repository
+      await _waterIntakeRepository.deleteWaterIntakeEntry(history.date, entry.id);
+
+      // Tải lại dữ liệu
+      _loadDailyData(state.selectedDate);
+
+      // Nếu đang ở tab tuần hoặc tháng hoặc năm, cũng cần tải lại dữ liệu tương ứng
+      if (state.activeTab == 1) {
+        _loadWeeklyData(state.selectedWeek);
+      } else if (state.activeTab == 2) {
+        _loadMonthlyData(state.selectedMonth);
+      } else if (state.activeTab == 3) {
+        _loadYearlyData(state.selectedYear);
+      }
+    } catch (e) {
+      // Xử lý lỗi
+      AppLogger.reportError(e, StackTrace.current, 'Error deleting water intake entry');
+    }
+  }
+
+  /// Cập nhật một lần uống nước
+  Future<void> updateWaterIntakeEntry(WaterIntakeEntry updatedEntry) async {
+    try {
+      // Lấy lịch sử hiện tại
+      final history = state.dailyHistory.valueOrNull;
+      if (history == null) {
+        return;
+      }
+
+      // Tìm entry cần cập nhật
+      final entries = List<WaterIntakeEntry>.from(history.entries);
+      final index = entries.indexWhere((e) => e.id == updatedEntry.id);
+
+      if (index == -1) {
+        return; // Không tìm thấy entry
+      }
+
+      // Cập nhật entry
+      entries[index] = updatedEntry;
+
+      // Tạo history mới
+      final updatedHistory = WaterIntakeHistory(
+        date: history.date,
+        entries: entries,
+        dailyGoal: history.dailyGoal,
+        measureUnit: history.measureUnit,
+      );
+
+      // Lưu history
+      await _waterIntakeRepository.saveWaterIntakeHistory(updatedHistory);
+
+      // Tải lại dữ liệu
+      _loadDailyData(state.selectedDate);
+
+      // Nếu đang ở tab tuần hoặc tháng hoặc năm, cũng cần tải lại dữ liệu tương ứng
+      if (state.activeTab == 1) {
+        _loadWeeklyData(state.selectedWeek);
+      } else if (state.activeTab == 2) {
+        _loadMonthlyData(state.selectedMonth);
+      } else if (state.activeTab == 3) {
+        _loadYearlyData(state.selectedYear);
+      }
+    } catch (e) {
+      // Xử lý lỗi
+      AppLogger.reportError(e, StackTrace.current, 'Error updating water intake entry');
+    }
   }
 }

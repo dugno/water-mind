@@ -26,22 +26,6 @@ abstract class KVStoreService {
       await sharedPreferences.setBool(SharedPreferencesConst.doneGettingStarted, value);
 
   // ----------------------
-  // User Data
-  // ----------------------
-
-  /// Get user data as JSON string
-  static String? get userDataJson =>
-      sharedPreferences.getString(SharedPreferencesConst.userData);
-
-  /// Set user data as JSON string
-  static Future<void> setUserDataJson(String jsonData) async =>
-      await sharedPreferences.setString(SharedPreferencesConst.userData, jsonData);
-
-  /// Clear user data
-  static Future<void> clearUserData() async =>
-      await sharedPreferences.remove(SharedPreferencesConst.userData);
-
-  // ----------------------
   // Theme Settings
   // ----------------------
 
@@ -89,22 +73,6 @@ abstract class KVStoreService {
     await sharedPreferences.remove(SharedPreferencesConst.weatherCache);
     await sharedPreferences.remove(SharedPreferencesConst.lastWeatherUpdate);
   }
-
-  // ----------------------
-  // Reminder Settings
-  // ----------------------
-
-  /// Get water reminder settings as JSON string
-  static String? get waterReminderSettingsJson =>
-      sharedPreferences.getString(SharedPreferencesConst.waterReminderSettings);
-
-  /// Set water reminder settings as JSON string
-  static Future<void> setWaterReminderSettingsJson(String jsonData) async =>
-      await sharedPreferences.setString(SharedPreferencesConst.waterReminderSettings, jsonData);
-
-  /// Clear water reminder settings
-  static Future<void> clearWaterReminderSettings() async =>
-      await sharedPreferences.remove(SharedPreferencesConst.waterReminderSettings);
 
   // ----------------------
   // App Settings

@@ -4,17 +4,11 @@ class SharedPreferencesConst {
   // App state
   static const String doneGettingStarted = 'doneGettingStarted';
 
-  // User data
-  static const String userData = 'user_data';
-
   // Theme settings
   static const String themeStyle = 'theme_style';
 
   // Weather cache
   static const String weatherCache = 'weather_cache';
-
-  // Reminder settings
-  static const String waterReminderSettings = 'water_reminder_settings';
 
   // App settings
   static const String appLanguage = 'app_language';
