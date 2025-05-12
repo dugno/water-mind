@@ -195,6 +195,11 @@ class _WheelPickerColumnState<T> extends State<WheelPickerColumn<T>> with Haptic
   }
 
   Widget _buildItem(WheelPickerItem<T> item, bool isSelected, WheelPickerTheme theme) {
+    // If a custom widget is provided, use it directly
+    if (item.widget != null) {
+      return Center(child: item.widget!);
+    }
+
     final textStyle = item.enabled
         ? (isSelected
             ? theme.selectedItemTextStyle
@@ -207,9 +212,54 @@ class _WheelPickerColumnState<T> extends State<WheelPickerColumn<T>> with Haptic
             : theme.unselectedItemColor)
         : theme.disabledItemColor;
 
+    // Special handling for DrinkType
+    if (T.toString() == 'DrinkType') {
+      final drinkType = item.value;
+      if (drinkType != null && drinkType.toString().contains('DrinkType')) {
+        try {
+          // Access icon and color using dynamic to avoid type errors
+          final dynamic dynamicDrinkType = drinkType;
+          final IconData? icon = dynamicDrinkType.icon;
+          final Color? color = dynamicDrinkType.color;
+
+          if (icon != null && color != null) {
+            return Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                    color: isSelected ? color : color.withOpacity(0.5),
+                    size: isSelected ? 24 : 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    item.text??'',
+                    style: textStyle?.copyWith(
+                      color: isSelected ? color : color.withOpacity(0.5),
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    ) ??
+                        TextStyle(
+                          color: isSelected ? color : color.withOpacity(0.5),
+                          fontSize: isSelected ? 16 : 14,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
+          }
+        } catch (e) {
+          // Fallback to default rendering if there's an error
+        }
+      }
+    }
+
+    // Default rendering for other types
     return Center(
       child: Text(
-        item.text,
+        item.text??'',
         style: textStyle?.copyWith(color: textColor) ??
             TextStyle(
               color: textColor,

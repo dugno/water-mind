@@ -206,7 +206,7 @@ class SummaryPage extends ConsumerWidget {
 
     // Navigate to home screen
     if (context.mounted) {
-      context.router.replaceAll([const HomeRoute()]);
+      context.router.replaceAll([const MainNavigationRoute()]);
     }
   }
 }

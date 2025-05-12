@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 import 'package:water_mind/src/core/models/drink_type.dart';
 import 'package:water_mind/src/core/models/water_intake_entry.dart';
 import 'package:water_mind/src/core/models/water_intake_history.dart';
+import 'package:water_mind/src/core/services/hydration/water_intake_change_notifier.dart';
 import 'package:water_mind/src/core/services/hydration/water_intake_provider.dart';
 import 'package:water_mind/src/core/services/hydration/water_intake_repository.dart';
 import 'package:water_mind/src/core/services/reminders/reminders.dart';
@@ -142,8 +143,50 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
     // Lấy cài đặt nhắc nhở
     _loadReminderSettings();
 
+    // Chuẩn hóa ngày hiện tại
+    final today = DateTime.now();
+    final normalizedToday = DateTime(today.year, today.month, today.day);
+    AppLogger.info('HISTORY_VM: Initializing with normalized date: ${normalizedToday.toIso8601String().split('T')[0]}');
+
+    // Cập nhật state với ngày đã chuẩn hóa
+    state = state.copyWith(selectedDate: normalizedToday);
+
     // Lấy dữ liệu theo ngày
-    _loadDailyData(state.selectedDate);
+    _loadDailyData(normalizedToday);
+
+    // Lắng nghe sự thay đổi dữ liệu
+    _listenToDataChanges();
+  }
+
+  /// Lắng nghe sự thay đổi dữ liệu
+  void _listenToDataChanges() {
+    // Đăng ký lắng nghe sự kiện thay đổi dữ liệu
+    _ref.listen(waterIntakeChangeNotifierProvider, (previous, current) {
+      AppLogger.info('HISTORY_VM: Detected data change at ${current.toIso8601String()}');
+
+      // Tải lại dữ liệu cho tab đang active
+      _reloadActiveTabData();
+    });
+  }
+
+  /// Tải lại dữ liệu cho tab đang active
+  void _reloadActiveTabData() {
+    AppLogger.info('HISTORY_VM: Reloading data for active tab: ${state.activeTab}');
+
+    switch (state.activeTab) {
+      case 0: // Ngày
+        _loadDailyData(state.selectedDate);
+        break;
+      case 1: // Tuần
+        _loadWeeklyData(state.selectedWeek);
+        break;
+      case 2: // Tháng
+        _loadMonthlyData(state.selectedMonth);
+        break;
+      case 3: // Năm
+        _loadYearlyData(state.selectedYear);
+        break;
+    }
   }
 
   /// Lấy cài đặt nhắc nhở
@@ -167,11 +210,24 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
     );
 
     try {
+      AppLogger.info('HISTORY_VM: Loading daily data for date: ${date.toIso8601String().split('T')[0]}');
       final history = await _waterIntakeRepository.getWaterIntakeHistory(date);
+      AppLogger.info('HISTORY_VM: History found: ${history != null}');
+
+      if (history != null) {
+        AppLogger.info('HISTORY_VM: Entries count: ${history.entries.length}');
+        AppLogger.info('HISTORY_VM: Total amount: ${history.totalAmount} ml');
+        // Log chi tiết từng entry
+        for (var entry in history.entries) {
+          AppLogger.info('HISTORY_VM: Entry ID: ${entry.id}, Amount: ${entry.amount}, Type: ${entry.drinkType.name}, Time: ${entry.timestamp}');
+        }
+      }
+
       state = state.copyWith(
         dailyHistory: AsyncValue.data(history),
       );
     } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'HISTORY_VM: Error loading daily data');
       state = state.copyWith(
         dailyHistory: AsyncValue.error(e, StackTrace.current),
       );
@@ -180,8 +236,12 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
 
   /// Đặt ngày được chọn
   void setSelectedDate(DateTime date) {
-    state = state.copyWith(selectedDate: date);
-    _loadDailyData(date);
+    // Chuẩn hóa ngày để đảm bảo chỉ có ngày, tháng, năm (không có giờ, phút, giây)
+    final normalizedDate = DateTime(date.year, date.month, date.day);
+    AppLogger.info('HISTORY_VM: Setting selected date to: ${normalizedDate.toIso8601String().split('T')[0]}');
+
+    state = state.copyWith(selectedDate: normalizedDate);
+    _loadDailyData(normalizedDate);
   }
 
   /// Đặt tuần được chọn
@@ -230,7 +290,8 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
     );
 
     try {
-      final endOfWeek = startOfWeek.add(const Duration(days: 6));
+      // Lấy ngày cuối tuần (không sử dụng biến này nhưng giữ lại comment để hiểu logic)
+      // final endOfWeek = startOfWeek.add(const Duration(days: 6));
       final histories = <WaterIntakeHistory>[];
 
       // Lấy dữ liệu cho 7 ngày trong tuần
@@ -499,7 +560,7 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
     await _waterIntakeRepository.clearAllWaterIntakeHistory();
 
     final random = Random();
-    final uuid = const Uuid();
+    const uuid = Uuid();
     final today = DateTime.now();
 
     // Tạo dữ liệu cho 7 ngày gần đây
@@ -733,10 +794,14 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
         return;
       }
 
+      AppLogger.info('HISTORY_VM: Deleting water intake entry with ID: ${entry.id}');
+
       // Xóa entry từ repository
       await _waterIntakeRepository.deleteWaterIntakeEntry(history.date, entry.id);
+      AppLogger.info('HISTORY_VM: Entry deleted successfully');
 
       // Tải lại dữ liệu
+      AppLogger.info('HISTORY_VM: Reloading daily data after deleting entry');
       _loadDailyData(state.selectedDate);
 
       // Nếu đang ở tab tuần hoặc tháng hoặc năm, cũng cần tải lại dữ liệu tương ứng

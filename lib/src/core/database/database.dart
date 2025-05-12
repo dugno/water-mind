@@ -26,8 +26,11 @@ class DatabaseVersions {
   /// Phiên bản cải tiến với TypeConverter và Index
   static const int enhancedVersion = 3;
 
+  /// Phiên bản thêm bảng UserPreferencesTable và ForecastHydrationTable
+  static const int addUserPreferencesAndForecastTables = 4;
+
   /// Phiên bản hiện tại
-  static const int currentVersion = enhancedVersion;
+  static const int currentVersion = addUserPreferencesAndForecastTables;
 }
 
 /// Cơ sở dữ liệu chính của ứng dụng
@@ -36,6 +39,8 @@ class DatabaseVersions {
   WaterIntakeEntryTable,
   UserDataTable,
   ReminderSettingsTable,
+  UserPreferencesTable,
+  ForecastHydrationTable,
 ])
 class AppDatabase extends _$AppDatabase {
   /// Constructor
@@ -72,6 +77,42 @@ class AppDatabase extends _$AppDatabase {
 
           // Thêm ràng buộc cho các trường dữ liệu
           await _addConstraints(m);
+        }
+
+        // Nâng cấp lên phiên bản 4 (thêm bảng UserPreferencesTable và ForecastHydrationTable)
+        if (from < DatabaseVersions.addUserPreferencesAndForecastTables && to >= DatabaseVersions.addUserPreferencesAndForecastTables) {
+          AppLogger.info('Adding user preferences and forecast hydration tables');
+
+          // Tạo bảng UserPreferencesTable
+          await customStatement('''
+            CREATE TABLE user_preferences_table (
+              id TEXT NOT NULL PRIMARY KEY,
+              last_drink_type_id TEXT,
+              last_drink_amount REAL,
+              measure_unit INTEGER NOT NULL,
+              last_updated TEXT NOT NULL
+            )
+          ''');
+
+          // Tạo bảng ForecastHydrationTable
+          await customStatement('''
+            CREATE TABLE forecast_hydration_table (
+              id TEXT NOT NULL PRIMARY KEY,
+              date TEXT NOT NULL,
+              recommended_water_intake REAL NOT NULL,
+              weather_condition_code INTEGER NOT NULL,
+              weather_description TEXT NOT NULL,
+              max_temperature REAL NOT NULL,
+              min_temperature REAL NOT NULL,
+              measure_unit INTEGER NOT NULL,
+              last_updated TEXT NOT NULL
+            )
+          ''');
+
+          // Thêm index cho bảng ForecastHydrationTable
+          await customStatement(
+            'CREATE INDEX idx_forecast_hydration_date ON forecast_hydration_table (date)'
+          );
         }
       },
       beforeOpen: (details) async {
@@ -142,12 +183,57 @@ class AppDatabase extends _$AppDatabase {
   /// Lấy lịch sử uống nước theo ngày
   Future<WaterIntakeHistoryTableData?> getWaterIntakeHistoryByDate(DateTime date) async {
     try {
-      final dateString = date.toIso8601String().split('T')[0];
-      final query = select(waterIntakeHistoryTable)
+      // Chuẩn hóa ngày để đảm bảo chỉ có ngày, tháng, năm (không có giờ, phút, giây)
+      final normalizedDate = DateTime(date.year, date.month, date.day);
+      final dateString = normalizedDate.toIso8601String().split('T')[0];
+      AppLogger.info('DATABASE: Getting water intake history for date: $dateString');
+
+      // Thử tìm theo ID (dateString)
+      final queryById = select(waterIntakeHistoryTable)
+        ..where((tbl) => tbl.id.equals(dateString));
+      final resultById = await queryById.getSingleOrNull();
+
+      if (resultById != null) {
+        AppLogger.info('Found history by ID: ${resultById.id}, date: ${resultById.date}, dailyGoal: ${resultById.dailyGoal}');
+        return resultById;
+      }
+
+      // Nếu không tìm thấy theo ID, thử tìm theo date
+      AppLogger.info('No history found by ID, trying to find by date...');
+      final queryByDate = select(waterIntakeHistoryTable)
         ..where((tbl) => tbl.date.equals(dateString));
-      return await query.getSingleOrNull();
+      final resultByDate = await queryByDate.getSingleOrNull();
+
+      if (resultByDate != null) {
+        AppLogger.info('Found history by date: ${resultByDate.id}, date: ${resultByDate.date}, dailyGoal: ${resultByDate.dailyGoal}');
+        return resultByDate;
+      }
+
+      // Nếu vẫn không tìm thấy, thử tìm bằng SQL trực tiếp
+      AppLogger.info('No history found by date, trying with direct SQL...');
+      final results = await customSelect(
+        'SELECT * FROM water_intake_history_table WHERE id = ? OR date = ?',
+        variables: [Variable.withString(dateString), Variable.withString(dateString)],
+        readsFrom: {waterIntakeHistoryTable},
+      ).get();
+
+      if (results.isNotEmpty) {
+        final row = results.first;
+        AppLogger.info('Found history with SQL: id=${row.data['id']}, date=${row.data['date']}');
+
+        // Chuyển đổi từ row sang WaterIntakeHistoryTableData
+        return WaterIntakeHistoryTableData(
+          id: row.data['id'] as String,
+          date: DateTime.parse(row.data['date'] as String),
+          dailyGoal: row.data['daily_goal'] as double,
+          measureUnit: MeasureUnit.values[row.data['measure_unit'] as int],
+        );
+      }
+
+      AppLogger.info('No history found for date: $dateString');
+      return null;
     } catch (e) {
-      AppLogger.reportError(e, StackTrace.current, 'Error getting water intake history by date');
+      AppLogger.reportError(e, StackTrace.current, 'Error getting water intake history by date: ${e.toString()}');
       rethrow;
     }
   }
@@ -213,17 +299,94 @@ class AppDatabase extends _$AppDatabase {
   /// Thêm hoặc cập nhật lịch sử uống nước
   Future<void> insertOrUpdateWaterIntakeHistory(WaterIntakeHistoryTableCompanion history) async {
     try {
-      await into(waterIntakeHistoryTable).insertOnConflictUpdate(history);
+      // Log thông tin về companion
+      AppLogger.info('History companion: id=${history.id.value}, date=${history.date.value}, dailyGoal=${history.dailyGoal.value}');
+
+      // Kiểm tra xem bản ghi đã tồn tại chưa
+      final existing = await (select(waterIntakeHistoryTable)
+        ..where((tbl) => tbl.id.equals(history.id.value)))
+        .getSingleOrNull();
+
+      AppLogger.info('Checking history record: ${history.id.value}, exists: ${existing != null}');
+
+      if (existing != null) {
+        // Nếu đã tồn tại, sử dụng update
+        final updateCompanion = WaterIntakeHistoryTableCompanion(
+          dailyGoal: history.dailyGoal,
+          measureUnit: history.measureUnit,
+        );
+        final updateResult = await (update(waterIntakeHistoryTable)
+          ..where((tbl) => tbl.id.equals(history.id.value)))
+          .write(updateCompanion);
+        AppLogger.info('Updated water intake history, result: $updateResult');
+      } else {
+        // Nếu chưa tồn tại, sử dụng insert
+        final insertResult = await into(waterIntakeHistoryTable).insert(history);
+        AppLogger.info('Inserted water intake history, result: $insertResult');
+      }
+
+      // Kiểm tra lại sau khi thêm/cập nhật
+      final afterOperation = await (select(waterIntakeHistoryTable)
+        ..where((tbl) => tbl.id.equals(history.id.value)))
+        .getSingleOrNull();
+
+      final success = afterOperation != null;
+      AppLogger.info('Record exists after operation: $success, id: ${history.id.value}');
+
+      if (!success) {
+        AppLogger.warning('Failed to insert/update history record: ${history.id.value}');
+
+        // Thử thêm lại với SQL trực tiếp
+        await customStatement(
+          'INSERT OR REPLACE INTO water_intake_history_table (id, date, daily_goal, measure_unit) VALUES (?, ?, ?, ?)',
+          [history.id.value, history.date.value.toIso8601String(), history.dailyGoal.value, history.measureUnit.value.index]
+        );
+
+        // Kiểm tra lại
+        final afterCustomInsert = await (select(waterIntakeHistoryTable)
+          ..where((tbl) => tbl.id.equals(history.id.value)))
+          .getSingleOrNull();
+
+        if (afterCustomInsert != null) {
+          AppLogger.info('Record exists after custom insert: id=${afterCustomInsert.id}');
+        } else {
+          AppLogger.warning('Record still does not exist after custom insert');
+        }
+      }
     } catch (e) {
-      AppLogger.reportError(e, StackTrace.current, 'Error inserting or updating water intake history');
+      AppLogger.reportError(e, StackTrace.current, 'Error inserting or updating water intake history: ${e.toString()}');
       rethrow;
     }
   }
 
   /// Thêm lần uống nước mới
-  Future<void> insertWaterIntakeEntry(WaterIntakeEntryTableCompanion entry) async {
+  Future<int> insertWaterIntakeEntry(WaterIntakeEntryTableCompanion entry) async {
     try {
-      await into(waterIntakeEntryTable).insert(entry);
+      AppLogger.info('Inserting water intake entry: id=${entry.id.value}, historyId=${entry.historyId.value}, amount=${entry.amount.value}');
+
+      // Kiểm tra xem historyId có tồn tại không
+      final historyExists = await (select(waterIntakeHistoryTable)
+        ..where((tbl) => tbl.id.equals(entry.historyId.value)))
+        .getSingleOrNull();
+
+      if (historyExists == null) {
+        AppLogger.warning('History record not found for historyId: ${entry.historyId.value}');
+        throw Exception('History record not found for historyId: ${entry.historyId.value}');
+      }
+
+      // Thêm entry mới
+      final result = await into(waterIntakeEntryTable).insert(entry);
+      AppLogger.info('Inserted water intake entry, result: $result');
+
+      // Kiểm tra xem entry đã được thêm thành công chưa
+      final entryExists = await (select(waterIntakeEntryTable)
+        ..where((tbl) => tbl.id.equals(entry.id.value)))
+        .getSingleOrNull();
+
+      final success = entryExists != null;
+      AppLogger.info('Entry exists after insertion: $success, id: ${entry.id.value}');
+
+      return result;
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error inserting water intake entry');
       rethrow;
@@ -333,7 +496,8 @@ class AppDatabase extends _$AppDatabase {
   /// Lưu hoặc cập nhật cài đặt nhắc nhở
   Future<void> saveReminderSettings(ReminderSettingsTableCompanion settings) async {
     try {
-      await into(reminderSettingsTable).insertOnConflictUpdate(settings);
+    final result =  await into(reminderSettingsTable).insertOnConflictUpdate(settings);
+    debugPrint(result.toString());
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error saving reminder settings');
       rethrow;
@@ -346,6 +510,125 @@ class AppDatabase extends _$AppDatabase {
       await (delete(reminderSettingsTable)..where((tbl) => tbl.id.equals('water_reminder'))).go();
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error clearing reminder settings');
+      rethrow;
+    }
+  }
+
+  // ----------------------
+  // User Preferences Methods
+  // ----------------------
+
+  /// Lấy tùy chọn người dùng
+  Future<UserPreferencesTableData?> getUserPreferences() async {
+    try {
+      final query = select(userPreferencesTable)
+        ..where((tbl) => tbl.id.equals('user_preferences'));
+      return await query.getSingleOrNull();
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error getting user preferences');
+      rethrow;
+    }
+  }
+
+  /// Lưu hoặc cập nhật tùy chọn người dùng
+  Future<void> saveUserPreferences(UserPreferencesTableCompanion preferences) async {
+    try {
+      await into(userPreferencesTable).insertOnConflictUpdate(preferences);
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error saving user preferences');
+      rethrow;
+    }
+  }
+
+  /// Cập nhật thông tin uống nước gần nhất
+  Future<void> updateLastDrinkInfo(String drinkTypeId, double amount) async {
+    try {
+      // Lấy đơn vị đo lường từ dữ liệu người dùng hoặc sử dụng mặc định
+      final userData = await getUserData();
+      final measureUnit = userData?.measureUnit ?? MeasureUnit.metric;
+
+      // Tạo companion để cập nhật hoặc chèn mới
+      final companion = UserPreferencesTableCompanion(
+        id: const Value('user_preferences'),
+        lastDrinkTypeId: Value(drinkTypeId),
+        lastDrinkAmount: Value(amount),
+        measureUnit: Value(measureUnit),
+        lastUpdated: Value(DateTime.now()),
+      );
+
+      await saveUserPreferences(companion);
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error updating last drink info');
+      rethrow;
+    }
+  }
+
+  // ----------------------
+  // Forecast Hydration Methods
+  // ----------------------
+
+  /// Lấy dự báo lượng nước cho một ngày cụ thể
+  Future<ForecastHydrationTableData?> getForecastHydration(DateTime date) async {
+    try {
+      final dateString = date.toIso8601String().split('T')[0];
+      final query = select(forecastHydrationTable)
+        ..where((tbl) => tbl.id.equals(dateString));
+      return await query.getSingleOrNull();
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error getting forecast hydration');
+      rethrow;
+    }
+  }
+
+  /// Lấy dự báo lượng nước cho nhiều ngày
+  Future<List<ForecastHydrationTableData>> getForecastHydrationRange(
+    DateTime startDate,
+    int days,
+  ) async {
+    try {
+      final result = <ForecastHydrationTableData>[];
+      for (int i = 0; i < days; i++) {
+        final date = startDate.add(Duration(days: i));
+        final dateString = date.toIso8601String().split('T')[0];
+        final query = select(forecastHydrationTable)
+          ..where((tbl) => tbl.id.equals(dateString));
+        final forecast = await query.getSingleOrNull();
+        if (forecast != null) {
+          result.add(forecast);
+        }
+      }
+      return result;
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error getting forecast hydration range');
+      rethrow;
+    }
+  }
+
+  /// Lưu hoặc cập nhật dự báo lượng nước
+  Future<void> saveForecastHydration(ForecastHydrationTableCompanion forecast) async {
+    try {
+      await into(forecastHydrationTable).insertOnConflictUpdate(forecast);
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error saving forecast hydration');
+      rethrow;
+    }
+  }
+
+  /// Xóa dự báo lượng nước cũ hơn một ngày cụ thể
+  Future<int> deleteForecastHydrationOlderThan(DateTime date) async {
+    try {
+      final dateString = date.toIso8601String().split('T')[0];
+
+      // Sử dụng SQL trực tiếp để xóa các bản ghi cũ
+      final result = await customUpdate(
+        'DELETE FROM forecast_hydration_table WHERE id < ?',
+        variables: [Variable.withString(dateString)],
+        updates: {forecastHydrationTable},
+      );
+
+      return result;
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error deleting old forecast hydration');
       rethrow;
     }
   }

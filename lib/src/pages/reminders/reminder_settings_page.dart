@@ -9,6 +9,7 @@ import 'package:water_mind/src/core/services/reminders/models/standard_reminder_
 import 'package:water_mind/src/core/services/reminders/models/water_reminder_model.dart';
 import 'package:water_mind/src/core/services/reminders/reminder_service_provider.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
+import 'package:water_mind/src/pages/profile/providers/profile_provider.dart';
 import 'package:water_mind/src/pages/reminders/widgets/interval_selector.dart';
 import 'package:water_mind/src/pages/reminders/widgets/time_picker_bottom_sheet.dart';
 
@@ -84,6 +85,15 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
         settings.mode == ReminderMode.custom &&
         settings.customTimes.isEmpty;
 
+    // Kiểm tra xem thời gian thức dậy hoặc đi ngủ có thay đổi không
+    final wakeUpTimeChanged = _settings != null &&
+        _settings!.wakeUpTime.hour != settings.wakeUpTime.hour ||
+        _settings!.wakeUpTime.minute != settings.wakeUpTime.minute;
+
+    final bedTimeChanged = _settings != null &&
+        _settings!.bedTime.hour != settings.bedTime.hour ||
+        _settings!.bedTime.minute != settings.bedTime.minute;
+
     // Lưu cài đặt mà không hiển thị loading
     final reminderService = ref.read(reminderServiceProvider);
     await reminderService.saveReminderSettings(settings);
@@ -92,6 +102,23 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
     setState(() {
       _settings = settings;
     });
+
+    // Đồng bộ hóa với profile settings nếu thời gian thay đổi
+    if (wakeUpTimeChanged || bedTimeChanged) {
+      final profileNotifier = ref.read(profileSettingsProvider.notifier);
+
+      if (wakeUpTimeChanged) {
+        // Chỉ cập nhật trong profile settings, không cần cập nhật lại reminder settings
+        // vì đã được cập nhật ở trên
+        profileNotifier.syncWakeUpTime(settings.wakeUpTime);
+      }
+
+      if (bedTimeChanged) {
+        // Chỉ cập nhật trong profile settings, không cần cập nhật lại reminder settings
+        // vì đã được cập nhật ở trên
+        profileNotifier.syncBedTime(settings.bedTime);
+      }
+    }
 
     // Initialize times if we just switched modes
     if (needsStandardTimesInit) {
@@ -106,6 +133,8 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
     return Scaffold(
       backgroundColor: AppColor.secondaryColor,
       appBar: AppBar(
+        leading: IconButton(onPressed: () => context.router.maybePop(true)
+        , icon: const Icon(Icons.arrow_back_ios)),
         backgroundColor: AppColor.secondaryColor,
         elevation: 0,
         title: Text(
@@ -193,7 +222,7 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
               style: const TextStyle(color: Colors.white),
             ),
             subtitle: Text(
-              _settings!.mode.description,
+              _settings!.mode.getDescription(context),
               style: const TextStyle(color: Colors.white70),
             ),
           ),
@@ -432,7 +461,7 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
               ),
               const SizedBox(height: 8),
               Text(
-                mode.name,
+                mode.getName(context),
                 style: TextStyle(
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   color: Colors.white,
@@ -736,19 +765,6 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
             style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 16),
-
-          // Section title
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, bottom: 12.0),
-            child: Text(
-              context.l10n.reminderTimes,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
           // Custom times grid
           _buildCustomTimesGrid(),
 

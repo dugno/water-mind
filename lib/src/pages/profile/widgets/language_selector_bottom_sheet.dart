@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
+import 'package:water_mind/src/core/services/language/language_manager.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
 import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_config.dart';
@@ -47,35 +48,6 @@ class LanguageSelectorBottomSheet extends StatefulWidget {
 class _LanguageSelectorBottomSheetState extends State<LanguageSelectorBottomSheet> with HapticFeedbackMixin {
   late String _selectedLanguage;
 
-  // Language data
-  final List<Map<String, dynamic>> _languages = [
-    {
-      'name': 'English',
-      'code': 'en',
-      'flag': 'assets/images/language/united_kingdom.png',
-    },
-    {
-      'name': 'Tiếng Việt',
-      'code': 'vi',
-      'flag': 'assets/images/language/vietnam.png',
-    },
-    {
-      'name': '日本語',
-      'code': 'ja',
-      'flag': 'assets/images/language/japan.png',
-    },
-    {
-      'name': '中文',
-      'code': 'zh',
-      'flag': 'assets/images/language/china.png',
-    },
-    {
-      'name': 'Română',
-      'code': 'ro',
-      'flag': 'assets/images/language/romania.png',
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -83,60 +55,76 @@ class _LanguageSelectorBottomSheetState extends State<LanguageSelectorBottomShee
   }
 
   Widget _buildLanguagePicker() {
-    // Create items for the wheel picker
-    final List<WheelPickerItem<String>> languageItems = _languages.map((lang) {
-      return WheelPickerItem<String>(
-        value: lang['code'] as String,
-        text: lang['name'] as String,
-      );
-    }).toList();
+    return FutureBuilder<List<LanguageModel>>(
+      future: LanguageManager.getSupportedLanguages(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(color: Colors.white),
+          );
+        }
 
-    // Find initial index
-    int initialIndex = 0;
-    for (int i = 0; i < _languages.length; i++) {
-      if (_languages[i]['code'] == _selectedLanguage) {
-        initialIndex = i;
-        break;
-      }
-    }
+        final languages = snapshot.data!;
 
-    return SizedBox(
-      height: 200,
-      child: WheelPicker(
-        columns: [languageItems],
-        initialIndices: [initialIndex],
-        onSelectedItemChanged: (columnIndex, itemIndex, value) {
-          haptic(HapticFeedbackType.selection);
-          setState(() {
-            _selectedLanguage = value as String;
-          });
-        },
-        config: const WheelPickerConfig(
+        // Create items for the wheel picker with custom widgets that include flag images
+        final List<WheelPickerItem<String>> languageItems = languages.map((lang) {
+          return WheelPickerItem<String>(
+            value: lang.code,
+            text: lang.name, // Vẫn giữ text cho tương thích ngược
+            widget: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Hình ảnh cờ quốc gia
+                Image.asset(
+                  lang.imagePath,
+                  width: 24,
+                  height: 18,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(Icons.language, size: 20, color: Colors.white);
+                  },
+                ),
+                const SizedBox(width: 12),
+                // Tên ngôn ngữ
+                Text(
+                  lang.name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList();
+
+        // Find initial index
+        int initialIndex = languages.indexWhere((lang) => lang.code == _selectedLanguage);
+        if (initialIndex < 0) initialIndex = 0;
+
+        return SizedBox(
           height: 200,
-          useHapticFeedback: true,
-          itemHeight: 50,
-        ),
-      ),
+          child: WheelPicker(
+            columns: [languageItems],
+            initialIndices: [initialIndex],
+            onSelectedItemChanged: (columnIndex, itemIndex, value) {
+              haptic(HapticFeedbackType.selection);
+              setState(() {
+                _selectedLanguage = value as String;
+              });
+            },
+            config: const WheelPickerConfig(
+              height: 200,
+              useHapticFeedback: true,
+              itemHeight: 50,
+            ),
+          ),
+        );
+      },
     );
   }
 
-  String _getLanguageName(String code) {
-    for (final lang in _languages) {
-      if (lang['code'] == code) {
-        return lang['name'] as String;
-      }
-    }
-    return 'Unknown';
-  }
 
-  String _getLanguageFlag(String code) {
-    for (final lang in _languages) {
-      if (lang['code'] == code) {
-        return lang['flag'] as String;
-      }
-    }
-    return '';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,30 +145,43 @@ class _LanguageSelectorBottomSheetState extends State<LanguageSelectorBottomShee
         ),
 
         // Current language display
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                _getLanguageFlag(_selectedLanguage),
-                width: 32,
-                height: 24,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Icon(Icons.language, size: 24, color: Colors.white);
-                },
+        FutureBuilder<LanguageModel?>(
+          future: LanguageManager.getLanguageByCode(_selectedLanguage),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              );
+            }
+
+            final language = snapshot.data;
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    language?.imagePath ?? '',
+                    width: 32,
+                    height: 24,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(Icons.language, size: 24, color: Colors.white);
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    language?.name ?? 'Unknown',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 8),
-              Text(
-                _getLanguageName(_selectedLanguage),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         ),
 
         const SizedBox(height: 24),

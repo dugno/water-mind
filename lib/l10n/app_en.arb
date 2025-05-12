@@ -403,6 +403,31 @@
     "description": "About app information"
   },
 
+  "waterIntakeForecast": "Water Intake Forecast",
+  "@waterIntakeForecast": {
+    "description": "Water intake forecast title"
+  },
+  "noForecastData": "No forecast data available",
+  "@noForecastData": {
+    "description": "Message when no forecast data is available"
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Refresh button"
+  },
+  "refreshingForecast": "Refreshing forecast data...",
+  "@refreshingForecast": {
+    "description": "Message when refreshing forecast data"
+  },
+  "recommendedIntake": "recommended",
+  "@recommendedIntake": {
+    "description": "Recommended intake label"
+  },
+  "lastDrink": "Last Drink",
+  "@lastDrink": {
+    "description": "Last drink label"
+  },
+
   "yourProfile": "Your Profile",
   "@yourProfile": {
     "description": "Profile header"
@@ -635,6 +660,18 @@
   "@reminderMode": {
     "description": "Reminder mode title"
   },
+  "standardMode": "Standard",
+  "@standardMode": {
+    "description": "Standard reminder mode"
+  },
+  "intervalMode": "Interval",
+  "@intervalMode": {
+    "description": "Interval reminder mode"
+  },
+  "customMode": "Custom",
+  "@customMode": {
+    "description": "Custom reminder mode"
+  },
   "standardModeDescription": "Optimal reminders based on your wake-up and bedtime",
   "@standardModeDescription": {
     "description": "Standard mode description"
@@ -803,5 +840,17 @@
   "tapToToggleHint": "Tap to enable or disable a reminder time",
   "@tapToToggleHint": {
     "description": "Hint for tapping to toggle reminder times"
+  },
+  "selectDrinkType": "Select Drink Type",
+  "@selectDrinkType": {
+    "description": "Title for drink type selection bottom sheet"
+  },
+  "selectAmount": "Select Amount",
+  "@selectAmount": {
+    "description": "Title for amount selection bottom sheet"
+  },
+  "select": "Select",
+  "@select": {
+    "description": "Select button text"
   }
 }

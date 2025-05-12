@@ -22,10 +22,7 @@ class MainNavigationPage extends ConsumerWidget {
       body: IndexedStack(
         index: currentIndex,
         children: const [
-          // Home tab
           HomePage(),
-
-          // History tab
           WaterHistoryPage(),
         ],
       ),

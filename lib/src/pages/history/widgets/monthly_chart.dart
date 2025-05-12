@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/utils/date_time_utils.dart';
 import 'package:water_mind/src/pages/history/water_history_view_model.dart';
 
@@ -28,17 +29,23 @@ class MonthlyChartTab extends StatelessWidget {
         children: [
           // Month selector
           _buildMonthSelector(context),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
 
           // Chart
           Expanded(
             child: viewModel.monthlyHistory.isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator(color: Colors.white))
                 : viewModel.monthlyHistory.hasError
-                    ? Center(child: Text('Error: ${viewModel.monthlyHistory.error}'))
+                    ? Center(child: Text(
+                        'Error: ${viewModel.monthlyHistory.error}',
+                        style: const TextStyle(color: Colors.white),
+                      ))
                     : viewModel.monthlyHistory.value?.isNotEmpty == true
                         ? _buildMonthlyChart(context, viewModel.monthlyHistory.value!)
-                        : const Center(child: Text('No data for this month')),
+                        : const Center(child: Text(
+                            'No data for this month',
+                            style: TextStyle(color: Colors.white),
+                          )),
           ),
         ],
       ),
@@ -50,54 +57,65 @@ class MonthlyChartTab extends StatelessWidget {
     final monthName = DateTimeUtils.getMonthName(month.month);
     final year = month.year;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            final previousMonth = DateTime(
-              month.year,
-              month.month - 1,
-              1,
-            );
-            onMonthChanged(previousMonth);
-          },
-        ),
-        TextButton(
-          onPressed: () async {
-            final selectedDate = await showDatePicker(
-              context: context,
-              initialDate: month,
-              firstDate: DateTime(2020),
-              lastDate: DateTime.now(),
-            );
-            if (selectedDate != null) {
-              final newMonth = DateTime(selectedDate.year, selectedDate.month, 1);
-              onMonthChanged(newMonth);
-            }
-          },
-          child: Text(
-            '$monthName $year',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.thirdColor.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () {
+              final previousMonth = DateTime(
+                month.year,
+                month.month - 1,
+                1,
+              );
+              onMonthChanged(previousMonth);
+            },
           ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.arrow_forward_ios),
-          onPressed: month.isBefore(DateTime(DateTime.now().year, DateTime.now().month, 1))
-              ? () {
-                  final nextMonth = DateTime(
-                    month.year,
-                    month.month + 1,
-                    1,
-                  );
-                  if (nextMonth.isBefore(DateTime.now().add(const Duration(days: 1)))) {
-                    onMonthChanged(nextMonth);
+          TextButton(
+            onPressed: () async {
+              final selectedDate = await showDatePicker(
+                context: context,
+                initialDate: month,
+                firstDate: DateTime(2020),
+                lastDate: DateTime.now(),
+              );
+              if (selectedDate != null) {
+                final newMonth = DateTime(selectedDate.year, selectedDate.month, 1);
+                onMonthChanged(newMonth);
+              }
+            },
+            child: Text(
+              '$monthName $year',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+            onPressed: month.isBefore(DateTime(DateTime.now().year, DateTime.now().month, 1))
+                ? () {
+                    final nextMonth = DateTime(
+                      month.year,
+                      month.month + 1,
+                      1,
+                    );
+                    if (nextMonth.isBefore(DateTime.now().add(const Duration(days: 1)))) {
+                      onMonthChanged(nextMonth);
+                    }
                   }
-                }
-              : null,
-        ),
-      ],
+                : null,
+          ),
+        ],
+      ),
     );
   }
 
@@ -270,65 +288,69 @@ class MonthlyChartTab extends StatelessWidget {
     final progressPercentage = totalGoal > 0 ? (totalIntake / totalGoal).clamp(0.0, 1.0) : 0.0;
     final goalMet = totalIntake >= totalGoal;
 
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Total monthly intake:',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  '${totalIntake.toInt()} ml',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Monthly goal:',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  '${totalGoal.toInt()} ml',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            LinearProgressIndicator(
-              value: progressPercentage,
-              backgroundColor: Colors.grey.withOpacity(0.3),
-              valueColor: AlwaysStoppedAnimation<Color>(
-                goalMet ? Colors.green : Colors.blue,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColor.thirdColor.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Total monthly intake:',
+                style: TextStyle(fontSize: 16, color: Colors.white),
               ),
-              minHeight: 10,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '${(progressPercentage * 100).toStringAsFixed(1)}% of monthly goal',
-              style: TextStyle(
-                color: goalMet ? Colors.green : Colors.blue,
-                fontWeight: FontWeight.bold,
+              Text(
+                '${totalIntake.toInt()} ml',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Monthly goal:',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              Text(
+                '${totalGoal.toInt()} ml',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          LinearProgressIndicator(
+            value: progressPercentage,
+            backgroundColor: Colors.white.withOpacity(0.3),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              goalMet ? Colors.green : Colors.white,
             ),
-          ],
-        ),
+            minHeight: 10,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${(progressPercentage * 100).toStringAsFixed(1)}% of monthly goal',
+            style: TextStyle(
+              color: goalMet ? Colors.green : Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }

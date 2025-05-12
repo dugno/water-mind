@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/utils/date_time_utils.dart';
 import 'package:water_mind/src/pages/history/water_history_view_model.dart';
 
@@ -28,17 +29,23 @@ class YearlyChartTab extends StatelessWidget {
         children: [
           // Year selector
           _buildYearSelector(context),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
 
           // Chart
           Expanded(
             child: viewModel.yearlyHistory.isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator(color: Colors.white))
                 : viewModel.yearlyHistory.hasError
-                    ? Center(child: Text('Error: ${viewModel.yearlyHistory.error}'))
+                    ? Center(child: Text(
+                        'Error: ${viewModel.yearlyHistory.error}',
+                        style: const TextStyle(color: Colors.white),
+                      ))
                     : viewModel.yearlyHistory.value?.isNotEmpty == true
                         ? _buildYearlyChart(context, viewModel.yearlyHistory.value!)
-                        : const Center(child: Text('No data for this year')),
+                        : const Center(child: Text(
+                            'No data for this year',
+                            style: TextStyle(color: Colors.white),
+                          )),
           ),
         ],
       ),
@@ -48,57 +55,79 @@ class YearlyChartTab extends StatelessWidget {
   Widget _buildYearSelector(BuildContext context) {
     final year = viewModel.selectedYear;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            onYearChanged(year - 1);
-          },
-        ),
-        TextButton(
-          onPressed: () async {
-            // Show year picker
-            final selectedYear = await showDialog<int>(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Select Year'),
-                  content: SizedBox(
-                    width: 300,
-                    height: 300,
-                    child: YearPicker(
-                      firstDate: DateTime(2020),
-                      lastDate: DateTime.now(),
-                      selectedDate: DateTime(year),
-                      onChanged: (DateTime dateTime) {
-                        Navigator.pop(context, dateTime.year);
-                      },
-                    ),
-                  ),
-                );
-              },
-            );
-
-            if (selectedYear != null) {
-              onYearChanged(selectedYear);
-            }
-          },
-          child: Text(
-            year.toString(),
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.thirdColor.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () {
+              onYearChanged(year - 1);
+            },
           ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.arrow_forward_ios),
-          onPressed: year < DateTime.now().year
-              ? () {
-                  onYearChanged(year + 1);
-                }
-              : null,
-        ),
-      ],
+          TextButton(
+            onPressed: () async {
+              // Show year picker
+              final selectedYear = await showDialog<int>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: AppColor.thirdColor,
+                    title: const Text('Select Year', style: TextStyle(color: Colors.white)),
+                    content: SizedBox(
+                      width: 300,
+                      height: 300,
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          colorScheme: Theme.of(context).colorScheme.copyWith(
+                            primary: Colors.white,
+                            onPrimary: AppColor.thirdColor,
+                            surface: AppColor.thirdColor,
+                            onSurface: Colors.white,
+                          ),
+                        ),
+                        child: YearPicker(
+                          firstDate: DateTime(2020),
+                          lastDate: DateTime.now(),
+                          selectedDate: DateTime(year),
+                          onChanged: (DateTime dateTime) {
+                            Navigator.pop(context, dateTime.year);
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+
+              if (selectedYear != null) {
+                onYearChanged(selectedYear);
+              }
+            },
+            child: Text(
+              year.toString(),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+            onPressed: year < DateTime.now().year
+                ? () {
+                    onYearChanged(year + 1);
+                  }
+                : null,
+          ),
+        ],
+      ),
     );
   }
 
@@ -246,64 +275,69 @@ class YearlyChartTab extends StatelessWidget {
   }
 
   Widget _buildSummaryInfo(double totalIntake, double averageMonthlyIntake) {
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Total yearly intake:',
-                  style: TextStyle(fontSize: 16),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColor.thirdColor.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Total yearly intake:',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              Text(
+                '${totalIntake.toInt()} ml',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-                Text(
-                  '${totalIntake.toInt()} ml',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Average monthly:',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              Text(
+                '${averageMonthlyIntake.toInt()} ml',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Average monthly:',
-                  style: TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Average daily:',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              Text(
+                '${(averageMonthlyIntake / 30).toInt()} ml',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-                Text(
-                  '${averageMonthlyIntake.toInt()} ml',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Average daily:',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  '${(averageMonthlyIntake / 30).toInt()} ml',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

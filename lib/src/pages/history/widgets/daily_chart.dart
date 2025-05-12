@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/models/water_intake_entry.dart';
 import 'package:water_mind/src/core/models/water_intake_history.dart';
 import 'package:water_mind/src/core/utils/date_time_utils.dart';
@@ -41,14 +42,17 @@ class _DailyChartTabState extends State<DailyChartTab> {
         children: [
           // Date selector
           _buildDateSelector(context),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
 
           // Chart and list in a scrollable container
           Expanded(
             child: viewModel.dailyHistory.isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator(color: Colors.white))
                 : viewModel.dailyHistory.hasError
-                    ? Center(child: Text('Error: ${viewModel.dailyHistory.error}'))
+                    ? Center(child: Text(
+                        'Error: ${viewModel.dailyHistory.error}',
+                        style: const TextStyle(color: Colors.white),
+                      ))
                     : SingleChildScrollView(
                         child: _buildDailyChart(context),
                       ),
@@ -59,45 +63,56 @@ class _DailyChartTabState extends State<DailyChartTab> {
   }
 
   Widget _buildDateSelector(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            final previousDay = viewModel.selectedDate.subtract(const Duration(days: 1));
-            onDateChanged(previousDay);
-          },
-        ),
-        TextButton(
-          onPressed: () async {
-            final selectedDate = await showDatePicker(
-              context: context,
-              initialDate: viewModel.selectedDate,
-              firstDate: DateTime(2020),
-              lastDate: DateTime.now(),
-            );
-            if (selectedDate != null) {
-              onDateChanged(selectedDate);
-            }
-          },
-          child: Text(
-            DateTimeUtils.formatDate(viewModel.selectedDate),
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.thirdColor.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () {
+              final previousDay = viewModel.selectedDate.subtract(const Duration(days: 1));
+              onDateChanged(previousDay);
+            },
           ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.arrow_forward_ios),
-          onPressed: viewModel.selectedDate.isBefore(DateTime.now())
-              ? () {
-                  final nextDay = viewModel.selectedDate.add(const Duration(days: 1));
-                  if (nextDay.isBefore(DateTime.now().add(const Duration(days: 1)))) {
-                    onDateChanged(nextDay);
+          TextButton(
+            onPressed: () async {
+              final selectedDate = await showDatePicker(
+                context: context,
+                initialDate: viewModel.selectedDate,
+                firstDate: DateTime(2020),
+                lastDate: DateTime.now(),
+              );
+              if (selectedDate != null) {
+                onDateChanged(selectedDate);
+              }
+            },
+            child: Text(
+              DateTimeUtils.formatDate(viewModel.selectedDate),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+            onPressed: viewModel.selectedDate.isBefore(DateTime.now())
+                ? () {
+                    final nextDay = viewModel.selectedDate.add(const Duration(days: 1));
+                    if (nextDay.isBefore(DateTime.now().add(const Duration(days: 1)))) {
+                      onDateChanged(nextDay);
+                    }
                   }
-                }
-              : null,
-        ),
-      ],
+                : null,
+          ),
+        ],
+      ),
     );
   }
 
@@ -328,15 +343,29 @@ class _DailyChartTabState extends State<DailyChartTab> {
 
         // Danh sách các lần uống nước
         const SizedBox(height: 24),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Water Intake Entries',
-            style: Theme.of(context).textTheme.titleMedium,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          decoration: BoxDecoration(
+            color: AppColor.thirdColor.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                child: Text(
+                  'Water Intake Entries',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              _buildWaterIntakeList(context, history),
+            ],
           ),
         ),
-        const SizedBox(height: 8),
-        _buildWaterIntakeList(context, history),
         // Add some padding at the bottom for better scrolling experience
         const SizedBox(height: 16),
       ],
@@ -346,10 +375,13 @@ class _DailyChartTabState extends State<DailyChartTab> {
   /// Xây dựng danh sách các lần uống nước
   Widget _buildWaterIntakeList(BuildContext context, WaterIntakeHistory history) {
     if (history.entries.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Center(
-          child: Text('No water intake entries for this day'),
+          child: Text(
+            'No water intake entries for this day',
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
       );
     }
@@ -362,7 +394,7 @@ class _DailyChartTabState extends State<DailyChartTab> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: sortedEntries.length,
-      separatorBuilder: (context, index) => const Divider(),
+      separatorBuilder: (context, index) => const Divider(color: Colors.white24),
       itemBuilder: (context, index) {
         final entry = sortedEntries[index];
         return _buildWaterIntakeItem(context, entry, history.measureUnit);
@@ -383,15 +415,20 @@ class _DailyChartTabState extends State<DailyChartTab> {
       ),
       title: Text(
         '${entry.amount.toStringAsFixed(0)} $unit of ${entry.drinkType.name}',
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        style: const TextStyle(
+          color: Colors.white,
           fontWeight: FontWeight.bold,
+          fontSize: 16,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
         'at ${timeFormat.format(entry.timestamp)}${entry.note != null ? ' • ${entry.note}' : ''}',
-        style: Theme.of(context).textTheme.bodySmall,
+        style: const TextStyle(
+          color: Colors.white70,
+          fontSize: 14,
+        ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -402,7 +439,7 @@ class _DailyChartTabState extends State<DailyChartTab> {
           children: [
             // Edit button
             IconButton(
-              icon: const Icon(Icons.edit_outlined),
+              icon: const Icon(Icons.edit_outlined, color: Colors.white),
               onPressed: () => _showEditEntryDialog(context, entry),
               tooltip: 'Edit entry',
               constraints: const BoxConstraints(),
@@ -410,7 +447,7 @@ class _DailyChartTabState extends State<DailyChartTab> {
             ),
             // Delete button
             IconButton(
-              icon: const Icon(Icons.delete_outline),
+              icon: const Icon(Icons.delete_outline, color: Colors.white),
               onPressed: () => _showDeleteConfirmation(context, entry),
               tooltip: 'Delete entry',
               constraints: const BoxConstraints(),
@@ -427,11 +464,16 @@ class _DailyChartTabState extends State<DailyChartTab> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Entry'),
-        content: const Text('Are you sure you want to delete this water intake entry?'),
+        backgroundColor: AppColor.thirdColor,
+        title: const Text('Delete Entry', style: TextStyle(color: Colors.white)),
+        content: const Text(
+          'Are you sure you want to delete this water intake entry?',
+          style: TextStyle(color: Colors.white),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(foregroundColor: Colors.white),
             child: const Text('CANCEL'),
           ),
           TextButton(
@@ -442,6 +484,7 @@ class _DailyChartTabState extends State<DailyChartTab> {
               final notifier = container.read(waterHistoryViewModelProvider.notifier);
               notifier.deleteWaterIntakeEntry(entry);
             },
+            style: TextButton.styleFrom(foregroundColor: Colors.white),
             child: const Text('DELETE'),
           ),
         ],
@@ -505,65 +548,69 @@ class _DailyChartTabState extends State<DailyChartTab> {
       return const SizedBox.shrink();
     }
 
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Total intake:',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  history.formattedTotalAmount,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Daily goal:',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  history.formattedDailyGoal,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            LinearProgressIndicator(
-              value: history.progressPercentage.clamp(0.0, 1.0),
-              backgroundColor: Colors.grey.withAlpha(77), // 0.3 opacity = 77 alpha
-              valueColor: AlwaysStoppedAnimation<Color>(
-                history.goalMet ? Colors.green : Colors.blue,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColor.thirdColor.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Total intake:',
+                style: TextStyle(fontSize: 16, color: Colors.white),
               ),
-              minHeight: 10,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '${(history.progressPercentage * 100).toStringAsFixed(1)}% of daily goal',
-              style: TextStyle(
-                color: history.goalMet ? Colors.green : Colors.blue,
-                fontWeight: FontWeight.bold,
+              Text(
+                history.formattedTotalAmount,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Daily goal:',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              Text(
+                history.formattedDailyGoal,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          LinearProgressIndicator(
+            value: history.progressPercentage.clamp(0.0, 1.0),
+            backgroundColor: Colors.white.withOpacity(0.3),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              history.goalMet ? Colors.green : Colors.white,
             ),
-          ],
-        ),
+            minHeight: 10,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${(history.progressPercentage * 100).toStringAsFixed(1)}% of daily goal',
+            style: TextStyle(
+              color: history.goalMet ? Colors.green : Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }

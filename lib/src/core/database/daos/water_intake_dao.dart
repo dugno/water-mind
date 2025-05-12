@@ -17,12 +17,24 @@ class WaterIntakeDao {
   WaterIntakeHistoryTableCompanion historyToCompanion(WaterIntakeHistory history) {
     try {
       final dateString = history.date.toIso8601String().split('T')[0];
-      return WaterIntakeHistoryTableCompanion.insert(
-        id: dateString,
-        date: history.date,
-        dailyGoal: history.dailyGoal,
-        measureUnit: history.measureUnit,
+
+      // Log thông tin chi tiết
+      AppLogger.info('Creating companion for history:');
+      AppLogger.info('- dateString: $dateString');
+      AppLogger.info('- date: ${history.date}');
+      AppLogger.info('- dailyGoal: ${history.dailyGoal}');
+      AppLogger.info('- measureUnit: ${history.measureUnit}');
+
+      // Tạo companion với Value thay vì giá trị trực tiếp
+      final companion = WaterIntakeHistoryTableCompanion(
+        id: Value(dateString),
+        date: Value(history.date),
+        dailyGoal: Value(history.dailyGoal),
+        measureUnit: Value(history.measureUnit),
       );
+
+      AppLogger.info('Created companion: id=${companion.id.value}, date=${companion.date.value}');
+      return companion;
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error converting history to companion');
       rethrow;
@@ -32,13 +44,34 @@ class WaterIntakeDao {
   /// Chuyển đổi từ dữ liệu bảng sang model
   Future<WaterIntakeHistory> historyFromData(WaterIntakeHistoryTableData data) async {
     try {
-      final entries = await _db.getEntriesByHistoryId(data.id);
-      return WaterIntakeHistory(
+      AppLogger.info('Converting history data to model for ID: ${data.id}');
+
+      // Lấy danh sách entries
+      final entriesData = await _db.getEntriesByHistoryId(data.id);
+      AppLogger.info('Found ${entriesData.length} entries for history ID: ${data.id}');
+
+      // Chuyển đổi từng entry
+      final entries = await Future.wait(entriesData.map((e) async {
+        try {
+          final entry = await entryFromData(e);
+          AppLogger.info('Converted entry: ${entry.id}, amount: ${entry.amount} ml, type: ${entry.drinkType.id}');
+          return entry;
+        } catch (e) {
+          AppLogger.reportError(e, StackTrace.current, 'Error converting entry data');
+          rethrow;
+        }
+      }));
+
+      // Tạo history model
+      final history = WaterIntakeHistory(
         date: data.date,
-        entries: await Future.wait(entries.map((e) => entryFromData(e))),
+        entries: entries,
         dailyGoal: data.dailyGoal,
         measureUnit: data.measureUnit,
       );
+
+      AppLogger.info('History converted with ${history.entries.length} entries, total: ${history.totalAmount} ml, goal: ${history.dailyGoal} ml');
+      return history;
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error converting data to history model');
       rethrow;
@@ -90,9 +123,26 @@ class WaterIntakeDao {
   /// Lấy lịch sử uống nước theo ngày
   Future<WaterIntakeHistory?> getWaterIntakeHistory(DateTime date) async {
     try {
-      final data = await _db.getWaterIntakeHistoryByDate(date);
-      if (data == null) return null;
-      return historyFromData(data);
+      // Chuẩn hóa ngày để đảm bảo chỉ có ngày, tháng, năm (không có giờ, phút, giây)
+      final normalizedDate = DateTime(date.year, date.month, date.day);
+      final dateString = normalizedDate.toIso8601String().split('T')[0];
+      AppLogger.info('DAO: Getting water intake history for date: $dateString');
+
+      final data = await _db.getWaterIntakeHistoryByDate(normalizedDate);
+      if (data == null) {
+        AppLogger.info('No history found for date: $dateString');
+        return null;
+      }
+
+      // Lấy danh sách entries
+      final entries = await _db.getEntriesByHistoryId(data.id);
+      AppLogger.info('Found ${entries.length} entries for date: $dateString');
+
+      // Chuyển đổi dữ liệu
+      final history = await historyFromData(data);
+      AppLogger.info('History converted with ${history.entries.length} entries, total amount: ${history.totalAmount} ml');
+
+      return history;
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error getting water intake history');
       rethrow;
@@ -126,26 +176,62 @@ class WaterIntakeDao {
   }
 
   /// Thêm một lần uống nước mới
-  Future<void> addWaterIntakeEntry(DateTime date, WaterIntakeEntry entry) async {
+  Future<WaterIntakeHistory> addWaterIntakeEntry(DateTime date, WaterIntakeEntry entry) async {
     try {
-      final dateString = date.toIso8601String().split('T')[0];
+      // Chuẩn hóa ngày để đảm bảo chỉ có ngày, tháng, năm (không có giờ, phút, giây)
+      final normalizedDate = DateTime(date.year, date.month, date.day);
+      final dateString = normalizedDate.toIso8601String().split('T')[0];
+      AppLogger.info('DAO: Adding water intake entry for date: $dateString, entry timestamp: ${entry.timestamp}');
 
       // Kiểm tra xem đã có lịch sử cho ngày này chưa
-      var historyData = await _db.getWaterIntakeHistoryByDate(date);
+      var historyData = await _db.getWaterIntakeHistoryByDate(normalizedDate);
 
       // Nếu chưa có, tạo mới với mục tiêu mặc định
       if (historyData == null) {
+        AppLogger.info('No history found for date: $dateString, creating new one');
         final defaultHistory = WaterIntakeHistory(
-          date: date,
+          date: normalizedDate,
           entries: [],
           dailyGoal: 2500, // Mục tiêu mặc định
           measureUnit: MeasureUnit.metric,
         );
-        await _db.insertOrUpdateWaterIntakeHistory(historyToCompanion(defaultHistory));
+
+        // Tạo companion và thêm vào database
+        final historyCompanion = historyToCompanion(defaultHistory);
+        await _db.insertOrUpdateWaterIntakeHistory(historyCompanion);
+        AppLogger.info('Created new history record');
+
+        // Lấy lại dữ liệu sau khi tạo mới
+        historyData = await _db.getWaterIntakeHistoryByDate(normalizedDate);
+        if (historyData == null) {
+          throw Exception('Failed to create history record for date: $dateString');
+        }
+
+        AppLogger.info('Confirmed new history record for date: $dateString, id: ${historyData.id}');
+      } else {
+        AppLogger.info('Found existing history for date: $dateString, id: ${historyData.id}');
       }
 
       // Thêm entry mới
-      await _db.insertWaterIntakeEntry(entryToCompanion(dateString, entry));
+      final entryCompanion = entryToCompanion(dateString, entry);
+      await _db.insertWaterIntakeEntry(entryCompanion);
+      AppLogger.info('Added water intake entry');
+
+      // Log thông tin để debug
+      AppLogger.info('Added water intake entry: ${entry.amount} ml, type: ${entry.drinkType.id} for date: $dateString');
+
+      // Kiểm tra xem entry đã được thêm thành công chưa
+      final entries = await _db.getEntriesByHistoryId(dateString);
+      AppLogger.info('Current entries count for $dateString: ${entries.length}');
+
+      // Lấy lịch sử mới nhất sau khi thêm entry
+      final updatedHistory = await getWaterIntakeHistory(normalizedDate);
+      if (updatedHistory == null) {
+        throw Exception('Failed to get updated history after adding entry');
+      }
+
+      AppLogger.info('Updated history has ${updatedHistory.entries.length} entries, total: ${updatedHistory.totalAmount} ml');
+      return updatedHistory;
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error adding water intake entry');
       rethrow;
@@ -155,7 +241,14 @@ class WaterIntakeDao {
   /// Xóa một lần uống nước
   Future<void> deleteWaterIntakeEntry(DateTime date, String entryId) async {
     try {
+      // Chuẩn hóa ngày để đảm bảo chỉ có ngày, tháng, năm (không có giờ, phút, giây)
+      final normalizedDate = DateTime(date.year, date.month, date.day);
+      final dateString = normalizedDate.toIso8601String().split('T')[0];
+      AppLogger.info('DAO: Deleting water intake entry with ID: $entryId for date: $dateString');
+
+      // Xóa entry
       await _db.deleteWaterIntakeEntry(entryId);
+      AppLogger.info('DAO: Entry deleted successfully');
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error deleting water intake entry');
       rethrow;

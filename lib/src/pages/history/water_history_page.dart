@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
+import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
+import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/pages/history/water_history_view_model.dart';
 import 'package:water_mind/src/pages/history/widgets/daily_chart.dart';
@@ -18,7 +21,7 @@ class WaterHistoryPage extends ConsumerStatefulWidget {
   ConsumerState<WaterHistoryPage> createState() => _WaterHistoryPageState();
 }
 
-class _WaterHistoryPageState extends ConsumerState<WaterHistoryPage> with SingleTickerProviderStateMixin {
+class _WaterHistoryPageState extends ConsumerState<WaterHistoryPage> with SingleTickerProviderStateMixin, HapticFeedbackMixin {
   late TabController _tabController;
 
   @override
@@ -28,6 +31,8 @@ class _WaterHistoryPageState extends ConsumerState<WaterHistoryPage> with Single
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging) {
         ref.read(waterHistoryViewModelProvider.notifier).setActiveTab(_tabController.index);
+        // Cập nhật giao diện khi tab thay đổi
+        setState(() {});
       }
     });
   }
@@ -38,14 +43,113 @@ class _WaterHistoryPageState extends ConsumerState<WaterHistoryPage> with Single
     super.dispose();
   }
 
+  /// Xây dựng các card cho các tab
+  Widget _buildTabSelectionCards() {
+    return Row(
+      children: [
+        // Tab Ngày
+        Expanded(
+          child: _buildTabCard(
+            index: 0,
+            icon: Icons.calendar_today,
+            title: context.l10n.day,
+          ),
+        ),
+
+        // Tab Tuần
+        Expanded(
+          child: _buildTabCard(
+            index: 1,
+            icon: Icons.date_range,
+            title: context.l10n.week,
+          ),
+        ),
+
+        // Tab Tháng
+        Expanded(
+          child: _buildTabCard(
+            index: 2,
+            icon: Icons.calendar_month,
+            title: context.l10n.month,
+          ),
+        ),
+
+        // Tab Năm
+        Expanded(
+          child: _buildTabCard(
+            index: 3,
+            icon: Icons.view_timeline,
+            title: context.l10n.year,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Xây dựng một card cho tab
+  Widget _buildTabCard({
+    required int index,
+    required IconData icon,
+    required String title,
+  }) {
+    final isSelected = _tabController.index == index;
+
+    return GestureDetector(
+      onTap: () {
+        haptic(HapticFeedbackType.selection);
+        _tabController.animateTo(index);
+      },
+      child: Card(
+        color: isSelected
+            ? AppColor.thirdColor
+            : AppColor.thirdColor.withOpacity(0.5),
+        elevation: isSelected ? 4 : 1,
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          height: 80,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: Colors.white,
+                size: 28,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = ref.watch(waterHistoryViewModelProvider);
     final notifier = ref.read(waterHistoryViewModelProvider.notifier);
 
     return Scaffold(
+      backgroundColor: AppColor.secondaryColor,
       appBar: AppBar(
-        title: Text(context.l10n.waterHistory),
+        backgroundColor: AppColor.secondaryColor,
+        elevation: 0,
+        title: Text(
+          context.l10n.waterHistory,
+          style: const TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           // Nút tạo dữ liệu giả
           PopupMenuButton<String>(
@@ -79,45 +183,66 @@ class _WaterHistoryPageState extends ConsumerState<WaterHistoryPage> with Single
                 child: Text('Tạo dữ liệu giả cho 30 ngày'),
               ),
             ],
-            icon: const Icon(Icons.data_array),
+            icon: const Icon(Icons.data_array, color: Colors.white),
             tooltip: 'Tạo dữ liệu giả',
           ),
         ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: context.l10n.day),
-            Tab(text: context.l10n.week),
-            Tab(text: context.l10n.month),
-            Tab(text: context.l10n.year),
-          ],
-        ),
       ),
-      body: TabBarView(
-        controller: _tabController,
+      body: Column(
         children: [
-          // Tab Ngày
-          DailyChartTab(
-            viewModel: viewModel,
-            onDateChanged: notifier.setSelectedDate,
+          // Tab selection cards
+          Container(
+            margin: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                  child: Text(
+                    context.l10n.waterHistory,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                _buildTabSelectionCards(),
+              ],
+            ),
           ),
 
-          // Tab Tuần
-          WeeklyChartTab(
-            viewModel: viewModel,
-            onWeekChanged: notifier.setSelectedWeek,
-          ),
+          // Tab content
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                // Tab Ngày
+                DailyChartTab(
+                  viewModel: viewModel,
+                  onDateChanged: notifier.setSelectedDate,
+                ),
 
-          // Tab Tháng
-          MonthlyChartTab(
-            viewModel: viewModel,
-            onMonthChanged: notifier.setSelectedMonth,
-          ),
+                // Tab Tuần
+                WeeklyChartTab(
+                  viewModel: viewModel,
+                  onWeekChanged: notifier.setSelectedWeek,
+                ),
 
-          // Tab Năm
-          YearlyChartTab(
-            viewModel: viewModel,
-            onYearChanged: notifier.setSelectedYear,
+                // Tab Tháng
+                MonthlyChartTab(
+                  viewModel: viewModel,
+                  onMonthChanged: notifier.setSelectedMonth,
+                ),
+
+                // Tab Năm
+                YearlyChartTab(
+                  viewModel: viewModel,
+                  onYearChanged: notifier.setSelectedYear,
+                ),
+              ],
+            ),
           ),
         ],
       ),

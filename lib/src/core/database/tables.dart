@@ -171,3 +171,64 @@ class ReminderSettingsTable extends Table {
     'CHECK (interval_minutes > 0)',
   ];
 }
+
+/// Bảng lưu trữ tùy chọn và thông tin gần đây của người dùng
+class UserPreferencesTable extends Table {
+  /// ID duy nhất của tùy chọn (mặc định là 'user_preferences')
+  TextColumn get id => text()();
+
+  /// ID của loại nước uống gần nhất
+  TextColumn get lastDrinkTypeId => text().nullable()();
+
+  /// Lượng nước uống gần nhất (ml hoặc fl oz)
+  RealColumn get lastDrinkAmount => real().nullable()();
+
+  /// Đơn vị đo lường (0: metric, 1: imperial)
+  IntColumn get measureUnit => integer().map(const MeasureUnitConverter())();
+
+  /// Thời gian cập nhật cuối cùng (định dạng ISO8601)
+  TextColumn get lastUpdated => text().map(const DateTimeConverter())();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+/// Bảng lưu trữ dự báo lượng nước khuyến nghị cho các ngày tiếp theo
+class ForecastHydrationTable extends Table {
+  /// ID duy nhất của dự báo (định dạng: 'YYYY-MM-DD')
+  TextColumn get id => text()();
+
+  /// Ngày dự báo
+  TextColumn get date => text().map(const DateTimeConverter())();
+
+  /// Lượng nước khuyến nghị (ml hoặc fl oz)
+  RealColumn get recommendedWaterIntake => real()();
+
+  /// Mã điều kiện thời tiết dự báo
+  IntColumn get weatherConditionCode => integer()();
+
+  /// Mô tả điều kiện thời tiết
+  TextColumn get weatherDescription => text()();
+
+  /// Nhiệt độ tối đa dự báo (°C)
+  RealColumn get maxTemperature => real()();
+
+  /// Nhiệt độ tối thiểu dự báo (°C)
+  RealColumn get minTemperature => real()();
+
+  /// Đơn vị đo lường (0: metric, 1: imperial)
+  IntColumn get measureUnit => integer().map(const MeasureUnitConverter())();
+
+  /// Thời gian cập nhật cuối cùng
+  TextColumn get lastUpdated => text().map(const DateTimeConverter())();
+
+  @override
+  Set<Column> get primaryKey => {id};
+
+  List<Index> get indexes => [
+    Index(
+      'idx_forecast_hydration_date',
+      'CREATE INDEX idx_forecast_hydration_date ON forecast_hydration_table (date)',
+    ),
+  ];
+}

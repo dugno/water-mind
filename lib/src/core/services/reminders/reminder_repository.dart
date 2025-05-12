@@ -34,8 +34,7 @@ class ReminderRepositoryImpl implements ReminderRepository {
 
   @override
   Future<void> saveReminderSettings(WaterReminderModel settings) async {
-    try {
-      await _dao.saveReminderSettings(settings);
+    try { await _dao.saveReminderSettings(settings);
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error saving reminder settings');
       rethrow;

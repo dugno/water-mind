@@ -5,6 +5,9 @@ import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/routing/app_router.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
+import 'package:water_mind/src/core/database/providers/database_providers.dart';
+import 'package:water_mind/src/core/services/reminders/models/reminder_mode.dart';
+import 'package:water_mind/src/core/services/reminders/reminder_service_provider.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/pages/profile/providers/profile_provider.dart';
@@ -61,26 +64,66 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
       children: [
-        // REMINDER SETTINGS SECTION
         _buildSectionTitle(context.l10n.reminders),
 
         _buildSettingsCard([
-          // Reminder Settings
-          ListTile(
-            leading: const Icon(Icons.access_alarm, color: Colors.white),
-            title: Text(
-              context.l10n.reminderSettings,
-              style: const TextStyle(color: Colors.white),
-            ),
-            subtitle: const Text(
-              'Standard Mode',
-              style: TextStyle(color: Colors.white70),
-            ),
-            trailing: const Icon(Icons.chevron_right, color: Colors.white),
-            onTap: () {
-              haptic(HapticFeedbackType.selection);
-              context.router.push(const ReminderSettingsRoute());
+          ref.watch(reminderSettingsProvider).when(
+            data: (settings) {
+              final mode = settings?.mode ?? ReminderMode.standard;
+              return ListTile(
+                leading: const Icon(Icons.access_alarm, color: Colors.white),
+                title: Text(
+                  context.l10n.reminderSettings,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  mode.getName(context),
+                  style: const TextStyle(color: Colors.white70),
+                ),
+                trailing: const Icon(Icons.chevron_right, color: Colors.white),
+                onTap: () {
+                  haptic(HapticFeedbackType.selection);
+                  context.router.push(const ReminderSettingsRoute()).then((value) {
+                    if (value == true) {
+                      ref.invalidate(reminderSettingsProvider);
+                    }
+                  });
+                },
+              );
             },
+            loading: () => ListTile(
+              leading: const Icon(Icons.access_alarm, color: Colors.white),
+              title: Text(
+                context.l10n.reminderSettings,
+                style: const TextStyle(color: Colors.white),
+              ),
+              subtitle: const Text(
+                'Loading...',
+                style: TextStyle(color: Colors.white70),
+              ),
+              trailing: const Icon(Icons.chevron_right, color: Colors.white),
+            ),
+            error: (_, __) => ListTile(
+              leading: const Icon(Icons.access_alarm, color: Colors.white),
+              title: Text(
+                context.l10n.reminderSettings,
+                style: const TextStyle(color: Colors.white),
+              ),
+              subtitle: Text(
+                context.l10n.standardMode,
+                style: const TextStyle(color: Colors.white70),
+              ),
+              trailing: const Icon(Icons.chevron_right, color: Colors.white),
+              onTap: () {
+                haptic(HapticFeedbackType.selection);
+                context.router.push(const ReminderSettingsRoute()).then((value) {
+                  if (value == true) {
+                    ref.invalidate(reminderSettingsProvider);
+                  }
+                  setState(() {});
+                });
+              },
+            ),
           ),
 
           // Sound
