@@ -12,7 +12,7 @@ import 'package:water_mind/src/pages/introduction/introduction.dart';
 import 'package:water_mind/src/pages/main_navigation_page.dart';
 import 'package:water_mind/src/pages/profile/profile_page.dart';
 import 'package:water_mind/src/pages/reminders/reminder_settings_page.dart';
-import 'package:water_mind/src/pages/settings/theme_settings_page.dart';
+
 import 'package:water_mind/src/ui/widgets/calendar/example/dashed_week_view_example.dart';
 import 'package:water_mind/src/ui/widgets/hydration/hydration_widgets.dart';
 import 'package:water_mind/src/ui/widgets/wheel_picker/example/wheel_picker_example.dart';
@@ -67,11 +67,7 @@ class AppRouter extends _$AppRouter {
           page: WaterIntakeExampleRoute.page,
         ),
 
-        // Theme settings page
-        AutoRoute(
-          path: '/settings/theme',
-          page: ThemeSettingsRoute.page,
-        ),
+
 
         // Reminder settings page
         AutoRoute(

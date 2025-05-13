@@ -33,19 +33,17 @@ class MonthlyChartTab extends StatelessWidget {
 
           // Chart
           Expanded(
-            child: viewModel.monthlyHistory.isLoading
-                ? const Center(child: CircularProgressIndicator(color: Colors.white))
-                : viewModel.monthlyHistory.hasError
-                    ? Center(child: Text(
-                        'Error: ${viewModel.monthlyHistory.error}',
-                        style: const TextStyle(color: Colors.white),
-                      ))
-                    : viewModel.monthlyHistory.value?.isNotEmpty == true
-                        ? _buildMonthlyChart(context, viewModel.monthlyHistory.value!)
-                        : const Center(child: Text(
-                            'No data for this month',
-                            style: TextStyle(color: Colors.white),
-                          )),
+            child: viewModel.monthlyHistory.hasError
+                ? Center(child: Text(
+                    'Error: ${viewModel.monthlyHistory.error}',
+                    style: const TextStyle(color: Colors.white),
+                  ))
+                : viewModel.monthlyHistory.value?.isNotEmpty == true
+                    ? _buildMonthlyChart(context, viewModel.monthlyHistory.value!)
+                    : const Center(child: Text(
+                        'No data for this month',
+                        style: TextStyle(color: Colors.white),
+                      )),
           ),
         ],
       ),
@@ -159,119 +157,242 @@ class MonthlyChartTab extends StatelessWidget {
 
         // Biểu đồ
         Expanded(
-          child: LineChart(
-            LineChartData(
-              gridData: FlGridData(
-                show: true,
-                drawVerticalLine: true,
-                horizontalInterval: 500,
-                verticalInterval: 5,
-                getDrawingHorizontalLine: (value) {
-                  return FlLine(
-                    color: Colors.grey.withOpacity(0.3),
-                    strokeWidth: 1,
-                  );
-                },
-                getDrawingVerticalLine: (value) {
-                  return FlLine(
-                    color: Colors.grey.withOpacity(0.3),
-                    strokeWidth: 1,
-                  );
-                },
-              ),
-              titlesData: FlTitlesData(
-                show: true,
-                rightTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  spreadRadius: 1,
                 ),
-                topTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
+              ],
+            ),
+            padding: const EdgeInsets.only(right: 16, top: 16, bottom: 16),
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(
+                  show: true,
+                  drawVerticalLine: true,
+                  horizontalInterval: 500,
+                  verticalInterval: 5,
+                  getDrawingHorizontalLine: (value) {
+                    return FlLine(
+                      color: Colors.white.withOpacity(0.2),
+                      strokeWidth: 0.8,
+                      dashArray: [5, 5],
+                    );
+                  },
+                  getDrawingVerticalLine: (value) {
+                    // Highlight weekends
+                    final day = value.toInt();
+                    final date = DateTime(
+                      viewModel.selectedMonth.year,
+                      viewModel.selectedMonth.month,
+                      day,
+                    );
+                    final isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
+
+                    return FlLine(
+                      color: isWeekend
+                          ? Colors.red.withOpacity(0.1)
+                          : Colors.white.withOpacity(0.1),
+                      strokeWidth: 0.8,
+                    );
+                  },
                 ),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 30,
-                    interval: 5,
-                    getTitlesWidget: (value, meta) {
-                      final day = value.toInt();
-                      if (day % 5 == 0 || day == 1) {
+                titlesData: FlTitlesData(
+                  show: true,
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 30,
+                      interval: 5,
+                      getTitlesWidget: (value, meta) {
+                        final day = value.toInt();
+                        if (day % 5 == 0 || day == 1) {
+                          return SideTitleWidget(
+                            axisSide: meta.axisSide,
+                            space: 8,
+                            child: Text(
+                              day.toString(),
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ),
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 500,
+                      getTitlesWidget: (value, meta) {
                         return SideTitleWidget(
                           axisSide: meta.axisSide,
-                          child: Text(day.toString()),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                ),
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    interval: 500,
-                    getTitlesWidget: (value, meta) {
-                      return SideTitleWidget(
-                        axisSide: meta.axisSide,
-                        child: Text(
-                          value.toInt().toString(),
-                          style: const TextStyle(
-                            fontSize: 10,
+                          child: Text(
+                            value.toInt().toString(),
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    reservedSize: 40,
-                  ),
-                ),
-              ),
-              borderData: FlBorderData(
-                show: true,
-                border: Border.all(color: Colors.grey.withOpacity(0.5)),
-              ),
-              minX: 1,
-              maxX: DateTimeUtils.getDaysInMonth(
-                viewModel.selectedMonth.year,
-                viewModel.selectedMonth.month,
-              ).toDouble(),
-              minY: 0,
-              maxY: _getMaxY(spots),
-              lineBarsData: [
-                LineChartBarData(
-                  spots: spots,
-                  isCurved: true,
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.blue.withOpacity(0.8),
-                      Colors.blue,
-                    ],
-                  ),
-                  barWidth: 3,
-                  isStrokeCapRound: true,
-                  dotData: const FlDotData(
-                    show: true,
-                  ),
-                  belowBarData: BarAreaData(
-                    show: true,
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.blue.withOpacity(0.3),
-                        Colors.blue.withOpacity(0.1),
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                        );
+                      },
+                      reservedSize: 40,
                     ),
                   ),
                 ),
-              ],
-              lineTouchData: LineTouchData(
-                touchTooltipData: LineTouchTooltipData(
-                  tooltipBgColor: Colors.blueAccent.withOpacity(0.8),
-                  getTooltipItems: (touchedSpots) {
-                    return touchedSpots.map((touchedSpot) {
-                      final day = touchedSpot.x.toInt();
-                      final amount = touchedSpot.y.toInt();
-                      return LineTooltipItem(
-                        'Day $day: $amount ml',
-                        const TextStyle(color: Colors.white),
+                borderData: FlBorderData(
+                  show: true,
+                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                ),
+                minX: 1,
+                maxX: DateTimeUtils.getDaysInMonth(
+                  viewModel.selectedMonth.year,
+                  viewModel.selectedMonth.month,
+                ).toDouble(),
+                minY: 0,
+                maxY: _getMaxY(spots),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: spots,
+                    isCurved: true,
+                    curveSmoothness: 0.35,
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColor.fourColor.withOpacity(0.7),
+                        AppColor.thirdColor,
+                        AppColor.secondaryColor,
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                    barWidth: 4,
+                    isStrokeCapRound: true,
+                    dotData: FlDotData(
+                      show: true,
+                      getDotPainter: (spot, percent, barData, index) {
+                        // Nếu không có dữ liệu (y = 0), không hiển thị điểm
+                        if (spot.y == 0) {
+                          return FlDotCirclePainter(
+                            radius: 0,
+                            color: Colors.transparent,
+                            strokeWidth: 0,
+                            strokeColor: Colors.transparent,
+                          );
+                        }
+
+                        // Kiểm tra xem có phải là ngày cuối tuần không
+                        final day = spot.x.toInt();
+                        final date = DateTime(
+                          viewModel.selectedMonth.year,
+                          viewModel.selectedMonth.month,
+                          day,
+                        );
+                        final isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
+
+                        return FlDotCirclePainter(
+                          radius: 5,
+                          color: isWeekend ? AppColor.warningColor : AppColor.thirdColor,
+                          strokeWidth: 2.5,
+                          strokeColor: Colors.white,
+                        );
+                      },
+                    ),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColor.secondaryColor.withOpacity(0.4),
+                          AppColor.thirdColor.withOpacity(0.2),
+                          AppColor.fourColor.withOpacity(0.05),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                    shadow: const Shadow(
+                      color: Colors.black26,
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    ),
+                  ),
+                ],
+                lineTouchData: LineTouchData(
+                  touchTooltipData: LineTouchTooltipData(
+                    tooltipBgColor: AppColor.primaryColor.withOpacity(0.85),
+                    tooltipRoundedRadius: 12,
+                    tooltipPadding: const EdgeInsets.all(12),
+                    tooltipMargin: 8,
+                    getTooltipItems: (touchedSpots) {
+                      return touchedSpots.map((touchedSpot) {
+                        final day = touchedSpot.x.toInt();
+                        final amount = touchedSpot.y.toInt();
+                        final date = DateTime(
+                          viewModel.selectedMonth.year,
+                          viewModel.selectedMonth.month,
+                          day,
+                        );
+                        final dayOfWeek = DateTimeUtils.getDayOfWeekName(date.weekday, short: false);
+
+                        return LineTooltipItem(
+                          '$dayOfWeek, ${DateTimeUtils.formatDate(date)}',
+                          const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                          children: [
+                            const TextSpan(text: '\n'),
+                            TextSpan(
+                              text: '$amount ml',
+                              style: TextStyle(
+                                color: amount > 0 ? AppColor.fourColor : Colors.white70,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList();
+                    },
+                  ),
+                  touchCallback: (FlTouchEvent event, LineTouchResponse? touchResponse) {
+                    // Thêm hiệu ứng khi chạm vào biểu đồ nếu cần
+                  },
+                  handleBuiltInTouches: true,
+                  getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
+                    return spotIndexes.map((spotIndex) {
+                      return TouchedSpotIndicatorData(
+                        FlLine(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                          dashArray: [3, 3],
+                        ),
+                        FlDotData(
+                          getDotPainter: (spot, percent, barData, index) {
+                            return FlDotCirclePainter(
+                              radius: 6,
+                              color: AppColor.thirdColor,
+                              strokeWidth: 3,
+                              strokeColor: Colors.white,
+                            );
+                          },
+                        ),
                       );
                     }).toList();
                   },
@@ -287,68 +408,226 @@ class MonthlyChartTab extends StatelessWidget {
   Widget _buildSummaryInfo(double totalIntake, double totalGoal) {
     final progressPercentage = totalGoal > 0 ? (totalIntake / totalGoal).clamp(0.0, 1.0) : 0.0;
     final goalMet = totalIntake >= totalGoal;
+    final progressColor = goalMet ? AppColor.successColor : AppColor.thirdColor;
+
+    // Tính trung bình mỗi ngày
+    final daysInMonth = DateTimeUtils.getDaysInMonth(
+      viewModel.selectedMonth.year,
+      viewModel.selectedMonth.month,
+    );
+    final averageDailyIntake = totalIntake / daysInMonth;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColor.thirdColor.withOpacity(0.8),
+        gradient: LinearGradient(
+          colors: [
+            AppColor.primaryColor.withOpacity(0.8),
+            AppColor.secondaryColor.withOpacity(0.7),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: AppColor.primaryColor.withOpacity(0.3),
+            blurRadius: 8,
+            spreadRadius: 1,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
+          // Thông tin tổng hợp
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Total monthly intake:',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+              // Cột bên trái
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Total monthly intake:',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${totalIntake.toInt()} ml',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Text(
-                '${totalIntake.toInt()} ml',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+
+              // Cột bên phải
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Average daily:',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${averageDailyIntake.toInt()} ml',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+
+          const SizedBox(height: 16),
+
+          // Mục tiêu tháng
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 'Monthly goal:',
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-              Text(
-                '${totalGoal.toInt()} ml',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                style: TextStyle(
+                  fontSize: 14,
                   color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '${totalGoal.toInt()} ml',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          LinearProgressIndicator(
-            value: progressPercentage,
-            backgroundColor: Colors.white.withOpacity(0.3),
-            valueColor: AlwaysStoppedAnimation<Color>(
-              goalMet ? Colors.green : Colors.white,
-            ),
-            minHeight: 10,
-            borderRadius: BorderRadius.circular(5),
+
+          const SizedBox(height: 16),
+
+          // Thanh tiến trình
+          Stack(
+            children: [
+              // Background progress bar
+              Container(
+                height: 16,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+
+              // Actual progress
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                height: 16,
+                width: 300 * progressPercentage, // Fixed width * percentage
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      progressColor.withOpacity(0.7),
+                      progressColor,
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: progressColor.withOpacity(0.4),
+                      blurRadius: 4,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
-          Text(
-            '${(progressPercentage * 100).toStringAsFixed(1)}% of monthly goal',
-            style: TextStyle(
-              color: goalMet ? Colors.green : Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+
+          const SizedBox(height: 8),
+
+          // Thông tin tiến trình
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${(progressPercentage * 100).toStringAsFixed(1)}% of monthly goal',
+                style: TextStyle(
+                  color: goalMet ? AppColor.successColor : Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              if (goalMet)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColor.successColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'Goal Achieved!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
           ),
         ],
       ),

@@ -53,16 +53,18 @@ class WeightBottomSheet extends StatefulWidget {
 
 class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedbackMixin {
   late double _weight;
-  
+
   // For wheel pickers
   late int _weightWhole;
   late int _weightDecimal;
+
+  bool _isDisposed = false;
 
   @override
   void initState() {
     super.initState();
     _weight = widget.initialWeight ?? (widget.measureUnit == MeasureUnit.metric ? 70 : 154);
-    
+
     // Initialize wheel picker values
     _initializeWheelPickerValues();
   }
@@ -74,6 +76,13 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
 
   void _updateWeightFromWheelPicker() {
     _weight = _weightWhole + (_weightDecimal / 10);
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    // Đảm bảo rằng tất cả các tài nguyên được giải phóng
+    super.dispose();
   }
 
   Widget _buildWeightPicker() {
@@ -88,11 +97,11 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
     // Generate weight values for metric (kg)
     const int minWeight = 30;
     const int maxWeight = 150;
-    
+
     // Ensure weight is within range
     if (_weightWhole < minWeight) _weightWhole = minWeight;
     if (_weightWhole > maxWeight) _weightWhole = maxWeight;
-    
+
     // Create items for the wheel picker
     final List<WheelPickerItem<int>> weightItems = List.generate(
       maxWeight - minWeight + 1,
@@ -101,7 +110,7 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
         text: '${minWeight + index} kg',
       ),
     );
-    
+
     // Create items for decimal
     final List<WheelPickerItem<int>> decimalItems = List.generate(
       10,
@@ -110,10 +119,10 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
         text: '.$index',
       ),
     );
-    
+
     // Calculate initial index
     final initialIndex = (_weightWhole - minWeight).clamp(0, maxWeight - minWeight);
-    
+
     return SizedBox(
       height: 200,
       child: WheelPicker(
@@ -121,13 +130,15 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
         initialIndices: [initialIndex, _weightDecimal],
         onSelectedItemChanged: (columnIndex, itemIndex, value) {
           haptic(HapticFeedbackType.selection);
-          setState(() {
-            if (columnIndex == 0) {
-              _weightWhole = value as int;
-            } else {
-              _weightDecimal = value as int;
-            }
-          });
+          if (!_isDisposed && mounted) {
+            setState(() {
+              if (columnIndex == 0) {
+                _weightWhole = value as int;
+              } else {
+                _weightDecimal = value as int;
+              }
+            });
+          }
         },
         config: const WheelPickerConfig(
           height: 200,
@@ -141,11 +152,11 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
     // Generate weight values for imperial (lbs)
     const int minWeight = 66;
     const int maxWeight = 330;
-    
+
     // Ensure weight is within range
     if (_weightWhole < minWeight) _weightWhole = minWeight;
     if (_weightWhole > maxWeight) _weightWhole = maxWeight;
-    
+
     // Create items for the wheel picker
     final List<WheelPickerItem<int>> weightItems = List.generate(
       maxWeight - minWeight + 1,
@@ -154,7 +165,7 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
         text: '${minWeight + index} lbs',
       ),
     );
-    
+
     // Create items for decimal
     final List<WheelPickerItem<int>> decimalItems = List.generate(
       10,
@@ -163,10 +174,10 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
         text: '.$index',
       ),
     );
-    
+
     // Calculate initial index
     final initialIndex = (_weightWhole - minWeight).clamp(0, maxWeight - minWeight);
-    
+
     return SizedBox(
       height: 200,
       child: WheelPicker(
@@ -174,13 +185,15 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
         initialIndices: [initialIndex, _weightDecimal],
         onSelectedItemChanged: (columnIndex, itemIndex, value) {
           haptic(HapticFeedbackType.selection);
-          setState(() {
-            if (columnIndex == 0) {
-              _weightWhole = value as int;
-            } else {
-              _weightDecimal = value as int;
-            }
-          });
+          if (!_isDisposed && mounted) {
+            setState(() {
+              if (columnIndex == 0) {
+                _weightWhole = value as int;
+              } else {
+                _weightDecimal = value as int;
+              }
+            });
+          }
         },
         config: const WheelPickerConfig(
           height: 200,
@@ -193,7 +206,7 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
   @override
   Widget build(BuildContext context) {
     final weightUnit = widget.measureUnit == MeasureUnit.metric ? 'kg' : 'lbs';
-    
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -209,12 +222,12 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
             textAlign: TextAlign.center,
           ),
         ),
-        
+
         // Current weight display
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            '${_weightWhole}.$_weightDecimal $weightUnit',
+            '$_weightWhole.$_weightDecimal $weightUnit',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -223,14 +236,14 @@ class _WeightBottomSheetState extends State<WeightBottomSheet> with HapticFeedba
             textAlign: TextAlign.center,
           ),
         ),
-        
+
         const SizedBox(height: 24),
-        
+
         // Weight picker
         _buildWeightPicker(),
-        
+
         const SizedBox(height: 24),
-        
+
         // Buttons
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

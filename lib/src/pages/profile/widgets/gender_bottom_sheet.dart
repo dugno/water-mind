@@ -32,7 +32,7 @@ class GenderBottomSheet extends StatefulWidget {
   }) {
     return BaseBottomSheet.show(
       context: context,
-      backgroundColor: AppColor.thirdColor,
+      backgroundColor: Colors.white,
       maxHeightFactor: 0.6,
       child: GenderBottomSheet(
         initialGender: initialGender,

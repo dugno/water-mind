@@ -37,11 +37,18 @@ class DrinkTypeWheelSheet extends StatefulWidget {
 
 class _DrinkTypeWheelSheetState extends State<DrinkTypeWheelSheet> with HapticFeedbackMixin {
   late DrinkType _selectedDrinkType;
+  bool _isDisposed = false;
 
   @override
   void initState() {
     super.initState();
     _selectedDrinkType = widget.initialDrinkType;
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 
   @override
@@ -163,9 +170,11 @@ class _DrinkTypeWheelSheetState extends State<DrinkTypeWheelSheet> with HapticFe
       initialIndices: [initialIndex],
       onSelectedItemChanged: (columnIndex, itemIndex, value) {
         haptic(HapticFeedbackType.selection);
-        setState(() {
-          _selectedDrinkType = value as DrinkType;
-        });
+        if (!_isDisposed && mounted) {
+          setState(() {
+            _selectedDrinkType = value as DrinkType;
+          });
+        }
       },
       config: const WheelPickerConfig(
         height: 150,

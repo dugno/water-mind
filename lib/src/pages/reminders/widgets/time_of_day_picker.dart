@@ -35,6 +35,11 @@ class _TimeOfDayPickerDialogState extends State<TimeOfDayPickerDialog>
   late int _selectedMinute;
   late String _selectedAmPm;
 
+  // Controllers for wheel pickers
+  late WheelPickerController _hourController;
+  late WheelPickerController _minuteController;
+  late WheelPickerController _amPmController;
+
   @override
   void initState() {
     super.initState();
@@ -49,6 +54,36 @@ class _TimeOfDayPickerDialogState extends State<TimeOfDayPickerDialog>
     }
 
     _selectedMinute = widget.initialTime.minute;
+
+    // Initialize controllers
+    _hourController = WheelPickerController(
+      itemCount: 12,
+      initialIndex: _selectedHour - 1,
+    );
+
+    _minuteController = WheelPickerController(
+      itemCount: 60,
+      initialIndex: _selectedMinute,
+    );
+
+    _amPmController = WheelPickerController(
+      itemCount: 2,
+      initialIndex: _selectedAmPm == 'AM' ? 0 : 1,
+    );
+  }
+
+  @override
+  void dispose() {
+    // Dispose controllers
+    try {
+      _hourController.dispose();
+      _minuteController.dispose();
+      _amPmController.dispose();
+    } catch (e) {
+      // Bỏ qua lỗi khi dispose controller
+      debugPrint('Error disposing time picker controllers: $e');
+    }
+    super.dispose();
   }
 
   TimeOfDay _getCurrentTimeOfDay() {
@@ -79,10 +114,7 @@ class _TimeOfDayPickerDialogState extends State<TimeOfDayPickerDialog>
                   '${index + 1}',
                   style: const TextStyle(fontSize: 20),
                 ),
-                controller: WheelPickerController(
-                  itemCount: 12,
-                  initialIndex: _selectedHour - 1,
-                ),
+                controller: _hourController,
                 selectedIndexColor: Theme.of(context).colorScheme.primary,
                 looping: false,
                 style: const WheelPickerStyle(
@@ -108,10 +140,7 @@ class _TimeOfDayPickerDialogState extends State<TimeOfDayPickerDialog>
                   index.toString().padLeft(2, '0'),
                   style: const TextStyle(fontSize: 20),
                 ),
-                controller: WheelPickerController(
-                  itemCount: 60,
-                  initialIndex: _selectedMinute,
-                ),
+                controller: _minuteController,
                 selectedIndexColor: Theme.of(context).colorScheme.primary,
                 looping: false,
                 style: const WheelPickerStyle(
@@ -137,10 +166,7 @@ class _TimeOfDayPickerDialogState extends State<TimeOfDayPickerDialog>
                   index == 0 ? 'AM' : 'PM',
                   style: const TextStyle(fontSize: 20),
                 ),
-                controller: WheelPickerController(
-                  itemCount: 2,
-                  initialIndex: _selectedAmPm == 'AM' ? 0 : 1,
-                ),
+                controller: _amPmController,
                 selectedIndexColor: Theme.of(context).colorScheme.primary,
                 looping: false,
                 style: const WheelPickerStyle(

@@ -44,11 +44,18 @@ class AmountWheelSheet extends StatefulWidget {
 
 class _AmountWheelSheetState extends State<AmountWheelSheet> with HapticFeedbackMixin {
   late double _selectedAmount;
+  bool _isDisposed = false;
 
   @override
   void initState() {
     super.initState();
     _selectedAmount = widget.initialAmount;
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 
   @override
@@ -210,9 +217,11 @@ class _AmountWheelSheetState extends State<AmountWheelSheet> with HapticFeedback
       initialIndices: [initialIndex],
       onSelectedItemChanged: (columnIndex, itemIndex, value) {
         haptic(HapticFeedbackType.selection);
-        setState(() {
-          _selectedAmount = value as double;
-        });
+        if (!_isDisposed && mounted) {
+          setState(() {
+            _selectedAmount = value as double;
+          });
+        }
       },
       config: const WheelPickerConfig(
         height: 150,

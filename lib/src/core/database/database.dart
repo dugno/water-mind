@@ -29,8 +29,11 @@ class DatabaseVersions {
   /// Phiên bản thêm bảng UserPreferencesTable và ForecastHydrationTable
   static const int addUserPreferencesAndForecastTables = 4;
 
+  /// Phiên bản thêm bảng UserStreakTable
+  static const int addUserStreakTable = 5;
+
   /// Phiên bản hiện tại
-  static const int currentVersion = addUserPreferencesAndForecastTables;
+  static const int currentVersion = addUserStreakTable;
 }
 
 /// Cơ sở dữ liệu chính của ứng dụng
@@ -41,10 +44,14 @@ class DatabaseVersions {
   ReminderSettingsTable,
   UserPreferencesTable,
   ForecastHydrationTable,
+  UserStreakTable,
 ])
 class AppDatabase extends _$AppDatabase {
   /// Constructor
   AppDatabase() : super(_openConnection());
+
+  /// Constructor cho việc kiểm thử
+  AppDatabase.forTesting(QueryExecutor executor) : super(executor);
 
   /// Phiên bản cơ sở dữ liệu
   @override
@@ -113,6 +120,22 @@ class AppDatabase extends _$AppDatabase {
           await customStatement(
             'CREATE INDEX idx_forecast_hydration_date ON forecast_hydration_table (date)'
           );
+        }
+
+        // Nâng cấp lên phiên bản 5 (thêm bảng UserStreakTable)
+        if (from < DatabaseVersions.addUserStreakTable && to >= DatabaseVersions.addUserStreakTable) {
+          AppLogger.info('Adding user streak table');
+
+          // Tạo bảng UserStreakTable
+          await customStatement('''
+            CREATE TABLE user_streak_table (
+              id TEXT NOT NULL PRIMARY KEY,
+              current_streak INTEGER NOT NULL DEFAULT 0,
+              longest_streak INTEGER NOT NULL DEFAULT 0,
+              last_active_date TEXT NOT NULL,
+              last_updated TEXT NOT NULL
+            )
+          ''');
         }
       },
       beforeOpen: (details) async {
@@ -559,6 +582,117 @@ class AppDatabase extends _$AppDatabase {
       await saveUserPreferences(companion);
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'Error updating last drink info');
+      rethrow;
+    }
+  }
+
+  // ----------------------
+  // User Streak Methods
+  // ----------------------
+
+  /// Lấy thông tin streak của người dùng
+  Future<UserStreakTableData?> getUserStreak() async {
+    try {
+      final query = select(userStreakTable)
+        ..where((tbl) => tbl.id.equals('user_streak'));
+      return await query.getSingleOrNull();
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error getting user streak');
+      rethrow;
+    }
+  }
+
+  /// Lưu hoặc cập nhật thông tin streak của người dùng
+  Future<void> saveUserStreak(UserStreakTableCompanion streak) async {
+    try {
+      await into(userStreakTable).insertOnConflictUpdate(streak);
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error saving user streak');
+      rethrow;
+    }
+  }
+
+  /// Cập nhật streak khi người dùng uống nước
+  Future<void> updateUserStreak(DateTime activityDate) async {
+    try {
+      // Lấy thông tin streak hiện tại
+      final currentStreak = await getUserStreak();
+
+      // Nếu chưa có thông tin streak, tạo mới với streak = 1
+      if (currentStreak == null) {
+        final newStreak = UserStreakTableCompanion(
+          id: const Value('user_streak'),
+          currentStreak: const Value(1),
+          longestStreak: const Value(1),
+          lastActiveDate: Value(activityDate),
+          lastUpdated: Value(DateTime.now()),
+        );
+        await saveUserStreak(newStreak);
+        return;
+      }
+
+      // Chuẩn hóa ngày để so sánh (chỉ lấy ngày, tháng, năm)
+      final normalizedActivityDate = DateTime(activityDate.year, activityDate.month, activityDate.day);
+      final normalizedLastActiveDate = DateTime(
+        currentStreak.lastActiveDate.year,
+        currentStreak.lastActiveDate.month,
+        currentStreak.lastActiveDate.day,
+      );
+
+      // Tính số ngày chênh lệch
+      final difference = normalizedActivityDate.difference(normalizedLastActiveDate).inDays;
+
+      // Xác định streak mới
+      int newCurrentStreak = currentStreak.currentStreak;
+      int newLongestStreak = currentStreak.longestStreak;
+
+      // Nếu là ngày hôm nay, không thay đổi streak
+      if (difference == 0) {
+        // Không thay đổi streak, chỉ cập nhật thời gian
+        await saveUserStreak(UserStreakTableCompanion(
+          id: const Value('user_streak'),
+          currentStreak: Value(currentStreak.currentStreak),
+          longestStreak: Value(currentStreak.longestStreak),
+          lastActiveDate: Value(currentStreak.lastActiveDate),
+          lastUpdated: Value(DateTime.now()),
+        ));
+        return;
+      }
+
+      // Nếu là ngày tiếp theo, tăng streak
+      if (difference == 1) {
+        newCurrentStreak += 1;
+        if (newCurrentStreak > newLongestStreak) {
+          newLongestStreak = newCurrentStreak;
+        }
+      }
+      // Nếu là ngày trong quá khứ, không thay đổi streak
+      else if (difference < 0) {
+        // Không thay đổi streak, chỉ cập nhật thời gian
+        await saveUserStreak(UserStreakTableCompanion(
+          id: const Value('user_streak'),
+          currentStreak: Value(currentStreak.currentStreak),
+          longestStreak: Value(currentStreak.longestStreak),
+          lastActiveDate: Value(currentStreak.lastActiveDate),
+          lastUpdated: Value(DateTime.now()),
+        ));
+        return;
+      }
+      // Nếu bỏ lỡ nhiều ngày, reset streak
+      else {
+        newCurrentStreak = 1;
+      }
+
+      // Cập nhật streak
+      await saveUserStreak(UserStreakTableCompanion(
+        id: const Value('user_streak'),
+        currentStreak: Value(newCurrentStreak),
+        longestStreak: Value(newLongestStreak),
+        lastActiveDate: Value(normalizedActivityDate),
+        lastUpdated: Value(DateTime.now()),
+      ));
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error updating user streak');
       rethrow;
     }
   }

@@ -4,6 +4,7 @@ import 'package:water_mind/src/core/models/water_intake_entry.dart';
 import 'package:water_mind/src/core/models/water_intake_history.dart';
 import 'package:water_mind/src/core/services/hydration/water_intake_change_notifier.dart';
 import 'package:water_mind/src/core/services/logger/app_logger.dart';
+import 'package:water_mind/src/core/services/streak/streak_provider.dart';
 
 /// Interface cho water intake repository
 abstract class WaterIntakeRepository {
@@ -78,6 +79,11 @@ class DriftWaterIntakeRepository implements WaterIntakeRepository {
       AppLogger.info('REPOSITORY: Adding water intake entry with ID: ${entry.id} for date: $dateString');
       await _dao.addWaterIntakeEntry(date, entry);
       AppLogger.info('REPOSITORY: Entry added successfully');
+
+      // Cập nhật streak
+      final streakService = _ref.read(streakServiceProvider);
+      await streakService.updateUserStreak(date);
+      AppLogger.info('REPOSITORY: Updated user streak');
 
       // Thông báo rằng dữ liệu đã thay đổi
       _ref.read(waterIntakeChangeNotifierProvider.notifier).notifyDataChanged();

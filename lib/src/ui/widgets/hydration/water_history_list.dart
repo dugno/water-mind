@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/models/water_intake_entry.dart';
 import 'package:water_mind/src/core/models/water_intake_history.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
+import 'package:water_mind/src/ui/widgets/water_cup/simple_water_cup.dart';
 
 /// Widget to display water intake history for a day
 class WaterHistoryList extends StatelessWidget {
@@ -21,49 +23,46 @@ class WaterHistoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Today\'s History',
-                  style: Theme.of(context).textTheme.titleMedium,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Today\'s History',
+                style: TextStyle(
+                  color: AppColor.primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
-                Text(
-                  '${history.formattedTotalAmount} / ${history.formattedDailyGoal}',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: history.goalMet
-                            ? Colors.green
-                            : Theme.of(context).colorScheme.primary,
-                      ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            LinearProgressIndicator(
-              value: history.progressPercentage.clamp(0.0, 1.0),
-              backgroundColor: Colors.grey.shade200,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                history.goalMet ? Colors.green : Theme.of(context).colorScheme.primary,
               ),
-              minHeight: 8,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            const SizedBox(height: 16),
-            _buildHistoryList(context),
-          ],
+              Text(
+                '${history.formattedTotalAmount} / ${history.formattedDailyGoal}',
+                style: TextStyle(
+                  color: history.goalMet ? AppColor.successColor : AppColor.primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+        const SizedBox(height: 8),
+        LinearProgressIndicator(
+          value: history.progressPercentage.clamp(0.0, 1.0),
+          backgroundColor: AppColor.backgroundColor,
+          valueColor: AlwaysStoppedAnimation<Color>(
+            history.goalMet ? AppColor.successColor : AppColor.secondaryColor,
+          ),
+          minHeight: 8,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        const SizedBox(height: 16),
+        _buildHistoryList(context),
+      ],
     );
   }
 
@@ -72,7 +71,10 @@ class WaterHistoryList extends StatelessWidget {
       return const Center(
         child: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Text('No entries for today. Start drinking!'),
+          child: Text(
+            'No entries for today. Start drinking!',
+            style: TextStyle(color: AppColor.primaryColor),
+          ),
         ),
       );
     }
@@ -85,7 +87,7 @@ class WaterHistoryList extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: sortedEntries.length,
-      separatorBuilder: (context, index) => const Divider(),
+      separatorBuilder: (context, index) => Divider(color: AppColor.primaryColor.withOpacity(0.2)),
       itemBuilder: (context, index) {
         final entry = sortedEntries[index];
         return _buildHistoryItem(context, entry);
@@ -98,24 +100,38 @@ class WaterHistoryList extends StatelessWidget {
     final String unit = history.measureUnit == MeasureUnit.metric ? 'ml' : 'fl oz';
 
     return ListTile(
-      leading: Icon(
-        entry.drinkType.icon,
-        color: entry.drinkType.color,
-        size: 32,
+      leading: SizedBox(
+        width: 40,
+        height: 40,
+        child: SimpleWaterCup(
+          currentWaterAmount: entry.amount,
+          maxWaterAmount: 1000,
+          width: 40,
+          height: 40,
+        ),
       ),
       title: Text(
         '${entry.amount.toStringAsFixed(0)} $unit of ${entry.drinkType.name}',
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+        style: const TextStyle(
+          color: AppColor.primaryColor,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
         'at ${timeFormat.format(entry.timestamp)}${entry.note != null ? ' • ${entry.note}' : ''}',
-        style: Theme.of(context).textTheme.bodySmall,
+        style: const TextStyle(
+          color: AppColor.secondaryColor,
+          fontSize: 14,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
       trailing: onEntryDeleted != null
           ? IconButton(
-              icon: const Icon(Icons.delete_outline),
+              icon: const Icon(Icons.delete_outline, color: AppColor.secondaryColor),
               onPressed: () => onEntryDeleted!(entry),
             )
           : null,

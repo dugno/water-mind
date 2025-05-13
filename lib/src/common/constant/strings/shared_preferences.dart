@@ -4,8 +4,6 @@ class SharedPreferencesConst {
   // App state
   static const String doneGettingStarted = 'doneGettingStarted';
 
-  // Theme settings
-  static const String themeStyle = 'theme_style';
 
   // Weather cache
   static const String weatherCache = 'weather_cache';

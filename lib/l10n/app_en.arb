@@ -845,6 +845,34 @@
   "@selectDrinkType": {
     "description": "Title for drink type selection bottom sheet"
   },
+  "streak": "Streak",
+  "@streak": {
+    "description": "Streak title"
+  },
+  "currentStreak": "Current Streak",
+  "@currentStreak": {
+    "description": "Current streak label"
+  },
+  "longestStreak": "Longest Streak",
+  "@longestStreak": {
+    "description": "Longest streak label"
+  },
+  "days": "days",
+  "@days": {
+    "description": "Days label for streak"
+  },
+  "noStreakYet": "No streak yet",
+  "@noStreakYet": {
+    "description": "Message when user has no streak"
+  },
+  "drinkWaterToStartStreak": "Drink water today to start your streak!",
+  "@drinkWaterToStartStreak": {
+    "description": "Message to encourage user to start streak"
+  },
+  "drinkTodayToKeepStreak": "Drink today!",
+  "@drinkTodayToKeepStreak": {
+    "description": "Message to encourage user to maintain streak"
+  },
   "selectAmount": "Select Amount",
   "@selectAmount": {
     "description": "Title for amount selection bottom sheet"
@@ -852,5 +880,13 @@
   "select": "Select",
   "@select": {
     "description": "Select button text"
+  },
+  "totalWaterIntake": "Total Water",
+  "@totalWaterIntake": {
+    "description": "Total water intake since using the app"
+  },
+  "sinceUsingApp": "since using the app",
+  "@sinceUsingApp": {
+    "description": "Text indicating the period since using the app"
   }
 }

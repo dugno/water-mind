@@ -33,19 +33,17 @@ class WeeklyChartTab extends StatelessWidget {
 
           // Chart
           Expanded(
-            child: viewModel.weeklyHistory.isLoading
-                ? const Center(child: CircularProgressIndicator(color: Colors.white))
-                : viewModel.weeklyHistory.hasError
-                    ? Center(child: Text(
-                        'Error: ${viewModel.weeklyHistory.error}',
-                        style: const TextStyle(color: Colors.white),
-                      ))
-                    : viewModel.weeklyHistory.value?.isNotEmpty == true
-                        ? _buildWeeklyChart(context, viewModel.weeklyHistory.value!)
-                        : const Center(child: Text(
-                            'No data for this week',
-                            style: TextStyle(color: Colors.white),
-                          )),
+            child: viewModel.weeklyHistory.hasError
+                ? Center(child: Text(
+                    'Error: ${viewModel.weeklyHistory.error}',
+                    style: const TextStyle(color: Colors.white),
+                  ))
+                : viewModel.weeklyHistory.value?.isNotEmpty == true
+                    ? _buildWeeklyChart(context, viewModel.weeklyHistory.value!)
+                    : const Center(child: Text(
+                        'No data for this week',
+                        style: TextStyle(color: Colors.white),
+                      )),
           ),
         ],
       ),
@@ -145,80 +143,134 @@ class WeeklyChartTab extends StatelessWidget {
 
         // Biểu đồ
         Expanded(
-          child: BarChart(
-            BarChartData(
-              alignment: BarChartAlignment.center,
-              barTouchData: BarTouchData(
-                touchTooltipData: BarTouchTooltipData(
-                  tooltipBgColor: Colors.blueAccent.withOpacity(0.8),
-                  getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                    final day = group.x.toInt();
-                    final amount = rod.toY.toInt();
-                    final dayName = DateTimeUtils.getDayOfWeekName(day + 1, short: true);
-                    return BarTooltipItem(
-                      '$dayName: $amount ml',
-                      const TextStyle(color: Colors.white),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+             padding: const EdgeInsets.only(right: 16, top: 16, bottom: 16),
+            child: BarChart(
+              BarChartData(
+                alignment: BarChartAlignment.center,
+                barTouchData: BarTouchData(
+                  enabled: true,
+                  touchTooltipData: BarTouchTooltipData(
+                    tooltipBgColor: AppColor.primaryColor.withOpacity(0.85),
+                    tooltipRoundedRadius: 12,
+                    tooltipPadding: const EdgeInsets.all(12),
+                    tooltipMargin: 8,
+                    getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                      final day = group.x.toInt();
+                      final amount = rod.toY.toInt();
+                      final dayName = DateTimeUtils.getDayOfWeekName(day + 1, short: false);
+                      final date = viewModel.selectedWeek.add(Duration(days: day));
+                      final formattedDate = DateTimeUtils.formatDate(date);
+
+                      return BarTooltipItem(
+                        '$dayName ($formattedDate)',
+                        const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        children: [
+                          const TextSpan(text: '\n'),
+                          TextSpan(
+                            text: '$amount ml',
+                            style: TextStyle(
+                              color: amount > 0 ? AppColor.fourColor : Colors.white70,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  touchCallback: (FlTouchEvent event, BarTouchResponse? touchResponse) {
+                    // Xử lý sự kiện chạm để cải thiện trải nghiệm người dùng
+                    // Tooltip sẽ tự động ẩn sau khi người dùng nhấc tay lên
+                  },
+                  // Đảm bảo tooltip chỉ hiển thị khi chạm vào
+                  handleBuiltInTouches: true,
+                ),
+                titlesData: FlTitlesData(
+                  show: true,
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      getTitlesWidget: (value, meta) {
+                        final day = value.toInt();
+                        final dayName = DateTimeUtils.getDayOfWeekName(day + 1, short: true);
+                        return SideTitleWidget(
+                          axisSide: meta.axisSide,
+                          space: 8,
+                          child: Text(
+                            dayName,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 500,
+                      getTitlesWidget: (value, meta) {
+                        return SideTitleWidget(
+                          axisSide: meta.axisSide,
+                          child: Text(
+                            value.toInt().toString(),
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      },
+                      reservedSize: 40,
+                    ),
+                  ),
+                ),
+                borderData: FlBorderData(
+                  show: true,
+                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                ),
+                gridData: FlGridData(
+                  show: true,
+                  drawHorizontalLine: true,
+                  drawVerticalLine: false,
+                  horizontalInterval: 500,
+                  getDrawingHorizontalLine: (value) {
+                    return FlLine(
+                      color: Colors.white.withOpacity(0.2),
+                      strokeWidth: 0.8,
+                      dashArray: [5, 5],
                     );
                   },
                 ),
+                barGroups: _getBarGroups(spots),
+                maxY: _getMaxY(spots),
               ),
-              titlesData: FlTitlesData(
-                show: true,
-                rightTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                topTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    getTitlesWidget: (value, meta) {
-                      final day = value.toInt();
-                      final dayName = DateTimeUtils.getDayOfWeekName(day + 1, short: true);
-                      return SideTitleWidget(
-                        axisSide: meta.axisSide,
-                        child: Text(dayName),
-                      );
-                    },
-                  ),
-                ),
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    interval: 500,
-                    getTitlesWidget: (value, meta) {
-                      return SideTitleWidget(
-                        axisSide: meta.axisSide,
-                        child: Text(
-                          value.toInt().toString(),
-                          style: const TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                      );
-                    },
-                    reservedSize: 40,
-                  ),
-                ),
-              ),
-              borderData: FlBorderData(
-                show: true,
-                border: Border.all(color: Colors.grey.withOpacity(0.5)),
-              ),
-              gridData: FlGridData(
-                show: true,
-                drawHorizontalLine: true,
-                drawVerticalLine: false,
-                horizontalInterval: 500,
-                getDrawingHorizontalLine: (value) {
-                  return FlLine(
-                    color: Colors.grey.withOpacity(0.3),
-                    strokeWidth: 1,
-                  );
-                },
-              ),
-              barGroups: _getBarGroups(spots),
             ),
           ),
         ),
@@ -227,96 +279,298 @@ class WeeklyChartTab extends StatelessWidget {
   }
 
   List<BarChartGroupData> _getBarGroups(List<FlSpot> spots) {
+    // Tìm giá trị lớn nhất để tính toán màu sắc
+    double maxValue = 0;
+    for (final spot in spots) {
+      if (spot.y > maxValue) {
+        maxValue = spot.y;
+      }
+    }
+
     return spots.map((spot) {
+      // Sử dụng màu đồng nhất cho tất cả các cột
+      final colors = [
+        AppColor.thirdColor,
+        AppColor.thirdColor.withOpacity(0.7),
+      ];
+
       return BarChartGroupData(
         x: spot.x.toInt(),
         barRods: [
           BarChartRodData(
             toY: spot.y,
             gradient: LinearGradient(
-              colors: [
-                Colors.blue.withOpacity(0.8),
-                Colors.blue,
-              ],
+              colors: colors,
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
             ),
-            width: 20,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(4),
-              topRight: Radius.circular(4),
+            width: 24, // Tăng độ rộng của cột
+            borderRadius: BorderRadius.circular(6),
+            backDrawRodData: BackgroundBarChartRodData(
+              show: true,
+              toY: _getMaxY(spots) * 0.9,
+              color: Colors.white.withOpacity(0.08), // Tăng độ tương phản của nền
+            ),
+            rodStackItems: [
+              // Thêm đường viền sáng ở trên cùng để tạo hiệu ứng 3D
+              BarChartRodStackItem(
+                spot.y - 5 > 0 ? spot.y - 5 : 0,
+                spot.y,
+                Colors.white.withOpacity(0.5), // Tăng độ sáng của viền
+                BorderSide.none
+              ),
+            ],
+            // Thêm viền để tạo hiệu ứng nổi bật
+            borderSide: BorderSide(
+              width: 1,
+              color: Colors.white.withOpacity(0.2),
             ),
           ),
         ],
+        // Không hiển thị tooltip mặc định
+        showingTooltipIndicators: [],
       );
     }).toList();
   }
 
+
+
+  /// Tính toán giá trị Y tối đa cho biểu đồ
+  double _getMaxY(List<FlSpot> spots) {
+    if (spots.isEmpty) return 500;
+
+    double maxY = 0;
+    for (final spot in spots) {
+      if (spot.y > maxY) {
+        maxY = spot.y;
+      }
+    }
+
+    // Làm tròn lên đến 500 gần nhất và thêm 500 để có khoảng trống
+    return ((maxY / 500).ceil() * 500 + 500).toDouble();
+  }
+
   Widget _buildSummaryInfo(double totalIntake, double totalGoal) {
+    // Sử dụng giá trị cố định thay vì MediaQuery
+    const progressBarWidth = 300.0;
     final progressPercentage = totalGoal > 0 ? (totalIntake / totalGoal).clamp(0.0, 1.0) : 0.0;
     final goalMet = totalIntake >= totalGoal;
+    final progressColor = goalMet ? AppColor.successColor : AppColor.thirdColor;
+
+    // Tính trung bình mỗi ngày
+    final averageDailyIntake = totalIntake / 7;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColor.thirdColor.withOpacity(0.8),
+        gradient: LinearGradient(
+          colors: [
+            AppColor.primaryColor.withOpacity(0.8),
+            AppColor.secondaryColor.withOpacity(0.7),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: AppColor.primaryColor.withOpacity(0.3),
+            blurRadius: 8,
+            spreadRadius: 1,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
+          // Thông tin tổng hợp
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Total weekly intake:',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+              // Cột bên trái
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Total weekly intake:',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${totalIntake.toInt()} ml',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Text(
-                '${totalIntake.toInt()} ml',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+
+              // Cột bên phải
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Average daily:',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${averageDailyIntake.toInt()} ml',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+
+          const SizedBox(height: 16),
+
+          // Mục tiêu tuần
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 'Weekly goal:',
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-              Text(
-                '${totalGoal.toInt()} ml',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                style: TextStyle(
+                  fontSize: 14,
                   color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '${totalGoal.toInt()} ml',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          LinearProgressIndicator(
-            value: progressPercentage,
-            backgroundColor: Colors.white.withOpacity(0.3),
-            valueColor: AlwaysStoppedAnimation<Color>(
-              goalMet ? Colors.green : Colors.white,
-            ),
-            minHeight: 10,
-            borderRadius: BorderRadius.circular(5),
+
+          const SizedBox(height: 16),
+
+          // Thanh tiến trình
+          Stack(
+            children: [
+              // Background progress bar
+              Container(
+                height: 16,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+
+              // Actual progress
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                height: 16,
+                width: progressBarWidth * progressPercentage, // Fixed width * percentage
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      progressColor.withOpacity(0.7),
+                      progressColor,
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: progressColor.withOpacity(0.4),
+                      blurRadius: 4,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
-          Text(
-            '${(progressPercentage * 100).toStringAsFixed(1)}% of weekly goal',
-            style: TextStyle(
-              color: goalMet ? Colors.green : Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+
+          const SizedBox(height: 8),
+
+          // Thông tin tiến trình
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${(progressPercentage * 100).toStringAsFixed(1)}% of weekly goal',
+                style: TextStyle(
+                  color: goalMet ? AppColor.successColor : Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              if (goalMet)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColor.successColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'Goal Achieved!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
           ),
         ],
       ),

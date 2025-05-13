@@ -50,7 +50,7 @@ class ProgressBarTheme extends ThemeExtension<ProgressBarTheme> {
   factory ProgressBarTheme.light(BuildContext context) {
     return const ProgressBarTheme(
       completedSegmentColor: AppColor.primaryColor,
-      incompleteSegmentColor: AppColor.fiveColor,
+      incompleteSegmentColor: AppColor.backgroundColor,
       labelColor: Colors.black87,
       segmentWidth: 12,
       segmentHeight: 12,

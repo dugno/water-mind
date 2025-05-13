@@ -53,7 +53,7 @@ class BaseBottomSheet extends StatelessWidget {
       isScrollControlled: true,
       isDismissible: isDismissible,
       enableDrag: enableDrag,
-      backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.surface,
+      backgroundColor: backgroundColor ?? Colors.white,
       shape: shape ?? const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),

@@ -23,6 +23,11 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
   late int _selectedMonth;
   late int _selectedYear;
 
+  // Controllers for wheel pickers
+  late WheelPickerController _daysController;
+  late WheelPickerController _monthsController;
+  late WheelPickerController _yearsController;
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +39,38 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
     _selectedDay = initialDate.day;
     _selectedMonth = initialDate.month;
     _selectedYear = initialDate.year;
+
+    // Initialize controllers
+    final currentYear = DateTime.now().year;
+
+    _daysController = WheelPickerController(
+      itemCount: 31,
+      initialIndex: _selectedDay - 1,
+    );
+
+    _monthsController = WheelPickerController(
+      itemCount: 12,
+      initialIndex: _selectedMonth - 1,
+    );
+
+    _yearsController = WheelPickerController(
+      itemCount: 100,
+      initialIndex: currentYear - _selectedYear,
+    );
+  }
+
+  @override
+  void dispose() {
+    // Dispose controllers
+    try {
+      _daysController.dispose();
+      _monthsController.dispose();
+      _yearsController.dispose();
+    } catch (e) {
+      // Bỏ qua lỗi khi dispose controller
+      debugPrint('Error disposing born segment controllers: $e');
+    }
+    super.dispose();
   }
 
   void _validateDate() {
@@ -80,22 +117,6 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
     // Current year
     final currentYear = DateTime.now().year;
 
-    // Create controllers
-    final daysController = WheelPickerController(
-      itemCount: 31,
-      initialIndex: _selectedDay - 1,
-    );
-
-    final monthsController = WheelPickerController(
-      itemCount: 12,
-      initialIndex: _selectedMonth - 1,
-    );
-
-    final yearsController = WheelPickerController(
-      itemCount: 100,
-      initialIndex: currentYear - _selectedYear,
-    );
-
     return SizedBox(
       height: 200,
       child: Row(
@@ -118,7 +139,7 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
                   ),
                 );
               },
-              controller: daysController,
+              controller: _daysController,
               selectedIndexColor: Colors.transparent,
               looping: false,
               style: const WheelPickerStyle(
@@ -158,7 +179,7 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
                   ),
                 );
               },
-              controller: monthsController,
+              controller: _monthsController,
               selectedIndexColor: Colors.transparent,
               looping: false,
               style: const WheelPickerStyle(
@@ -199,7 +220,7 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
                   ),
                 );
               },
-              controller: yearsController,
+              controller: _yearsController,
               selectedIndexColor: Colors.transparent,
               looping: false,
               style: const WheelPickerStyle(

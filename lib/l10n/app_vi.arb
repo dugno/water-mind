@@ -175,5 +175,14 @@
   "needAtLeastOneTime": "Bạn cần ít nhất một thời gian nhắc nhở",
   "timeAlreadyExists": "Thời gian này đã tồn tại",
   "reminderTimes": "Thời gian nhắc nhở",
-  "tapToToggleHint": "Nhấn để bật hoặc tắt thời gian nhắc nhở"
+  "tapToToggleHint": "Nhấn để bật hoặc tắt thời gian nhắc nhở",
+  "streak": "Chuỗi ngày",
+  "currentStreak": "Chuỗi hiện tại",
+  "longestStreak": "Chuỗi dài nhất",
+  "days": "ngày",
+  "noStreakYet": "Chưa có chuỗi ngày nào",
+  "drinkWaterToStartStreak": "Uống nước hôm nay để bắt đầu chuỗi ngày!",
+  "drinkTodayToKeepStreak": "Uống nước hôm nay!",
+  "totalWaterIntake": "Tổng nước",
+  "sinceUsingApp": "từ khi sử dụng ứng dụng"
 }

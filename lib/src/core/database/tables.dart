@@ -232,3 +232,24 @@ class ForecastHydrationTable extends Table {
     ),
   ];
 }
+
+/// Bảng lưu trữ thông tin streak của người dùng
+class UserStreakTable extends Table {
+  /// ID duy nhất của streak (mặc định là 'user_streak')
+  TextColumn get id => text()();
+
+  /// Số ngày streak hiện tại
+  IntColumn get currentStreak => integer().withDefault(const Constant(0))();
+
+  /// Số ngày streak dài nhất
+  IntColumn get longestStreak => integer().withDefault(const Constant(0))();
+
+  /// Ngày cuối cùng người dùng uống nước
+  TextColumn get lastActiveDate => text().map(const DateTimeConverter())();
+
+  /// Thời gian cập nhật cuối cùng
+  TextColumn get lastUpdated => text().map(const DateTimeConverter())();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}

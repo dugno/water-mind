@@ -3,8 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:water_mind/src/core/routing/app_router.dart';
-import 'package:water_mind/src/core/theme/app_theme.dart';
-import 'package:water_mind/src/core/theme/providers/theme_provider.dart';
 import 'package:water_mind/src/core/services/notifications/notification_handler_widget.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 
@@ -17,17 +15,8 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Lấy router từ provider
     final router = ref.watch(routerProvider);
-
-    // Lấy theme data từ provider
-    final themeData = ref.watch(themeDataProvider);
-
-    // Tạo theme dựa trên theme data
-    final theme = AppTheme.createTheme(themeData);
-
     return NotificationHandler(
       child: MaterialApp.router(
-        // Thiết lập theme cho ứng dụng
-        theme: theme,
         // Thêm các delegate cho đa ngôn ngữ
         localizationsDelegates: const [
           AppLocalizations.delegate,

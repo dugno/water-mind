@@ -142,109 +142,50 @@ class _WaterHistoryPageState extends ConsumerState<WaterHistoryPage> with Single
 
     return Scaffold(
       backgroundColor: AppColor.secondaryColor,
-      appBar: AppBar(
-        backgroundColor: AppColor.secondaryColor,
-        elevation: 0,
-        title: Text(
-          context.l10n.waterHistory,
-          style: const TextStyle(color: Colors.white),
+     
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Tab selection cards
+            Container(
+              margin: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: _buildTabSelectionCards(),
+            ),
+        
+            // Tab content
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  // Tab Ngày
+                  DailyChartTab(
+                    viewModel: viewModel,
+                    onDateChanged: notifier.setSelectedDate,
+                  ),
+        
+                  // Tab Tuần
+                  WeeklyChartTab(
+                    viewModel: viewModel,
+                    onWeekChanged: notifier.setSelectedWeek,
+                  ),
+        
+                  // Tab Tháng
+                  MonthlyChartTab(
+                    viewModel: viewModel,
+                    onMonthChanged: notifier.setSelectedMonth,
+                  ),
+        
+                  // Tab Năm
+                  YearlyChartTab(
+                    viewModel: viewModel,
+                    onYearChanged: notifier.setSelectedYear,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
-        actions: [
-          // Nút tạo dữ liệu giả
-          PopupMenuButton<String>(
-            onSelected: (value) async {
-              if (value == 'week') {
-                await notifier.generateFakeDataForLastWeek();
-              } else if (value == 'month') {
-                await notifier.generateFakeDataForLastMonth();
-              }
-
-              // Tải lại dữ liệu
-              notifier.setActiveTab(viewModel.activeTab);
-
-              // Hiển thị thông báo
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Đã tạo dữ liệu giả cho ${value == 'week' ? '7 ngày' : '30 ngày'} gần đây'),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem<String>(
-                value: 'week',
-                child: Text('Tạo dữ liệu giả cho 7 ngày'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'month',
-                child: Text('Tạo dữ liệu giả cho 30 ngày'),
-              ),
-            ],
-            icon: const Icon(Icons.data_array, color: Colors.white),
-            tooltip: 'Tạo dữ liệu giả',
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Tab selection cards
-          Container(
-            margin: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-                  child: Text(
-                    context.l10n.waterHistory,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                _buildTabSelectionCards(),
-              ],
-            ),
-          ),
-
-          // Tab content
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                // Tab Ngày
-                DailyChartTab(
-                  viewModel: viewModel,
-                  onDateChanged: notifier.setSelectedDate,
-                ),
-
-                // Tab Tuần
-                WeeklyChartTab(
-                  viewModel: viewModel,
-                  onWeekChanged: notifier.setSelectedWeek,
-                ),
-
-                // Tab Tháng
-                MonthlyChartTab(
-                  viewModel: viewModel,
-                  onMonthChanged: notifier.setSelectedMonth,
-                ),
-
-                // Tab Năm
-                YearlyChartTab(
-                  viewModel: viewModel,
-                  onYearChanged: notifier.setSelectedYear,
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

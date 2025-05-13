@@ -205,9 +205,21 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
 
   /// Lấy dữ liệu theo ngày
   Future<void> _loadDailyData(DateTime date) async {
-    state = state.copyWith(
-      dailyHistory: const AsyncValue.loading(),
-    );
+    // Kiểm tra xem dữ liệu đã được tải chưa và có cùng ngày không
+    final currentData = state.dailyHistory.valueOrNull;
+    final isSameDay = currentData != null && DateTimeUtils.isSameDay(date, state.selectedDate);
+
+    // Nếu đã có dữ liệu và cùng ngày, không cần tải lại
+    if (isSameDay && !state.dailyHistory.isLoading && !state.dailyHistory.hasError) {
+      return;
+    }
+
+    // Nếu chưa có dữ liệu hoặc khác ngày, đặt trạng thái loading nhưng giữ lại dữ liệu cũ (nếu có)
+    if (!isSameDay) {
+      state = state.copyWith(
+        dailyHistory: const AsyncValue.loading(),
+      );
+    }
 
     try {
       AppLogger.info('HISTORY_VM: Loading daily data for date: ${date.toIso8601String().split('T')[0]}');
@@ -228,9 +240,16 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
       );
     } catch (e) {
       AppLogger.reportError(e, StackTrace.current, 'HISTORY_VM: Error loading daily data');
-      state = state.copyWith(
-        dailyHistory: AsyncValue.error(e, StackTrace.current),
-      );
+      // Giữ lại dữ liệu cũ nếu có lỗi xảy ra
+      if (currentData != null && isSameDay) {
+        state = state.copyWith(
+          dailyHistory: AsyncValue.data(currentData),
+        );
+      } else {
+        state = state.copyWith(
+          dailyHistory: AsyncValue.error(e, StackTrace.current),
+        );
+      }
     }
   }
 
@@ -285,89 +304,170 @@ class WaterHistoryViewModel extends StateNotifier<WaterHistoryState> {
 
   /// Lấy dữ liệu theo tuần
   Future<void> _loadWeeklyData(DateTime startOfWeek) async {
-    state = state.copyWith(
-      weeklyHistory: const AsyncValue.loading(),
-    );
+    // Kiểm tra xem dữ liệu đã được tải chưa và có cùng tuần không
+    final currentData = state.weeklyHistory.valueOrNull;
+    final isSameWeek = currentData != null &&
+                       currentData.isNotEmpty &&
+                       DateTimeUtils.isSameDay(startOfWeek, state.selectedWeek);
+
+    // Nếu đã có dữ liệu và cùng tuần, không cần tải lại
+    if (isSameWeek && !state.weeklyHistory.isLoading && !state.weeklyHistory.hasError) {
+      return;
+    }
+
+    // Nếu chưa có dữ liệu, đặt trạng thái loading nhưng giữ lại dữ liệu cũ (nếu có)
+    if (!isSameWeek) {
+      state = state.copyWith(
+        weeklyHistory: const AsyncValue.loading(),
+      );
+    }
 
     try {
-      // Lấy ngày cuối tuần (không sử dụng biến này nhưng giữ lại comment để hiểu logic)
-      // final endOfWeek = startOfWeek.add(const Duration(days: 6));
-      final histories = <WaterIntakeHistory>[];
+      AppLogger.info('HISTORY_VM: Loading weekly data for week starting: ${startOfWeek.toIso8601String().split('T')[0]}');
 
-      // Lấy dữ liệu cho 7 ngày trong tuần
+      // Tối ưu: Lấy tất cả lịch sử trong khoảng thời gian của tuần
+      final endOfWeek = startOfWeek.add(const Duration(days: 6));
+      final histories = await _waterIntakeRepository.getAllWaterIntakeHistory(
+        startDate: startOfWeek,
+        endDate: endOfWeek,
+      );
+
+      // Đảm bảo có đủ dữ liệu cho 7 ngày trong tuần (thêm các ngày trống nếu cần)
+      final completeHistories = <WaterIntakeHistory>[];
       for (int i = 0; i < 7; i++) {
         final date = startOfWeek.add(Duration(days: i));
-        final history = await _waterIntakeRepository.getWaterIntakeHistory(date);
-        if (history != null) {
-          histories.add(history);
+        // Tìm lịch sử cho ngày này
+        final historyForDay = histories.where(
+          (h) => DateTimeUtils.isSameDay(h.date, date)
+        ).toList();
+
+        if (historyForDay.isNotEmpty) {
+          completeHistories.add(historyForDay.first);
         }
       }
 
+      AppLogger.info('HISTORY_VM: Weekly data loaded, found ${completeHistories.length} days with data');
+
       state = state.copyWith(
-        weeklyHistory: AsyncValue.data(histories),
+        weeklyHistory: AsyncValue.data(completeHistories),
       );
     } catch (e) {
-      state = state.copyWith(
-        weeklyHistory: AsyncValue.error(e, StackTrace.current),
-      );
+      AppLogger.reportError(e, StackTrace.current, 'HISTORY_VM: Error loading weekly data');
+      // Giữ lại dữ liệu cũ nếu có lỗi xảy ra
+      if (currentData != null && isSameWeek) {
+        state = state.copyWith(
+          weeklyHistory: AsyncValue.data(currentData),
+        );
+      } else {
+        state = state.copyWith(
+          weeklyHistory: AsyncValue.error(e, StackTrace.current),
+        );
+      }
     }
   }
 
   /// Lấy dữ liệu theo tháng
   Future<void> _loadMonthlyData(DateTime month) async {
-    state = state.copyWith(
-      monthlyHistory: const AsyncValue.loading(),
-    );
+    // Kiểm tra xem dữ liệu đã được tải chưa và có cùng tháng không
+    final currentData = state.monthlyHistory.valueOrNull;
+    final isSameMonth = currentData != null &&
+                       currentData.isNotEmpty &&
+                       month.year == state.selectedMonth.year &&
+                       month.month == state.selectedMonth.month;
+
+    // Nếu đã có dữ liệu và cùng tháng, không cần tải lại
+    if (isSameMonth && !state.monthlyHistory.isLoading && !state.monthlyHistory.hasError) {
+      return;
+    }
+
+    // Nếu chưa có dữ liệu, đặt trạng thái loading nhưng giữ lại dữ liệu cũ (nếu có)
+    if (!isSameMonth) {
+      state = state.copyWith(
+        monthlyHistory: const AsyncValue.loading(),
+      );
+    }
 
     try {
-      final daysInMonth = DateTimeUtils.getDaysInMonth(month.year, month.month);
-      final histories = <WaterIntakeHistory>[];
+      AppLogger.info('HISTORY_VM: Loading monthly data for: ${month.year}-${month.month}');
 
-      // Lấy dữ liệu cho tất cả các ngày trong tháng
-      for (int i = 1; i <= daysInMonth; i++) {
-        final date = DateTime(month.year, month.month, i);
-        final history = await _waterIntakeRepository.getWaterIntakeHistory(date);
-        if (history != null) {
-          histories.add(history);
-        }
-      }
+      // Tối ưu: Lấy tất cả lịch sử trong khoảng thời gian của tháng
+      final startOfMonth = DateTime(month.year, month.month, 1);
+      final endOfMonth = DateTime(month.year, month.month + 1, 0); // Ngày cuối cùng của tháng
+
+      final histories = await _waterIntakeRepository.getAllWaterIntakeHistory(
+        startDate: startOfMonth,
+        endDate: endOfMonth,
+      );
+
+      AppLogger.info('HISTORY_VM: Monthly data loaded, found ${histories.length} days with data');
 
       state = state.copyWith(
         monthlyHistory: AsyncValue.data(histories),
       );
     } catch (e) {
-      state = state.copyWith(
-        monthlyHistory: AsyncValue.error(e, StackTrace.current),
-      );
+      AppLogger.reportError(e, StackTrace.current, 'HISTORY_VM: Error loading monthly data');
+      // Giữ lại dữ liệu cũ nếu có lỗi xảy ra
+      if (currentData != null && isSameMonth) {
+        state = state.copyWith(
+          monthlyHistory: AsyncValue.data(currentData),
+        );
+      } else {
+        state = state.copyWith(
+          monthlyHistory: AsyncValue.error(e, StackTrace.current),
+        );
+      }
     }
   }
 
   /// Lấy dữ liệu theo năm
   Future<void> _loadYearlyData(int year) async {
-    state = state.copyWith(
-      yearlyHistory: const AsyncValue.loading(),
-    );
+    // Kiểm tra xem dữ liệu đã được tải chưa và có cùng năm không
+    final currentData = state.yearlyHistory.valueOrNull;
+    final isSameYear = currentData != null &&
+                       currentData.isNotEmpty &&
+                       year == state.selectedYear;
+
+    // Nếu đã có dữ liệu và cùng năm, không cần tải lại
+    if (isSameYear && !state.yearlyHistory.isLoading && !state.yearlyHistory.hasError) {
+      return;
+    }
+
+    // Nếu chưa có dữ liệu, đặt trạng thái loading nhưng giữ lại dữ liệu cũ (nếu có)
+    if (!isSameYear) {
+      state = state.copyWith(
+        yearlyHistory: const AsyncValue.loading(),
+      );
+    }
 
     try {
-      final histories = <WaterIntakeHistory>[];
+      AppLogger.info('HISTORY_VM: Loading yearly data for: $year');
 
-      // Lấy tất cả lịch sử uống nước
-      final allHistories = await _waterIntakeRepository.getAllWaterIntakeHistory();
+      // Tối ưu: Lấy tất cả lịch sử trong khoảng thời gian của năm
+      final startOfYear = DateTime(year, 1, 1);
+      final endOfYear = DateTime(year, 12, 31);
 
-      // Lọc theo năm
-      for (final history in allHistories) {
-        if (history.date.year == year) {
-          histories.add(history);
-        }
-      }
+      final histories = await _waterIntakeRepository.getAllWaterIntakeHistory(
+        startDate: startOfYear,
+        endDate: endOfYear,
+      );
+
+      AppLogger.info('HISTORY_VM: Yearly data loaded, found ${histories.length} days with data');
 
       state = state.copyWith(
         yearlyHistory: AsyncValue.data(histories),
       );
     } catch (e) {
-      state = state.copyWith(
-        yearlyHistory: AsyncValue.error(e, StackTrace.current),
-      );
+      AppLogger.reportError(e, StackTrace.current, 'HISTORY_VM: Error loading yearly data');
+      // Giữ lại dữ liệu cũ nếu có lỗi xảy ra
+      if (currentData != null && isSameYear) {
+        state = state.copyWith(
+          yearlyHistory: AsyncValue.data(currentData),
+        );
+      } else {
+        state = state.copyWith(
+          yearlyHistory: AsyncValue.error(e, StackTrace.current),
+        );
+      }
     }
   }
 

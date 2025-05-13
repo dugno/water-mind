@@ -7,7 +7,6 @@ import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
 import 'package:water_mind/src/core/database/providers/database_providers.dart';
 import 'package:water_mind/src/core/services/reminders/models/reminder_mode.dart';
-import 'package:water_mind/src/core/services/reminders/reminder_service_provider.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/pages/profile/providers/profile_provider.dart';
@@ -18,6 +17,7 @@ import 'package:water_mind/src/pages/profile/widgets/language_selector_bottom_sh
 import 'package:water_mind/src/pages/profile/widgets/time_settings_bottom_sheet.dart';
 import 'package:water_mind/src/pages/profile/widgets/unit_selector_bottom_sheet.dart';
 import 'package:water_mind/src/pages/profile/widgets/weight_bottom_sheet.dart';
+import 'package:water_mind/src/ui/widgets/profile/stats_row_widget.dart';
 
 import 'models/profile_settings_model.dart';
 
@@ -64,7 +64,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
       children: [
-        _buildSectionTitle(context.l10n.reminders),
+        // Streak và tổng lượng nước đã uống
+        const SizedBox(height: 8),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: StatsRowWidget(),
+        ),
+
+        const SizedBox(height: 24),
 
         _buildSettingsCard([
           ref.watch(reminderSettingsProvider).when(
@@ -161,8 +168,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
 
         const SizedBox(height: 24),
 
-        // DRINK SECTION
-        _buildSectionTitle('Drink'),
+
+
 
         _buildSettingsCard([
           // Daily Goal
@@ -287,8 +294,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
 
         const SizedBox(height: 24),
 
-        // GENERAL SECTION
-        _buildSectionTitle('General'),
 
         _buildSettingsCard([
           // Units
@@ -416,21 +421,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
       ],
     );
   }
-
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24, bottom: 8),
-      child: Text(
-        title,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
   Widget _buildSettingsCard(List<Widget> children) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),

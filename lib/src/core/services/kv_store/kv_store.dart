@@ -1,7 +1,6 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_mind/src/common/constant/strings/shared_preferences.dart';
-import 'package:water_mind/src/core/theme/app_theme_data.dart';
 
 /// Service for key-value storage using SharedPreferences
 abstract class KVStoreService {
@@ -25,28 +24,7 @@ abstract class KVStoreService {
   static Future<void> setDoneGettingStarted(bool value) async =>
       await sharedPreferences.setBool(SharedPreferencesConst.doneGettingStarted, value);
 
-  // ----------------------
-  // Theme Settings
-  // ----------------------
 
-  /// Get theme style index
-  static int? get themeStyleIndex =>
-      sharedPreferences.getInt(SharedPreferencesConst.themeStyle);
-
-  /// Set theme style index
-  static Future<void> setThemeStyleIndex(int index) async =>
-      await sharedPreferences.setInt(SharedPreferencesConst.themeStyle, index);
-
-  /// Get theme style
-  static AppThemeStyle? getThemeStyle() {
-    final index = themeStyleIndex;
-    if (index == null) return null;
-    return AppThemeStyle.values[index];
-  }
-
-  /// Set theme style
-  static Future<void> setThemeStyle(AppThemeStyle style) async =>
-      await setThemeStyleIndex(style.index);
 
   // ----------------------
   // Weather Cache

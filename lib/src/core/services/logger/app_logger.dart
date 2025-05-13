@@ -73,11 +73,8 @@ class AppLogger {
           }).sendPort,
         );
       }
-
       _initInternalPackageLoggers();
-
       getLogsPath().then((logFile) => AppLogger.logFile = logFile);
-
       return body();
 
     },

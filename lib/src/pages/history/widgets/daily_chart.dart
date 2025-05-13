@@ -9,6 +9,7 @@ import 'package:water_mind/src/core/utils/date_time_utils.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/pages/history/water_history_view_model.dart';
 import 'package:water_mind/src/ui/widgets/bottom_sheets/water_intake_editor_sheet.dart';
+import 'package:water_mind/src/ui/widgets/water_cup/simple_water_cup.dart';
 
 /// Tab biểu đồ ngày
 class DailyChartTab extends StatefulWidget {
@@ -46,16 +47,14 @@ class _DailyChartTabState extends State<DailyChartTab> {
 
           // Chart and list in a scrollable container
           Expanded(
-            child: viewModel.dailyHistory.isLoading
-                ? const Center(child: CircularProgressIndicator(color: Colors.white))
-                : viewModel.dailyHistory.hasError
-                    ? Center(child: Text(
-                        'Error: ${viewModel.dailyHistory.error}',
-                        style: const TextStyle(color: Colors.white),
-                      ))
-                    : SingleChildScrollView(
-                        child: _buildDailyChart(context),
-                      ),
+            child: viewModel.dailyHistory.hasError
+                ? Center(child: Text(
+                    'Error: ${viewModel.dailyHistory.error}',
+                    style: const TextStyle(color: Colors.white),
+                  ))
+                : SingleChildScrollView(
+                    child: _buildDailyChart(context),
+                  ),
           ),
         ],
       ),
@@ -151,156 +150,243 @@ class _DailyChartTabState extends State<DailyChartTab> {
         const SizedBox(height: 16),
 
         // Biểu đồ
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 250),
-          child: LineChart(
-            LineChartData(
-              gridData: FlGridData(
-                show: true,
-                drawVerticalLine: true,
-                horizontalInterval: 100,
-                verticalInterval: 4,
-                getDrawingHorizontalLine: (value) {
-                  return FlLine(
-                    color: Colors.grey.withAlpha(77), // 0.3 opacity = 77 alpha
-                    strokeWidth: 1,
-                  );
-                },
-                getDrawingVerticalLine: (value) {
-                  // Kiểm tra xem có phải là thời gian nhắc nhở không
-                  if (reminderSpots.contains(value)) {
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(16),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 250),
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(
+                  show: true,
+                  drawVerticalLine: true,
+                  horizontalInterval: 100,
+                  verticalInterval: 4,
+                  getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: Colors.red.withAlpha(128), // 0.5 opacity = 128 alpha
-                      strokeWidth: 1,
+                      color: Colors.white.withOpacity(0.2),
+                      strokeWidth: 0.8,
                       dashArray: [5, 5],
                     );
-                  }
-
-                  return FlLine(
-                    color: Colors.grey.withAlpha(77), // 0.3 opacity = 77 alpha
-                    strokeWidth: 1,
-                  );
-                },
-              ),
-              titlesData: FlTitlesData(
-                show: true,
-                rightTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                topTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 30,
-                    interval: 4,
-                    getTitlesWidget: (value, meta) {
-                      final hour = value.toInt();
-                      return SideTitleWidget(
-                        axisSide: meta.axisSide,
-                        space: 8,
-                        child: Text('${hour}h'),
+                  },
+                  getDrawingVerticalLine: (value) {
+                    // Kiểm tra xem có phải là thời gian nhắc nhở không
+                    if (reminderSpots.contains(value)) {
+                      return FlLine(
+                        color: AppColor.warningColor.withOpacity(0.5),
+                        strokeWidth: 1,
+                        dashArray: [5, 5],
                       );
-                    },
-                  ),
+                    }
+                    return FlLine(
+                      color: Colors.white.withOpacity(0.1),
+                      strokeWidth: 0.8,
+                    );
+                  },
                 ),
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    interval: 100,
-                    getTitlesWidget: (value, meta) {
-                      return SideTitleWidget(
-                        axisSide: meta.axisSide,
-                        child: Text(
-                          value.toInt().toString(),
-                          style: const TextStyle(
-                            fontSize: 10,
+                titlesData: FlTitlesData(
+                  show: true,
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 30,
+                      interval: 4,
+                      getTitlesWidget: (value, meta) {
+                        final hour = value.toInt();
+                        return SideTitleWidget(
+                          axisSide: meta.axisSide,
+                          space: 8,
+                          child: Text(
+                            '${hour}h',
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    reservedSize: 40,
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ),
-              borderData: FlBorderData(
-                show: true,
-                border: Border.all(color: Colors.grey.withAlpha(128)), // 0.5 opacity = 128 alpha
-              ),
-              minX: 0,
-              maxX: 23,
-              minY: 0,
-              maxY: _getMaxY(spots),
-              lineBarsData: [
-                LineChartBarData(
-                  spots: spots,
-                  isCurved: true,
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.blue.withAlpha(204), // 0.8 opacity = 204 alpha
-                      Colors.blue,
-                    ],
-                  ),
-                  barWidth: 3,
-                  isStrokeCapRound: true,
-                  dotData: FlDotData(
-                    show: true,
-                    getDotPainter: (spot, percent, barData, index) {
-                      // Kiểm tra xem có phải là thời gian nhắc nhở không
-                      bool isReminderTime = false;
-                      for (final time in reminderTimes) {
-                        final hour = time.hour.toDouble();
-                        final minute = time.minute / 60.0;
-                        if ((spot.x - (hour + minute)).abs() < 0.1) {
-                          isReminderTime = true;
-                          break;
-                        }
-                      }
-
-                      return FlDotCirclePainter(
-                        radius: 4,
-                        color: isReminderTime ? Colors.red : Colors.blue,
-                        strokeWidth: 2,
-                        strokeColor: isReminderTime ? Colors.red.withAlpha(128) : Colors.white, // 0.5 opacity = 128 alpha
-                      );
-                    },
-                  ),
-                  belowBarData: BarAreaData(
-                    show: true,
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.blue.withAlpha(77), // 0.3 opacity = 77 alpha
-                        Colors.blue.withAlpha(26), // 0.1 opacity = 26 alpha
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 100,
+                      getTitlesWidget: (value, meta) {
+                        return SideTitleWidget(
+                          axisSide: meta.axisSide,
+                          child: Text(
+                            value.toInt().toString(),
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      },
+                      reservedSize: 40,
                     ),
                   ),
                 ),
-              ],
-              lineTouchData: LineTouchData(
-                touchTooltipData: LineTouchTooltipData(
-                  tooltipBgColor: Colors.blueAccent.withAlpha(204), // 0.8 opacity = 204 alpha
-                  getTooltipItems: (touchedSpots) {
-                    return touchedSpots.map((touchedSpot) {
-                      final hour = touchedSpot.x.toInt();
-                      final amount = touchedSpot.y.toInt();
-
-                      // Kiểm tra xem có phải là thời gian nhắc nhở không
-                      bool isReminderTime = false;
-                      for (final time in reminderTimes) {
-                        if (time.hour == hour) {
-                          isReminderTime = true;
-                          break;
+                borderData: FlBorderData(
+                  show: true,
+                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                ),
+                minX: 0,
+                maxX: 23,
+                minY: 0,
+                maxY: _getMaxY(spots),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: spots,
+                    isCurved: true,
+                    curveSmoothness: 0.35,
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColor.fourColor.withOpacity(0.7),
+                        AppColor.thirdColor,
+                        AppColor.secondaryColor,
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                    barWidth: 4,
+                    isStrokeCapRound: true,
+                    dotData: FlDotData(
+                      show: true,
+                      getDotPainter: (spot, percent, barData, index) {
+                        // Kiểm tra xem có phải là thời gian nhắc nhở không
+                        bool isReminderTime = false;
+                        for (final time in reminderTimes) {
+                          final hour = time.hour.toDouble();
+                          final minute = time.minute / 60.0;
+                          if ((spot.x - (hour + minute)).abs() < 0.1) {
+                            isReminderTime = true;
+                            break;
+                          }
                         }
-                      }
 
-                      return LineTooltipItem(
-                        isReminderTime
-                            ? '$hour:00 - $amount ml\nReminder time!'
-                            : '$hour:00 - $amount ml',
-                        const TextStyle(color: Colors.white),
+                        // Nếu không có dữ liệu (y = 0), không hiển thị điểm
+                        if (spot.y == 0) {
+                          return FlDotCirclePainter(
+                            radius: 0,
+                            color: Colors.transparent,
+                            strokeWidth: 0,
+                            strokeColor: Colors.transparent,
+                          );
+                        }
+
+                        return FlDotCirclePainter(
+                          radius: 5,
+                          color: isReminderTime ? AppColor.warningColor : AppColor.thirdColor,
+                          strokeWidth: 2.5,
+                          strokeColor: Colors.white,
+                        );
+                      },
+                    ),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColor.secondaryColor.withOpacity(0.4),
+                          AppColor.thirdColor.withOpacity(0.2),
+                          AppColor.fourColor.withOpacity(0.05),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                    shadow: const Shadow(
+                      color: Colors.black26,
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    ),
+                  ),
+                ],
+                lineTouchData: LineTouchData(
+                  touchTooltipData: LineTouchTooltipData(
+                    tooltipBgColor: AppColor.primaryColor.withOpacity(0.85),
+                    tooltipRoundedRadius: 12,
+                    tooltipPadding: const EdgeInsets.all(12),
+                    tooltipMargin: 8,
+                    getTooltipItems: (touchedSpots) {
+                      return touchedSpots.map((touchedSpot) {
+                        final hour = touchedSpot.x.toInt();
+                        final amount = touchedSpot.y.toInt();
+
+                        // Kiểm tra xem có phải là thời gian nhắc nhở không
+                        bool isReminderTime = false;
+                        for (final time in reminderTimes) {
+                          if (time.hour == hour) {
+                            isReminderTime = true;
+                            break;
+                          }
+                        }
+
+                        return LineTooltipItem(
+                          isReminderTime
+                              ? '$hour:00 - $amount ml\nReminder time!'
+                              : '$hour:00 - $amount ml',
+                          const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                          children: [
+                            if (isReminderTime)
+                              const TextSpan(
+                                text: '\nReminder time!',
+                                style: TextStyle(
+                                  color: Colors.yellow,
+                                  fontWeight: FontWeight.normal,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 12,
+                                ),
+                              ),
+                          ],
+                        );
+                      }).toList();
+                    },
+                  ),
+                  touchCallback: (FlTouchEvent event, LineTouchResponse? touchResponse) {
+                    // Thêm hiệu ứng khi chạm vào biểu đồ nếu cần
+                  },
+                  handleBuiltInTouches: true,
+                  getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
+                    return spotIndexes.map((spotIndex) {
+                      return TouchedSpotIndicatorData(
+                        FlLine(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                          dashArray: [3, 3],
+                        ),
+                        FlDotData(
+                          getDotPainter: (spot, percent, barData, index) {
+                            return FlDotCirclePainter(
+                              radius: 6,
+                              color: AppColor.thirdColor,
+                              strokeWidth: 3,
+                              strokeColor: Colors.white,
+                            );
+                          },
+                        ),
                       );
                     }).toList();
                   },
@@ -311,32 +397,71 @@ class _DailyChartTabState extends State<DailyChartTab> {
         ),
 
         // Chú thích
-        Padding(
-          padding: const EdgeInsets.only(top: 16.0),
+        Container(
+          margin: const EdgeInsets.only(top: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.white.withOpacity(0.1)),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 12,
-                height: 12,
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
+                width: 14,
+                height: 14,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColor.fourColor,
+                      AppColor.thirdColor,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.thirdColor.withOpacity(0.3),
+                      blurRadius: 4,
+                      spreadRadius: 1,
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 4),
-              const Text('Water intake'),
-              const SizedBox(width: 16),
+              const SizedBox(width: 6),
+              const Text(
+                'Water intake',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(width: 24),
               Container(
-                width: 12,
-                height: 12,
-                decoration: const BoxDecoration(
-                  color: Colors.red,
+                width: 14,
+                height: 14,
+                decoration: BoxDecoration(
+                  color: AppColor.warningColor,
                   shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.warningColor.withOpacity(0.3),
+                      blurRadius: 4,
+                      spreadRadius: 1,
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 4),
-              const Text('Reminder time'),
+              const SizedBox(width: 6),
+              const Text(
+                'Reminder time',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ],
           ),
         ),
@@ -375,12 +500,12 @@ class _DailyChartTabState extends State<DailyChartTab> {
   /// Xây dựng danh sách các lần uống nước
   Widget _buildWaterIntakeList(BuildContext context, WaterIntakeHistory history) {
     if (history.entries.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 16.0),
         child: Center(
           child: Text(
             'No water intake entries for this day',
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white),
           ),
         ),
       );
@@ -408,10 +533,15 @@ class _DailyChartTabState extends State<DailyChartTab> {
     final String unit = measureUnit == MeasureUnit.metric ? 'ml' : 'fl oz';
 
     return ListTile(
-      leading: Icon(
-        entry.drinkType.icon,
-        color: entry.drinkType.color,
-        size: 32,
+      leading: SizedBox(
+        width: 40,
+        height: 40,
+        child: SimpleWaterCup(
+          currentWaterAmount: entry.amount,
+          maxWaterAmount: 1000,
+          width: 40,
+          height: 40,
+        ),
       ),
       title: Text(
         '${entry.amount.toStringAsFixed(0)} $unit of ${entry.drinkType.name}',
@@ -548,11 +678,30 @@ class _DailyChartTabState extends State<DailyChartTab> {
       return const SizedBox.shrink();
     }
 
+    final progressPercentage = history.progressPercentage.clamp(0.0, 1.0);
+    final goalMet = history.goalMet;
+    final progressColor = goalMet ? AppColor.successColor : AppColor.thirdColor;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColor.thirdColor.withOpacity(0.8),
+        gradient: LinearGradient(
+          colors: [
+            AppColor.primaryColor.withOpacity(0.8),
+            AppColor.secondaryColor.withOpacity(0.7),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: AppColor.primaryColor.withOpacity(0.3),
+            blurRadius: 8,
+            spreadRadius: 1,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -562,14 +711,93 @@ class _DailyChartTabState extends State<DailyChartTab> {
             children: [
               const Text(
                 'Total intake:',
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-              Text(
-                history.formattedTotalAmount,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
                   color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  history.formattedTotalAmount,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Daily goal:',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  history.formattedDailyGoal,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Stack(
+            children: [
+              // Background progress bar
+              Container(
+                height: 16,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+
+              // Actual progress
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                height: 16,
+                width: MediaQuery.of(context).size.width * progressPercentage * 0.8, // Adjust for padding
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      progressColor.withOpacity(0.7),
+                      progressColor,
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: progressColor.withOpacity(0.4),
+                      blurRadius: 4,
+                      spreadRadius: 0,
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -578,37 +806,42 @@ class _DailyChartTabState extends State<DailyChartTab> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Daily goal:',
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
               Text(
-                history.formattedDailyGoal,
-                style: const TextStyle(
-                  fontSize: 16,
+                '${(progressPercentage * 100).toStringAsFixed(1)}% of daily goal',
+                style: TextStyle(
+                  color: goalMet ? AppColor.successColor : Colors.white,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  fontSize: 14,
                 ),
               ),
+              if (goalMet)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColor.successColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'Goal Achieved!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
             ],
-          ),
-          const SizedBox(height: 8),
-          LinearProgressIndicator(
-            value: history.progressPercentage.clamp(0.0, 1.0),
-            backgroundColor: Colors.white.withOpacity(0.3),
-            valueColor: AlwaysStoppedAnimation<Color>(
-              history.goalMet ? Colors.green : Colors.white,
-            ),
-            minHeight: 10,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${(history.progressPercentage * 100).toStringAsFixed(1)}% of daily goal',
-            style: TextStyle(
-              color: history.goalMet ? Colors.green : Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
           ),
         ],
       ),

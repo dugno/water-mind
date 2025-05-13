@@ -16,7 +16,6 @@ export 'models/wheel_picker_item.dart';
 
 // Widgets
 export 'widgets/wheel_picker.dart';
-export 'widgets/wheel_picker_column.dart';
 
 // Theme
 export 'theme/wheel_picker_theme.dart';
