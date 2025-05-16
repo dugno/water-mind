@@ -81,8 +81,7 @@ class ForecastHydrationService {
           // Lưu dự báo vào cơ sở dữ liệu
           await _forecastRepository.saveForecastHydrationBatch(forecastHydrationList);
 
-          // Xóa dự báo cũ
-          await _forecastRepository.cleanupOldForecasts(7); // Giữ dữ liệu 7 ngày
+          // Lưu ý: Đã loại bỏ logic xóa dự báo cũ để giữ lại tất cả dữ liệu
 
           return forecastHydrationList;
         },

@@ -40,11 +40,7 @@ class DatabaseGenerator {
 
       // Khởi tạo cơ sở dữ liệu mới
       final databaseService = DatabaseService();
-      await databaseService.initialize(
-        daysToKeep: 90,
-        enableCleanup: true,
-        runCleanupImmediately: false,
-      );
+      await databaseService.initialize();
 
       AppLogger.info('Generated new database successfully');
       return true;

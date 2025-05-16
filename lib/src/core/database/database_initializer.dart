@@ -134,20 +134,10 @@ class DatabaseInitializer {
     }
   }
 
-  /// Xóa dữ liệu cũ
+  /// Phương thức này đã bị loại bỏ để giữ lại tất cả dữ liệu
+  /// Được giữ lại để tương thích với mã hiện có nhưng không thực hiện gì cả
   static Future<void> cleanupOldData(int daysToKeep) async {
-    if (!_initialized || _instance == null) {
-      AppLogger.warning('Cannot cleanup old data: Database not initialized');
-      return;
-    }
-
-    try {
-      final cutoffDate = DateTime.now().subtract(Duration(days: daysToKeep));
-      await _instance!.deleteWaterIntakeHistoryOlderThan(cutoffDate);
-      AppLogger.info('Cleaned up water intake history older than $daysToKeep days');
-    } catch (e) {
-      AppLogger.reportError(e, StackTrace.current, 'Error cleaning up old data');
-      debugPrint('Error cleaning up old data: $e');
-    }
+    // Không làm gì cả, giữ lại tất cả dữ liệu
+    AppLogger.info('Database cleanup disabled. All data will be kept for the entire app lifecycle.');
   }
 }

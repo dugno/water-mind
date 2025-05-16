@@ -60,15 +60,12 @@ class ForecastHydrationDao {
     }
   }
 
-  /// Xóa dự báo lượng nước cũ
+  /// Phương thức này được giữ lại để tương thích với mã hiện có
+  /// nhưng không còn thực hiện xóa dữ liệu
   Future<int> cleanupOldForecasts(int daysToKeep) async {
-    try {
-      final cutoffDate = DateTime.now().subtract(Duration(days: daysToKeep));
-      return await _db.deleteForecastHydrationOlderThan(cutoffDate);
-    } catch (e) {
-      AppLogger.reportError(e, StackTrace.current, 'Error cleaning up old forecasts');
-      rethrow;
-    }
+    // Không làm gì cả, giữ lại tất cả dữ liệu
+    AppLogger.info('Database cleanup disabled. All forecast data will be kept for the entire app lifecycle.');
+    return 0; // Trả về 0 để chỉ ra rằng không có bản ghi nào bị xóa
   }
 
   /// Chuyển đổi từ dữ liệu bảng sang model

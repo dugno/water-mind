@@ -28,11 +28,7 @@ void main() async {
 
     // Initialize Database Service
     final databaseService = DatabaseService();
-    await databaseService.initialize(
-      daysToKeep: 90, // Giữ dữ liệu 90 ngày
-      enableCleanup: true,
-      runCleanupImmediately: false,
-    );
+    await databaseService.initialize();
     AppLogger.info('Database service initialized');
 
     // Initialize Firebase
@@ -99,7 +95,7 @@ void main() async {
   });
 }
 
-/// Observer for app lifecycle events to properly handle database cleanup
+/// Observer for app lifecycle events to properly handle database closing
 class AppLifecycleObserver extends WidgetsBindingObserver {
   final DatabaseService _databaseService = DatabaseService();
 
@@ -110,11 +106,7 @@ class AppLifecycleObserver extends WidgetsBindingObserver {
       // Close the database to prevent any data corruption
       AppLogger.info('App is being terminated. Closing database service...');
       _databaseService.close();
-    } else if (state == AppLifecycleState.resumed) {
-      // App is resumed from background
-      // This is a good time to clean up old data
-      AppLogger.info('App is resumed. Checking for old data to clean up...');
-      _databaseService.cleanupOldData();
     }
+    // Lưu ý: Đã loại bỏ logic xóa dữ liệu cũ khi ứng dụng được khôi phục
   }
 }

@@ -439,29 +439,11 @@ class AppDatabase extends _$AppDatabase {
     }
   }
 
-  /// Xóa lịch sử uống nước cũ hơn một ngày cụ thể
+  /// Phương thức này được giữ lại để tương thích với mã hiện có
+  /// nhưng không còn thực hiện xóa dữ liệu
   Future<void> deleteWaterIntakeHistoryOlderThan(DateTime date) async {
-    try {
-      final dateString = date.toIso8601String().split('T')[0];
-
-      // Lấy danh sách các historyId cần xóa
-      final query = select(waterIntakeHistoryTable)
-        ..where((tbl) => tbl.date.isSmallerThanValue(dateString));
-      final historyToDelete = await query.get();
-
-      await transaction(() async {
-        // Xóa các entry trước
-        for (final history in historyToDelete) {
-          await (delete(waterIntakeEntryTable)..where((tbl) => tbl.historyId.equals(history.id))).go();
-        }
-
-        // Sau đó xóa các history
-        await (delete(waterIntakeHistoryTable)..where((tbl) => tbl.date.isSmallerThanValue(dateString))).go();
-      });
-    } catch (e) {
-      AppLogger.reportError(e, StackTrace.current, 'Error deleting old water intake history');
-      rethrow;
-    }
+    // Không làm gì cả, giữ lại tất cả dữ liệu
+    AppLogger.info('Database cleanup disabled. All water intake history will be kept for the entire app lifecycle.');
   }
 
   // ----------------------
@@ -748,23 +730,12 @@ class AppDatabase extends _$AppDatabase {
     }
   }
 
-  /// Xóa dự báo lượng nước cũ hơn một ngày cụ thể
+  /// Phương thức này được giữ lại để tương thích với mã hiện có
+  /// nhưng không còn thực hiện xóa dữ liệu
   Future<int> deleteForecastHydrationOlderThan(DateTime date) async {
-    try {
-      final dateString = date.toIso8601String().split('T')[0];
-
-      // Sử dụng SQL trực tiếp để xóa các bản ghi cũ
-      final result = await customUpdate(
-        'DELETE FROM forecast_hydration_table WHERE id < ?',
-        variables: [Variable.withString(dateString)],
-        updates: {forecastHydrationTable},
-      );
-
-      return result;
-    } catch (e) {
-      AppLogger.reportError(e, StackTrace.current, 'Error deleting old forecast hydration');
-      rethrow;
-    }
+    // Không làm gì cả, giữ lại tất cả dữ liệu
+    AppLogger.info('Database cleanup disabled. All forecast hydration data will be kept for the entire app lifecycle.');
+    return 0; // Trả về 0 để chỉ ra rằng không có bản ghi nào bị xóa
   }
 }
 

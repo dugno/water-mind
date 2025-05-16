@@ -286,13 +286,10 @@ class WaterIntakeDao {
     }
   }
 
-  /// Xóa lịch sử uống nước cũ hơn một ngày cụ thể
+  /// Phương thức này được giữ lại để tương thích với mã hiện có
+  /// nhưng không còn thực hiện xóa dữ liệu
   Future<void> deleteWaterIntakeHistoryOlderThan(DateTime date) async {
-    try {
-      await _db.deleteWaterIntakeHistoryOlderThan(date);
-    } catch (e) {
-      AppLogger.reportError(e, StackTrace.current, 'Error deleting old water intake history');
-      rethrow;
-    }
+    // Không làm gì cả, giữ lại tất cả dữ liệu
+    AppLogger.info('Database cleanup disabled. All water intake history will be kept for the entire app lifecycle.');
   }
 }
