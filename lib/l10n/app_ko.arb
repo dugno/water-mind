@@ -134,5 +134,118 @@
   "lightRainThunder": "가벼운 비와 천둥",
   "heavyRainThunder": "폭우와 천둥",
   "lightSnowThunder": "가벼운 눈과 천둥",
-  "heavySnowThunder": "폭설과 천둥"
+  "heavySnowThunder": "폭설과 천둥",
+
+  "selectYourPreferredLanguage": "선호하는 언어를 선택하세요",
+  "dailyGoal": "일일 목표",
+  "useCustomDailyGoal": "맞춤 일일 목표 사용",
+  "setDailyGoal": "일일 목표 설정",
+  "dailyGoalDescription": "맞춤형 일일 물 섭취 목표를 설정하세요",
+  "recommendedRangeMetric": "권장 범위: 2000-3500 ml",
+  "recommendedRangeImperial": "권장 범위: 68-118 oz",
+
+  "soundAndVibration": "소리 및 진동",
+  "enableSound": "소리 활성화",
+  "enableVibration": "진동 활성화",
+
+  "units": "단위",
+  "measurementUnit": "측정 단위",
+
+  "physicalAttributes": "신체 특성",
+  "genderWeightHeight": "성별, 체중 및 키",
+
+  "timeSettings": "시간 설정",
+
+  "about": "정보",
+  "sendFeedback": "피드백 보내기",
+  "privacyPolicy": "개인정보 처리방침",
+  "shareApp": "앱 공유하기",
+  "aboutApp": "앱 정보",
+
+  "waterIntakeForecast": "물 섭취 예측",
+  "noForecastData": "사용 가능한 예측 데이터 없음",
+  "refresh": "새로고침",
+  "refreshingForecast": "예측 데이터 새로고침 중...",
+  "recommendedIntake": "권장",
+  "lastDrink": "마지막 음료",
+
+  "yourProfile": "내 프로필",
+  "tapToEdit": "편집하려면 탭하세요",
+  "reminderSettings": "알림 설정",
+
+  "save": "저장",
+  "cancel": "취소",
+  "notSet": "설정되지 않음",
+
+  "reminders": "알림",
+  "enableReminders": "알림 활성화",
+  "enableRemindersDescription": "하루 종일 물 마시기 알림 받기",
+  "reminderMode": "알림 모드",
+  "standardMode": "표준",
+  "intervalMode": "간격",
+  "customMode": "맞춤",
+  "standardModeDescription": "기상 및 취침 시간에 기반한 최적의 알림",
+  "intervalModeDescription": "하루 종일 일정한 간격으로 알림",
+  "customModeDescription": "특정 알림 시간을 직접 설정",
+
+  "wakeUpAndBedtime": "기상 및 취침 시간",
+  "wakeUpAndBedtimeDescription": "활동 시간 동안 알림을 예약합니다",
+
+  "advancedSettings": "고급 설정",
+  "skipIfGoalMet": "목표 달성 시 건너뛰기",
+  "skipIfGoalMetDescription": "이미 일일 목표를 달성한 경우 알림을 보내지 않음",
+  "doNotDisturb": "방해 금지",
+  "doNotDisturbDescription": "특정 시간 동안 알림 일시 중지",
+  "doNotDisturbStart": "방해 금지 시작",
+  "doNotDisturbEnd": "방해 금지 종료",
+
+  "reminderInterval": "알림 간격",
+  "customTimes": "맞춤 시간",
+  "addTime": "시간 추가",
+  "maxTimesReached": "최대 시간 수에 도달했습니다",
+  "needAtLeastOneTime": "최소 하나의 알림 시간이 필요합니다",
+  "timeAlreadyExists": "이 시간은 이미 존재합니다",
+
+  "hour": "시간",
+  "hours": "시간",
+  "minute": "분",
+  "minutes": "분",
+  "hourShort": "시",
+  "minuteShort": "분",
+
+  "congratulations": "축하합니다!",
+  "profileSetupComplete": "프로필이 성공적으로 설정되었습니다",
+  "yourDailyWaterIntake": "일일 물 섭취량",
+  "perDay": "하루",
+  "basedOnWeather": "현재 날씨 기반",
+  "waterIntakeExplanation": "이 권장 사항은 프로필과 현재 날씨 조건을 기반으로 합니다. 조건이 변경되면 조정됩니다.",
+
+  "liters": "리터",
+  "fluidOunces": "액량 온스",
+
+  "home": "홈",
+  "history": "기록",
+  "waterHistory": "물 섭취 기록",
+  "day": "일",
+  "week": "주",
+  "month": "월",
+  "year": "년",
+
+  "reminderTimes": "알림 시간",
+  "tapToToggleHint": "알림 시간을 활성화하거나 비활성화하려면 탭하세요",
+
+  "selectDrinkType": "음료 유형 선택",
+  "streak": "연속 기록",
+  "currentStreak": "현재 연속 기록",
+  "longestStreak": "최장 연속 기록",
+  "days": "일",
+  "noStreakYet": "아직 연속 기록 없음",
+  "drinkWaterToStartStreak": "오늘 물을 마셔서 연속 기록을 시작하세요!",
+  "drinkTodayToKeepStreak": "오늘 마시세요!",
+
+  "selectAmount": "양 선택",
+  "select": "선택",
+
+  "totalWaterIntake": "총 물 섭취량",
+  "sinceUsingApp": "앱 사용 이후"
 }

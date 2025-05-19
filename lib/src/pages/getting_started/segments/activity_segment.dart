@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 
 class ActivitySegment extends StatefulWidget {
@@ -65,20 +66,27 @@ class _ActivitySegmentState extends State<ActivitySegment> {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF03045E) : Colors.white,
+          color: isSelected ? AppColor.thirdColor : Colors.white24,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color:
-                isSelected ? const Color(0xFF03045E) : const Color(0xFFE0E0E0),
+            color: isSelected ? AppColor.thirdColor : Colors.white30,
             width: 1,
           ),
+          boxShadow: isSelected ? [
+            BoxShadow(
+              color: AppColor.thirdColor.withOpacity(0.3),
+              blurRadius: 4,
+              spreadRadius: 1,
+              offset: const Offset(0, 2),
+            ),
+          ] : null,
         ),
         child: Text(
           activity.getString(context),
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
+            color: Colors.white,
             fontSize: 16,
-            fontWeight: FontWeight.w500,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
           ),
         ),
       ),

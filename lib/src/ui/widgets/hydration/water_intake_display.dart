@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/services/hydration/hydration.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/pages/getting_started/models/user_onboarding_model.dart';
@@ -30,102 +31,53 @@ class WaterIntakeDisplay extends ConsumerWidget {
       onWaterIntakeCalculated!(hydrationModel);
     }
 
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              context.l10n.dailyWaterIntake,
-              style: Theme.of(context).textTheme.titleLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              hydrationModel.getFormattedWaterIntake(),
-              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            _buildFactorsList(context, hydrationModel),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFactorsList(BuildContext context, HydrationModel model) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          context.l10n.calculationFactors,
-          style: Theme.of(context).textTheme.titleMedium,
+        // Icon for water
+        const Icon(
+          Icons.water_drop,
+          size: 60,
+          color: Colors.white,
         ),
-        const SizedBox(height: 8),
-        ...model.calculationFactors.entries
-            .where((entry) =>
-                !entry.key.startsWith('_')) // Filter out hidden factors
-            .map((entry) {
-          final factorName = _getFactorName(context, entry.key);
-          // Skip if factor name is empty
-          if (factorName.isEmpty) {
-            return const SizedBox.shrink();
-          }
+        const SizedBox(height: 16),
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  factorName,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  '×${entry.value.toStringAsFixed(2)}',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ],
-            ),
-          );
-        }),
+        // Title
+        Text(
+          context.l10n.dailyWaterIntake,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16),
+
+        // Water intake amount
+        Text(
+          hydrationModel.getFormattedWaterIntake(),
+          style: const TextStyle(
+            fontSize: 36,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+          textAlign: TextAlign.center,
+        ),
+
+        const SizedBox(height: 8),
+
+        // Recommendation text
+        Text(
+          context.l10n.recommendedIntake,
+          style: const TextStyle(
+            fontSize: 16,
+            fontStyle: FontStyle.italic,
+            color: Colors.white70,
+          ),
+          textAlign: TextAlign.center,
+        ),
       ],
     );
-  }
-
-  String _getFactorName(BuildContext context, String factorKey) {
-    switch (factorKey) {
-      case 'base':
-        return context.l10n.baseIntake;
-      case 'activity':
-        return context.l10n.activityFactor;
-      case 'environment':
-        return context.l10n
-            .environmentFactor; // Now represents the combined environment factor
-      case 'gender':
-        return context.l10n.genderFactor;
-      case 'age':
-        return context.l10n.ageFactor;
-      case 'awakeHours':
-        return context.l10n.awakeHoursFactor;
-      // Hidden factors (prefixed with underscore) are not displayed in the UI
-      case '_livingEnvironment':
-      case '_weather':
-        return ''; // Don't display these in the UI
-      default:
-        return factorKey;
-    }
   }
 }

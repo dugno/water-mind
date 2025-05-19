@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wheel_picker/wheel_picker.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
@@ -92,7 +93,17 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Center(
-        child: _buildDatePicker(),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white10,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Colors.white24,
+              width: 1,
+            ),
+          ),
+          child: _buildDatePicker(),
+        ),
       ),
     );
   }
@@ -134,8 +145,8 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
                     fontSize: isSelected ? 22 : 20,
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                     color: isSelected
-                        ? const Color(0xFF4361EE) // Blue color for selected item
-                        : Colors.grey.shade800,   // Even darker grey for better visibility
+                        ? AppColor.thirdColor // Blue color for selected item
+                        : Colors.white70,   // Light color for better visibility on dark background
                   ),
                 );
               },
@@ -174,8 +185,8 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
                     fontSize: isSelected ? 22 : 20,
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                     color: isSelected
-                        ? const Color(0xFF4361EE) // Blue color for selected item
-                        : Colors.grey.shade800,   // Even darker grey for better visibility
+                        ? AppColor.thirdColor // Blue color for selected item
+                        : Colors.white70,   // Light color for better visibility on dark background
                   ),
                 );
               },
@@ -215,8 +226,8 @@ class _BornSegmentState extends State<BornSegment> with HapticFeedbackMixin {
                     fontSize: isSelected ? 22 : 20,
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                     color: isSelected
-                        ? const Color(0xFF4361EE) // Blue color for selected item
-                        : Colors.grey.shade800,   // Even darker grey for better visibility
+                        ? AppColor.thirdColor // Blue color for selected item
+                        : Colors.white70,   // Light color for better visibility on dark background
                   ),
                 );
               },

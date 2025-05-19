@@ -66,14 +66,11 @@ void main() async {
 
     // Initialize the notification manager first
     final notificationManager = container.read(notificationManagerProvider);
-    final notificationsAllowed = await notificationManager.initialize();
-    AppLogger.info('Notification manager initialized, permissions granted: $notificationsAllowed');
+    final initialized = await notificationManager.initialize();
+    AppLogger.info('Notification manager initialized: $initialized');
 
-    // If notifications are not allowed, try to request permission
-    if (!notificationsAllowed) {
-      final permissionGranted = await notificationManager.ensureNotificationsAllowed();
-      AppLogger.info('Notification permission request result: $permissionGranted');
-    }
+    // We don't request notification permission here anymore
+    // It will be requested in the summary page when the user completes onboarding
 
     // Initialize the reminder service
     final reminderService = container.read(reminderServiceProvider);

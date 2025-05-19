@@ -2,6 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
+import 'package:water_mind/src/core/services/kv_store/kv_store.dart';
+import 'package:water_mind/src/core/services/logger/app_logger.dart';
 import 'package:water_mind/src/core/services/user/user_provider.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/pages/getting_started/models/getting_started_step.dart';
@@ -15,6 +18,7 @@ import 'package:water_mind/src/pages/getting_started/segments/living_environment
 import 'package:water_mind/src/pages/getting_started/segments/wake_up_segment.dart';
 import 'package:water_mind/src/pages/getting_started/summary_page.dart';
 import 'package:water_mind/src/pages/getting_started/viewmodels/getting_started_viewmodel.dart';
+import 'package:water_mind/src/pages/getting_started/widgets/language_selector_fullscreen.dart';
 import 'package:water_mind/src/ui/widgets/progress_bar/progress_bar_theme.dart';
 import 'package:water_mind/src/ui/widgets/progress_bar/segmented_progress_bar.dart';
 
@@ -106,9 +110,20 @@ class GettingStartedPage extends ConsumerWidget {
     }
   }
 
-  void _showLanguageSelector() {
-    // Show language selector
-    // This is a placeholder, replace with actual implementation
+  void _showLanguageSelector(BuildContext context) {
+    // Lấy ngôn ngữ hiện tại từ KVStoreService
+    final currentLanguage = KVStoreService.appLanguage;
+
+    // Hiển thị màn hình chọn ngôn ngữ toàn màn hình
+    LanguageSelectorFullscreen.show(
+      context: context,
+      currentLanguage: currentLanguage,
+      onLanguageSelected: (languageCode) async {
+        // Cập nhật ngôn ngữ trong KVStoreService
+        await KVStoreService.setAppLanguage(languageCode);
+        AppLogger.info('Language changed to: $languageCode');
+      },
+    );
   }
 
   @override
@@ -117,15 +132,19 @@ class GettingStartedPage extends ConsumerWidget {
         ref.watch(gettingStartedViewModelProvider(initialStep: initialStep));
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.secondaryColor,
+      appBar: AppBar(
+        backgroundColor: AppColor.secondaryColor,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: _buildStatusBar(context, ref),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // Status bar with back button and progress bar
-            _buildStatusBar(context, ref),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               child: Column(
                 children: [
                   Text(
@@ -133,7 +152,7 @@ class GettingStartedPage extends ConsumerWidget {
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF000000),
+                      color: Colors.white,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -142,7 +161,7 @@ class GettingStartedPage extends ConsumerWidget {
                     state.currentStep.getDescription(context),
                     style: const TextStyle(
                       fontSize: 14,
-                      color: Color(0xFF666666),
+                      color: Colors.white70,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -152,7 +171,29 @@ class GettingStartedPage extends ConsumerWidget {
 
             // Main content
             Expanded(
-              child: _buildCurrentStep(context, ref),
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColor.primaryColor.withAlpha(204), // 0.8 opacity
+                      AppColor.secondaryColor.withAlpha(179), // 0.7 opacity
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.primaryColor.withAlpha(77), // 0.3 opacity
+                      blurRadius: 8,
+                      spreadRadius: 1,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: _buildCurrentStep(context, ref),
+              ),
             ),
 
             // Next button for wheel picker segments
@@ -165,18 +206,23 @@ class GettingStartedPage extends ConsumerWidget {
                         ? () => _nextStep(ref)
                         : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF03045E),
+                      backgroundColor: AppColor.thirdColor,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                       ),
+                      elevation: 4,
+                      minimumSize: const Size(double.infinity, 48),
                     ),
                     child: Text(
                       state.isLastStep()
                           ? context.l10n.getStarted
                           : context.l10n.next,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -199,7 +245,6 @@ class GettingStartedPage extends ConsumerWidget {
           initialGender: state.gender,
           onGenderSelected: (gender) {
             viewModel.updateGender(gender);
-            // Auto-navigate to next step after selection
             Future.delayed(
                 const Duration(milliseconds: 300), () => _nextStep(ref));
           },
@@ -265,34 +310,36 @@ class GettingStartedPage extends ConsumerWidget {
   Widget _buildStatusBar(BuildContext context, WidgetRef ref) {
     final state =
         ref.watch(gettingStartedViewModelProvider(initialStep: initialStep));
+    final bool showBackButton = state.currentStep.index > 0 || fromHome;
 
-    return Container(
+    return SizedBox(
       height: 44,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
-          // Back button
-          GestureDetector(
-            onTap: () => _previousStep(context, ref),
-            child: const Icon(
-              Icons.arrow_back,
-              color: Color(0xFF666666),
-              size: 20,
+          if (showBackButton)...[
+            GestureDetector(
+              onTap: () => _previousStep(context, ref),
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 20,
+              ),
             ),
-          ),
-
           const SizedBox(width: 16),
+          ] else ...[
+            const SizedBox(width: 44),
+          ],
 
-          // Progress bar
+
           Expanded(
             child: SegmentedProgressBar(
               completedSteps: state.currentStep.index,
               totalSteps: GettingStartedStep.totalSteps,
               showLabel: false,
               theme: ProgressBarTheme(
-                completedSegmentColor: const Color(0xFF03045E),
-                incompleteSegmentColor: const Color(0xFFD3D3D3),
-                labelColor: Theme.of(context).colorScheme.onSurface,
+                completedSegmentColor: AppColor.thirdColor,
+                incompleteSegmentColor: Colors.white24,
+                labelColor: Colors.white,
                 segmentWidth: 12,
                 segmentHeight: 4,
                 segmentSpacing: 4,
@@ -306,7 +353,7 @@ class GettingStartedPage extends ConsumerWidget {
 
           // Language selector
           GestureDetector(
-            onTap: _showLanguageSelector,
+            onTap: () => _showLanguageSelector(context),
             child: Row(
               children: [
                 Image.asset(
@@ -316,14 +363,14 @@ class GettingStartedPage extends ConsumerWidget {
                   width: 16,
                   height: 12,
                   errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.language, size: 16);
+                    return const Icon(Icons.language, size: 16, color: Colors.white);
                   },
                 ),
                 const SizedBox(width: 4),
                 Text(
                   isEnglish ? 'EN' : 'VI',
                   style: const TextStyle(
-                    color: Color(0xFF666666),
+                    color: Colors.white,
                     fontSize: 12,
                   ),
                 ),

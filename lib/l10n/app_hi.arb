@@ -134,5 +134,118 @@
   "lightRainThunder": "हल्की बारिश के साथ बिजली",
   "heavyRainThunder": "भारी बारिश के साथ बिजली",
   "lightSnowThunder": "हल्की बर्फ के साथ बिजली",
-  "heavySnowThunder": "भारी बर्फ के साथ बिजली"
+  "heavySnowThunder": "भारी बर्फ के साथ बिजली",
+
+  "selectYourPreferredLanguage": "अपनी पसंदीदा भाषा चुनें",
+  "dailyGoal": "दैनिक लक्ष्य",
+  "useCustomDailyGoal": "कस्टम दैनिक लक्ष्य का उपयोग करें",
+  "setDailyGoal": "दैनिक लक्ष्य सेट करें",
+  "dailyGoalDescription": "अपना कस्टम दैनिक पानी सेवन लक्ष्य सेट करें",
+  "recommendedRangeMetric": "अनुशंसित सीमा: 2000-3500 मिली",
+  "recommendedRangeImperial": "अनुशंसित सीमा: 68-118 औंस",
+
+  "soundAndVibration": "ध्वनि और कंपन",
+  "enableSound": "ध्वनि सक्षम करें",
+  "enableVibration": "कंपन सक्षम करें",
+
+  "units": "इकाइयाँ",
+  "measurementUnit": "माप इकाई",
+
+  "physicalAttributes": "शारीरिक विशेषताएं",
+  "genderWeightHeight": "लिंग, वजन और ऊंचाई",
+
+  "timeSettings": "समय सेटिंग्स",
+
+  "about": "के बारे में",
+  "sendFeedback": "प्रतिक्रिया भेजें",
+  "privacyPolicy": "गोपनीयता नीति",
+  "shareApp": "ऐप शेयर करें",
+  "aboutApp": "ऐप के बारे में",
+
+  "waterIntakeForecast": "पानी सेवन पूर्वानुमान",
+  "noForecastData": "कोई पूर्वानुमान डेटा उपलब्ध नहीं",
+  "refresh": "रिफ्रेश",
+  "refreshingForecast": "पूर्वानुमान डेटा रिफ्रेश हो रहा है...",
+  "recommendedIntake": "अनुशंसित",
+  "lastDrink": "अंतिम पेय",
+
+  "yourProfile": "आपकी प्रोफ़ाइल",
+  "tapToEdit": "संपादित करने के लिए टैप करें",
+  "reminderSettings": "रिमाइंडर सेटिंग्स",
+
+  "save": "सहेजें",
+  "cancel": "रद्द करें",
+  "notSet": "सेट नहीं",
+
+  "reminders": "रिमाइंडर",
+  "enableReminders": "रिमाइंडर सक्षम करें",
+  "enableRemindersDescription": "दिन भर पानी पीने के लिए सूचनाएं प्राप्त करें",
+  "reminderMode": "रिमाइंडर मोड",
+  "standardMode": "मानक",
+  "intervalMode": "अंतराल",
+  "customMode": "कस्टम",
+  "standardModeDescription": "आपके जागने और सोने के समय पर आधारित इष्टतम रिमाइंडर",
+  "intervalModeDescription": "दिन भर नियमित अंतराल पर रिमाइंडर",
+  "customModeDescription": "अपने स्वयं के विशिष्ट रिमाइंडर समय सेट करें",
+
+  "wakeUpAndBedtime": "जागने और सोने का समय",
+  "wakeUpAndBedtimeDescription": "हम आपके सक्रिय घंटों के दौरान रिमाइंडर शेड्यूल करेंगे",
+
+  "advancedSettings": "उन्नत सेटिंग्स",
+  "skipIfGoalMet": "यदि लक्ष्य पूरा हो गया है तो छोड़ें",
+  "skipIfGoalMetDescription": "यदि आपने पहले से ही अपना दैनिक लक्ष्य पूरा कर लिया है तो रिमाइंडर न भेजें",
+  "doNotDisturb": "परेशान न करें",
+  "doNotDisturbDescription": "विशिष्ट घंटों के दौरान रिमाइंडर रोकें",
+  "doNotDisturbStart": "परेशान न करें प्रारंभ",
+  "doNotDisturbEnd": "परेशान न करें समाप्त",
+
+  "reminderInterval": "रिमाइंडर अंतराल",
+  "customTimes": "कस्टम समय",
+  "addTime": "समय जोड़ें",
+  "maxTimesReached": "अधिकतम समय तक पहुंच गया",
+  "needAtLeastOneTime": "आपको कम से कम एक रिमाइंडर समय की आवश्यकता है",
+  "timeAlreadyExists": "यह समय पहले से मौजूद है",
+
+  "hour": "घंटा",
+  "hours": "घंटे",
+  "minute": "मिनट",
+  "minutes": "मिनट",
+  "hourShort": "घं",
+  "minuteShort": "मि",
+
+  "congratulations": "बधाई हो!",
+  "profileSetupComplete": "आपकी प्रोफ़ाइल सफलतापूर्वक सेट की गई है",
+  "yourDailyWaterIntake": "आपका दैनिक पानी सेवन",
+  "perDay": "प्रति दिन",
+  "basedOnWeather": "वर्तमान मौसम पर आधारित",
+  "waterIntakeExplanation": "यह सिफारिश आपकी प्रोफ़ाइल और वर्तमान मौसम की स्थिति पर आधारित है। स्थितियों के बदलने पर यह समायोजित होगी।",
+
+  "liters": "लीटर",
+  "fluidOunces": "तरल औंस",
+
+  "home": "होम",
+  "history": "इतिहास",
+  "waterHistory": "पानी का इतिहास",
+  "day": "दिन",
+  "week": "सप्ताह",
+  "month": "महीना",
+  "year": "वर्ष",
+
+  "reminderTimes": "रिमाइंडर समय",
+  "tapToToggleHint": "रिमाइंडर समय को सक्षम या अक्षम करने के लिए टैप करें",
+
+  "selectDrinkType": "पेय प्रकार चुनें",
+  "streak": "स्ट्रीक",
+  "currentStreak": "वर्तमान स्ट्रीक",
+  "longestStreak": "सबसे लंबी स्ट्रीक",
+  "days": "दिन",
+  "noStreakYet": "अभी तक कोई स्ट्रीक नहीं",
+  "drinkWaterToStartStreak": "अपनी स्ट्रीक शुरू करने के लिए आज पानी पिएं!",
+  "drinkTodayToKeepStreak": "आज पिएं!",
+
+  "selectAmount": "मात्रा चुनें",
+  "select": "चुनें",
+
+  "totalWaterIntake": "कुल पानी",
+  "sinceUsingApp": "ऐप का उपयोग करने के बाद से"
 }

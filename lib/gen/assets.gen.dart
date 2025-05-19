@@ -25,11 +25,24 @@ class $AssetsDataGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// Directory path: assets/images/app
+  $AssetsImagesAppGen get app => const $AssetsImagesAppGen();
+
   /// Directory path: assets/images/language
   $AssetsImagesLanguageGen get language => const $AssetsImagesLanguageGen();
 
   /// Directory path: assets/images/weather
   $AssetsImagesWeatherGen get weather => const $AssetsImagesWeatherGen();
+}
+
+class $AssetsImagesAppGen {
+  const $AssetsImagesAppGen();
+
+  /// File path: assets/images/app/icon_splash.svg
+  SvgGenImage get iconSplash => const SvgGenImage('assets/images/app/icon_splash.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [iconSplash];
 }
 
 class $AssetsImagesLanguageGen {

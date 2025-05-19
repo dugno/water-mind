@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:wheel_picker/wheel_picker.dart';
@@ -119,11 +120,20 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    SizedBox(
-                      height: 150,
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.white10,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.white24,
+                          width: 1,
+                        ),
+                      ),
                       child: _buildHeightPicker(),
                     ),
                   ],
@@ -142,11 +152,20 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    SizedBox(
-                      height: 150,
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.white10,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.white24,
+                          width: 1,
+                        ),
+                      ),
                       child: _buildWeightPicker(),
                     ),
                   ],
@@ -188,18 +207,25 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF03045E) : Colors.white,
+          color: isSelected ? AppColor.thirdColor : Colors.white24,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color:
-                isSelected ? const Color(0xFF03045E) : const Color(0xFFE0E0E0),
+            color: isSelected ? AppColor.thirdColor : Colors.white30,
           ),
+          boxShadow: isSelected ? [
+            BoxShadow(
+              color: AppColor.thirdColor.withOpacity(0.3),
+              blurRadius: 4,
+              spreadRadius: 1,
+              offset: const Offset(0, 2),
+            ),
+          ] : null,
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-            fontWeight: FontWeight.w500,
+            color: Colors.white,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
           ),
         ),
       ),
@@ -241,17 +267,17 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
                   fontSize: isSelected ? 22 : 20,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   color: isSelected
-                      ? const Color(0xFF4361EE) // Blue color for selected item
-                      : Colors.grey.shade800,   // Even darker grey for better visibility
+                      ? AppColor.thirdColor // Blue color for selected item
+                      : Colors.white70,   // Light color for better visibility on dark background
                 ),
               ),
               if (isSelected)
-                const Text(
+                Text(
                   ' cm',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4361EE), // Blue color for selected item
+                    color: AppColor.thirdColor, // Blue color for selected item
                   ),
                 ),
             ],
@@ -320,8 +346,8 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
                         fontSize: 20,
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                         color: isSelected
-                            ? const Color(0xFF4361EE) // Blue color for selected item
-                            : Colors.grey.shade400,   // Grey color for unselected items
+                            ? AppColor.thirdColor // Blue color for selected item
+                            : Colors.white70,   // Light color for better visibility on dark background
                       ),
                     ),
                     if (isSelected)
@@ -330,7 +356,7 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF4361EE), // Blue color for selected item
+                          color: AppColor.thirdColor, // Blue color for selected item
                         ),
                       ),
                   ],
@@ -373,8 +399,8 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
                         fontSize: isSelected ? 22 : 20,
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                         color: isSelected
-                            ? const Color(0xFF4361EE) // Blue color for selected item
-                            : Colors.grey.shade800,   // Even darker grey for better visibility
+                            ? AppColor.thirdColor // Blue color for selected item
+                            : Colors.white70,   // Light color for better visibility on dark background
                       ),
                     ),
                     if (isSelected)
@@ -383,7 +409,7 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF4361EE), // Blue color for selected item
+                          color: AppColor.thirdColor, // Blue color for selected item
                         ),
                       ),
                   ],
@@ -441,8 +467,8 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
                   fontSize: 20,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   color: isSelected
-                      ? const Color(0xFF4361EE) // Blue color for selected item
-                      : Colors.grey.shade700,   // Darker grey for better visibility
+                      ? AppColor.thirdColor // Blue color for selected item
+                      : Colors.white70,   // Light color for better visibility on dark background
                 ),
               ),
               if (isSelected)
@@ -451,7 +477,7 @@ class _HeightWeightSegmentState extends State<HeightWeightSegment>
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4361EE), // Blue color for selected item
+                    color: AppColor.thirdColor, // Blue color for selected item
                   ),
                 ),
             ],

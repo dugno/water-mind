@@ -18,6 +18,7 @@
   "register": "Đăng ký",
   "forgotPassword": "Quên mật khẩu?",
   "changeLanguage": "Thay đổi ngôn ngữ",
+  "selectYourPreferredLanguage": "Chọn ngôn ngữ bạn muốn sử dụng",
   "skip": "Bỏ qua",
   "next": "Tiếp theo",
   "back": "Quay lại",
@@ -184,5 +185,60 @@
   "drinkWaterToStartStreak": "Uống nước hôm nay để bắt đầu chuỗi ngày!",
   "drinkTodayToKeepStreak": "Uống nước hôm nay!",
   "totalWaterIntake": "Tổng nước",
-  "sinceUsingApp": "từ khi sử dụng ứng dụng"
+  "sinceUsingApp": "từ khi sử dụng ứng dụng",
+
+  "dailyGoal": "Mục tiêu hàng ngày",
+  "useCustomDailyGoal": "Sử dụng mục tiêu tùy chỉnh",
+  "setDailyGoal": "Đặt mục tiêu hàng ngày",
+  "dailyGoalDescription": "Đặt mục tiêu uống nước hàng ngày của bạn",
+  "recommendedRangeMetric": "Phạm vi khuyến nghị: 2000-3500 ml",
+  "recommendedRangeImperial": "Phạm vi khuyến nghị: 68-118 oz",
+
+  "soundAndVibration": "Âm thanh & Rung",
+  "enableSound": "Bật âm thanh",
+  "enableVibration": "Bật rung",
+
+  "units": "Đơn vị",
+  "measurementUnit": "Đơn vị đo lường",
+
+  "physicalAttributes": "Đặc điểm thể chất",
+  "genderWeightHeight": "Giới tính, cân nặng & chiều cao",
+
+  "about": "Giới thiệu",
+  "sendFeedback": "Gửi phản hồi",
+  "privacyPolicy": "Chính sách bảo mật",
+  "shareApp": "Chia sẻ ứng dụng",
+  "aboutApp": "Về ứng dụng",
+
+  "yourProfile": "Hồ sơ của bạn",
+  "tapToEdit": "Nhấn để chỉnh sửa",
+  "reminderSettings": "Cài đặt nhắc nhở",
+
+  "wakeUpAndBedtime": "Giờ thức dậy & Giờ đi ngủ",
+  "wakeUpAndBedtimeDescription": "Chúng tôi sẽ lên lịch nhắc nhở trong thời gian hoạt động của bạn",
+
+  "hour": "giờ",
+  "hours": "giờ",
+  "minute": "phút",
+  "minutes": "phút",
+  "hourShort": "g",
+  "minuteShort": "p",
+
+  "congratulations": "Chúc mừng!",
+  "profileSetupComplete": "Hồ sơ của bạn đã được thiết lập thành công",
+  "yourDailyWaterIntake": "Lượng nước uống hàng ngày của bạn",
+  "perDay": "mỗi ngày",
+  "basedOnWeather": "Dựa trên thời tiết hiện tại",
+  "waterIntakeExplanation": "Khuyến nghị này dựa trên hồ sơ của bạn và điều kiện thời tiết hiện tại. Nó sẽ điều chỉnh khi điều kiện thay đổi.",
+
+  "liters": "lít",
+  "fluidOunces": "fl oz",
+
+  "home": "Trang chủ",
+  "history": "Lịch sử",
+  "waterHistory": "Lịch sử uống nước",
+  "day": "Ngày",
+  "week": "Tuần",
+  "month": "Tháng",
+  "year": "Năm"
 }

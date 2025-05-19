@@ -81,7 +81,7 @@ class AwesomeNotificationService implements NotificationServiceInterface {
           enableVibration: true,
           enableLights: true,
           playSound: true,
-          channelShowBadge: true,
+          channelShowBadge: false, // Disable badge notifications
         ),
       ],
       debug: true, // Set to false in production

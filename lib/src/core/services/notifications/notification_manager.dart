@@ -26,6 +26,7 @@ class NotificationManager {
       channelName: 'General Notifications',
       channelDescription: 'General notifications for the app',
       importance: 3,
+      showBadge: false,
     ),
     const NotificationChannelModel(
       channelKey: 'alerts_channel',
@@ -34,12 +35,14 @@ class NotificationManager {
       importance: 5,
       enableVibration: true,
       playSound: true,
+      showBadge: false,
     ),
     const NotificationChannelModel(
       channelKey: 'reminders_channel',
       channelName: 'Reminders',
       channelDescription: 'Reminders and scheduled notifications',
       importance: 4,
+      showBadge: false,
     ),
   ];
 

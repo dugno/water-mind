@@ -133,5 +133,118 @@
   "lightRainThunder": "Pluie légère avec tonnerre",
   "heavyRainThunder": "Forte pluie avec tonnerre",
   "lightSnowThunder": "Neige légère avec tonnerre",
-  "heavySnowThunder": "Neige abondante avec tonnerre"
+  "heavySnowThunder": "Neige abondante avec tonnerre",
+
+  "selectYourPreferredLanguage": "Sélectionnez votre langue préférée",
+  "dailyGoal": "Objectif quotidien",
+  "useCustomDailyGoal": "Utiliser un objectif quotidien personnalisé",
+  "setDailyGoal": "Définir l'objectif quotidien",
+  "dailyGoalDescription": "Définissez votre objectif personnalisé de consommation d'eau quotidienne",
+  "recommendedRangeMetric": "Plage recommandée: 2000-3500 ml",
+  "recommendedRangeImperial": "Plage recommandée: 68-118 oz",
+
+  "soundAndVibration": "Son et vibration",
+  "enableSound": "Activer le son",
+  "enableVibration": "Activer la vibration",
+
+  "units": "Unités",
+  "measurementUnit": "Unité de mesure",
+
+  "physicalAttributes": "Attributs physiques",
+  "genderWeightHeight": "Genre, poids et taille",
+
+  "timeSettings": "Paramètres de temps",
+
+  "about": "À propos",
+  "sendFeedback": "Envoyer des commentaires",
+  "privacyPolicy": "Politique de confidentialité",
+  "shareApp": "Partager l'application",
+  "aboutApp": "À propos de l'application",
+
+  "waterIntakeForecast": "Prévision de consommation d'eau",
+  "noForecastData": "Aucune donnée de prévision disponible",
+  "refresh": "Actualiser",
+  "refreshingForecast": "Actualisation des données de prévision...",
+  "recommendedIntake": "recommandé",
+  "lastDrink": "Dernière boisson",
+
+  "yourProfile": "Votre profil",
+  "tapToEdit": "Appuyez pour modifier",
+  "reminderSettings": "Paramètres de rappel",
+
+  "save": "Enregistrer",
+  "cancel": "Annuler",
+  "notSet": "Non défini",
+
+  "reminders": "Rappels",
+  "enableReminders": "Activer les rappels",
+  "enableRemindersDescription": "Recevoir des notifications pour boire de l'eau tout au long de la journée",
+  "reminderMode": "Mode de rappel",
+  "standardMode": "Standard",
+  "intervalMode": "Intervalle",
+  "customMode": "Personnalisé",
+  "standardModeDescription": "Rappels optimaux basés sur votre heure de réveil et de coucher",
+  "intervalModeDescription": "Rappels à intervalles réguliers tout au long de votre journée",
+  "customModeDescription": "Définissez vos propres heures de rappel spécifiques",
+
+  "wakeUpAndBedtime": "Réveil et coucher",
+  "wakeUpAndBedtimeDescription": "Nous programmerons des rappels pendant vos heures actives",
+
+  "advancedSettings": "Paramètres avancés",
+  "skipIfGoalMet": "Ignorer si l'objectif est atteint",
+  "skipIfGoalMetDescription": "Ne pas envoyer de rappels si vous avez déjà atteint votre objectif quotidien",
+  "doNotDisturb": "Ne pas déranger",
+  "doNotDisturbDescription": "Mettre en pause les rappels pendant des heures spécifiques",
+  "doNotDisturbStart": "Début de ne pas déranger",
+  "doNotDisturbEnd": "Fin de ne pas déranger",
+
+  "reminderInterval": "Intervalle de rappel",
+  "customTimes": "Heures personnalisées",
+  "addTime": "Ajouter une heure",
+  "maxTimesReached": "Nombre maximum d'heures atteint",
+  "needAtLeastOneTime": "Vous avez besoin d'au moins une heure de rappel",
+  "timeAlreadyExists": "Cette heure existe déjà",
+
+  "hour": "heure",
+  "hours": "heures",
+  "minute": "minute",
+  "minutes": "minutes",
+  "hourShort": "h",
+  "minuteShort": "m",
+
+  "congratulations": "Félicitations !",
+  "profileSetupComplete": "Votre profil a été configuré avec succès",
+  "yourDailyWaterIntake": "Votre consommation quotidienne d'eau",
+  "perDay": "par jour",
+  "basedOnWeather": "Basé sur la météo actuelle",
+  "waterIntakeExplanation": "Cette recommandation est basée sur votre profil et les conditions météorologiques actuelles. Elle s'ajustera à mesure que les conditions changent.",
+
+  "liters": "litres",
+  "fluidOunces": "fl oz",
+
+  "home": "Accueil",
+  "history": "Historique",
+  "waterHistory": "Historique d'eau",
+  "day": "Jour",
+  "week": "Semaine",
+  "month": "Mois",
+  "year": "Année",
+
+  "reminderTimes": "Heures de rappel",
+  "tapToToggleHint": "Appuyez pour activer ou désactiver une heure de rappel",
+
+  "selectDrinkType": "Sélectionner le type de boisson",
+  "streak": "Série",
+  "currentStreak": "Série actuelle",
+  "longestStreak": "Plus longue série",
+  "days": "jours",
+  "noStreakYet": "Pas encore de série",
+  "drinkWaterToStartStreak": "Buvez de l'eau aujourd'hui pour commencer votre série !",
+  "drinkTodayToKeepStreak": "Buvez aujourd'hui !",
+
+  "selectAmount": "Sélectionner la quantité",
+  "select": "Sélectionner",
+
+  "totalWaterIntake": "Eau totale",
+  "sinceUsingApp": "depuis l'utilisation de l'application"
 }

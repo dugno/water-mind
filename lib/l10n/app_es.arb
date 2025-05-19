@@ -133,5 +133,118 @@
   "lightRainThunder": "Lluvia ligera con truenos",
   "heavyRainThunder": "Lluvia intensa con truenos",
   "lightSnowThunder": "Nieve ligera con truenos",
-  "heavySnowThunder": "Nieve intensa con truenos"
+  "heavySnowThunder": "Nieve intensa con truenos",
+
+  "selectYourPreferredLanguage": "Seleccione su idioma preferido",
+  "dailyGoal": "Objetivo diario",
+  "useCustomDailyGoal": "Usar objetivo diario personalizado",
+  "setDailyGoal": "Establecer objetivo diario",
+  "dailyGoalDescription": "Establezca su objetivo personalizado de consumo diario de agua",
+  "recommendedRangeMetric": "Rango recomendado: 2000-3500 ml",
+  "recommendedRangeImperial": "Rango recomendado: 68-118 oz",
+
+  "soundAndVibration": "Sonido y vibración",
+  "enableSound": "Activar sonido",
+  "enableVibration": "Activar vibración",
+
+  "units": "Unidades",
+  "measurementUnit": "Unidad de medida",
+
+  "physicalAttributes": "Atributos físicos",
+  "genderWeightHeight": "Género, peso y altura",
+
+  "timeSettings": "Configuración de tiempo",
+
+  "about": "Acerca de",
+  "sendFeedback": "Enviar comentarios",
+  "privacyPolicy": "Política de privacidad",
+  "shareApp": "Compartir aplicación",
+  "aboutApp": "Acerca de la aplicación",
+
+  "waterIntakeForecast": "Pronóstico de consumo de agua",
+  "noForecastData": "No hay datos de pronóstico disponibles",
+  "refresh": "Actualizar",
+  "refreshingForecast": "Actualizando datos de pronóstico...",
+  "recommendedIntake": "recomendado",
+  "lastDrink": "Última bebida",
+
+  "yourProfile": "Su perfil",
+  "tapToEdit": "Toque para editar",
+  "reminderSettings": "Configuración de recordatorios",
+
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "notSet": "No establecido",
+
+  "reminders": "Recordatorios",
+  "enableReminders": "Activar recordatorios",
+  "enableRemindersDescription": "Recibir notificaciones para beber agua durante el día",
+  "reminderMode": "Modo de recordatorio",
+  "standardMode": "Estándar",
+  "intervalMode": "Intervalo",
+  "customMode": "Personalizado",
+  "standardModeDescription": "Recordatorios óptimos basados en su hora de despertar y acostarse",
+  "intervalModeDescription": "Recordatorios a intervalos regulares durante el día",
+  "customModeDescription": "Establezca sus propios horarios específicos de recordatorio",
+
+  "wakeUpAndBedtime": "Despertar y acostarse",
+  "wakeUpAndBedtimeDescription": "Programaremos recordatorios durante sus horas activas",
+
+  "advancedSettings": "Configuración avanzada",
+  "skipIfGoalMet": "Omitir si se cumple el objetivo",
+  "skipIfGoalMetDescription": "No enviar recordatorios si ya ha cumplido su objetivo diario",
+  "doNotDisturb": "No molestar",
+  "doNotDisturbDescription": "Pausar recordatorios durante horas específicas",
+  "doNotDisturbStart": "Inicio de no molestar",
+  "doNotDisturbEnd": "Fin de no molestar",
+
+  "reminderInterval": "Intervalo de recordatorio",
+  "customTimes": "Horarios personalizados",
+  "addTime": "Añadir horario",
+  "maxTimesReached": "Se ha alcanzado el número máximo de horarios",
+  "needAtLeastOneTime": "Necesita al menos un horario de recordatorio",
+  "timeAlreadyExists": "Este horario ya existe",
+
+  "hour": "hora",
+  "hours": "horas",
+  "minute": "minuto",
+  "minutes": "minutos",
+  "hourShort": "h",
+  "minuteShort": "m",
+
+  "congratulations": "¡Felicitaciones!",
+  "profileSetupComplete": "Su perfil ha sido configurado exitosamente",
+  "yourDailyWaterIntake": "Su consumo diario de agua",
+  "perDay": "por día",
+  "basedOnWeather": "Basado en el clima actual",
+  "waterIntakeExplanation": "Esta recomendación se basa en su perfil y las condiciones climáticas actuales. Se ajustará a medida que cambien las condiciones.",
+
+  "liters": "litros",
+  "fluidOunces": "fl oz",
+
+  "home": "Inicio",
+  "history": "Historial",
+  "waterHistory": "Historial de agua",
+  "day": "Día",
+  "week": "Semana",
+  "month": "Mes",
+  "year": "Año",
+
+  "reminderTimes": "Horarios de recordatorio",
+  "tapToToggleHint": "Toque para activar o desactivar un horario de recordatorio",
+
+  "selectDrinkType": "Seleccionar tipo de bebida",
+  "streak": "Racha",
+  "currentStreak": "Racha actual",
+  "longestStreak": "Racha más larga",
+  "days": "días",
+  "noStreakYet": "Aún no hay racha",
+  "drinkWaterToStartStreak": "¡Beba agua hoy para comenzar su racha!",
+  "drinkTodayToKeepStreak": "¡Beba hoy!",
+
+  "selectAmount": "Seleccionar cantidad",
+  "select": "Seleccionar",
+
+  "totalWaterIntake": "Agua total",
+  "sinceUsingApp": "desde que usa la aplicación"
 }

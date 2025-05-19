@@ -133,5 +133,118 @@
   "lightRainThunder": "小雨伴有雷电",
   "heavyRainThunder": "大雨伴有雷电",
   "lightSnowThunder": "小雪伴有雷电",
-  "heavySnowThunder": "大雪伴有雷电"
+  "heavySnowThunder": "大雪伴有雷电",
+
+  "selectYourPreferredLanguage": "选择您偏好的语言",
+  "dailyGoal": "每日目标",
+  "useCustomDailyGoal": "使用自定义每日目标",
+  "setDailyGoal": "设置每日目标",
+  "dailyGoalDescription": "设置您的自定义每日饮水目标",
+  "recommendedRangeMetric": "推荐范围：2000-3500 毫升",
+  "recommendedRangeImperial": "推荐范围：68-118 盎司",
+
+  "soundAndVibration": "声音和振动",
+  "enableSound": "启用声音",
+  "enableVibration": "启用振动",
+
+  "units": "单位",
+  "measurementUnit": "测量单位",
+
+  "physicalAttributes": "身体特征",
+  "genderWeightHeight": "性别、体重和身高",
+
+  "timeSettings": "时间设置",
+
+  "about": "关于",
+  "sendFeedback": "发送反馈",
+  "privacyPolicy": "隐私政策",
+  "shareApp": "分享应用",
+  "aboutApp": "关于应用",
+
+  "waterIntakeForecast": "饮水量预测",
+  "noForecastData": "没有可用的预测数据",
+  "refresh": "刷新",
+  "refreshingForecast": "正在刷新预测数据...",
+  "recommendedIntake": "推荐",
+  "lastDrink": "最近饮品",
+
+  "yourProfile": "您的个人资料",
+  "tapToEdit": "点击编辑",
+  "reminderSettings": "提醒设置",
+
+  "save": "保存",
+  "cancel": "取消",
+  "notSet": "未设置",
+
+  "reminders": "提醒",
+  "enableReminders": "启用提醒",
+  "enableRemindersDescription": "全天接收饮水通知",
+  "reminderMode": "提醒模式",
+  "standardMode": "标准",
+  "intervalMode": "间隔",
+  "customMode": "自定义",
+  "standardModeDescription": "基于您的起床和睡觉时间的最佳提醒",
+  "intervalModeDescription": "全天定时提醒",
+  "customModeDescription": "设置您自己的特定提醒时间",
+
+  "wakeUpAndBedtime": "起床和睡觉时间",
+  "wakeUpAndBedtimeDescription": "我们将在您的活动时间安排提醒",
+
+  "advancedSettings": "高级设置",
+  "skipIfGoalMet": "达到目标时跳过",
+  "skipIfGoalMetDescription": "如果您已经达到每日目标，则不发送提醒",
+  "doNotDisturb": "勿扰模式",
+  "doNotDisturbDescription": "在特定时间暂停提醒",
+  "doNotDisturbStart": "勿扰开始时间",
+  "doNotDisturbEnd": "勿扰结束时间",
+
+  "reminderInterval": "提醒间隔",
+  "customTimes": "自定义时间",
+  "addTime": "添加时间",
+  "maxTimesReached": "已达到最大时间数",
+  "needAtLeastOneTime": "您需要至少一个提醒时间",
+  "timeAlreadyExists": "此时间已存在",
+
+  "hour": "小时",
+  "hours": "小时",
+  "minute": "分钟",
+  "minutes": "分钟",
+  "hourShort": "时",
+  "minuteShort": "分",
+
+  "congratulations": "恭喜！",
+  "profileSetupComplete": "您的个人资料已成功设置",
+  "yourDailyWaterIntake": "您的每日饮水量",
+  "perDay": "每天",
+  "basedOnWeather": "基于当前天气",
+  "waterIntakeExplanation": "此建议基于您的个人资料和当前天气状况。随着条件变化，它将会调整。",
+
+  "liters": "升",
+  "fluidOunces": "液体盎司",
+
+  "home": "首页",
+  "history": "历史",
+  "waterHistory": "饮水历史",
+  "day": "日",
+  "week": "周",
+  "month": "月",
+  "year": "年",
+
+  "reminderTimes": "提醒时间",
+  "tapToToggleHint": "点击启用或禁用提醒时间",
+
+  "selectDrinkType": "选择饮品类型",
+  "streak": "连续记录",
+  "currentStreak": "当前连续记录",
+  "longestStreak": "最长连续记录",
+  "days": "天",
+  "noStreakYet": "尚无连续记录",
+  "drinkWaterToStartStreak": "今天喝水开始您的连续记录！",
+  "drinkTodayToKeepStreak": "今天喝水！",
+
+  "selectAmount": "选择数量",
+  "select": "选择",
+
+  "totalWaterIntake": "总饮水量",
+  "sinceUsingApp": "自使用应用以来"
 }

@@ -134,5 +134,118 @@
   "lightRainThunder": "ฝนเบาพร้อมฟ้าผ่า",
   "heavyRainThunder": "ฝนหนักพร้อมฟ้าผ่า",
   "lightSnowThunder": "หิมะเบาพร้อมฟ้าผ่า",
-  "heavySnowThunder": "หิมะหนักพร้อมฟ้าผ่า"
+  "heavySnowThunder": "หิมะหนักพร้อมฟ้าผ่า",
+
+  "selectYourPreferredLanguage": "เลือกภาษาที่คุณต้องการ",
+  "dailyGoal": "เป้าหมายประจำวัน",
+  "useCustomDailyGoal": "ใช้เป้าหมายประจำวันแบบกำหนดเอง",
+  "setDailyGoal": "ตั้งเป้าหมายประจำวัน",
+  "dailyGoalDescription": "ตั้งเป้าหมายการดื่มน้ำประจำวันแบบกำหนดเองของคุณ",
+  "recommendedRangeMetric": "ช่วงที่แนะนำ: 2000-3500 มล.",
+  "recommendedRangeImperial": "ช่วงที่แนะนำ: 68-118 ออนซ์",
+
+  "soundAndVibration": "เสียงและการสั่น",
+  "enableSound": "เปิดใช้งานเสียง",
+  "enableVibration": "เปิดใช้งานการสั่น",
+
+  "units": "หน่วย",
+  "measurementUnit": "หน่วยการวัด",
+
+  "physicalAttributes": "คุณลักษณะทางกายภาพ",
+  "genderWeightHeight": "เพศ น้ำหนักและส่วนสูง",
+
+  "timeSettings": "การตั้งค่าเวลา",
+
+  "about": "เกี่ยวกับ",
+  "sendFeedback": "ส่งความคิดเห็น",
+  "privacyPolicy": "นโยบายความเป็นส่วนตัว",
+  "shareApp": "แชร์แอป",
+  "aboutApp": "เกี่ยวกับแอป",
+
+  "waterIntakeForecast": "การคาดการณ์การดื่มน้ำ",
+  "noForecastData": "ไม่มีข้อมูลการคาดการณ์",
+  "refresh": "รีเฟรช",
+  "refreshingForecast": "กำลังรีเฟรชข้อมูลการคาดการณ์...",
+  "recommendedIntake": "แนะนำ",
+  "lastDrink": "เครื่องดื่มล่าสุด",
+
+  "yourProfile": "โปรไฟล์ของคุณ",
+  "tapToEdit": "แตะเพื่อแก้ไข",
+  "reminderSettings": "การตั้งค่าการแจ้งเตือน",
+
+  "save": "บันทึก",
+  "cancel": "ยกเลิก",
+  "notSet": "ไม่ได้ตั้งค่า",
+
+  "reminders": "การแจ้งเตือน",
+  "enableReminders": "เปิดใช้งานการแจ้งเตือน",
+  "enableRemindersDescription": "รับการแจ้งเตือนให้ดื่มน้ำตลอดทั้งวัน",
+  "reminderMode": "โหมดการแจ้งเตือน",
+  "standardMode": "มาตรฐาน",
+  "intervalMode": "ช่วงเวลา",
+  "customMode": "กำหนดเอง",
+  "standardModeDescription": "การแจ้งเตือนที่เหมาะสมตามเวลาตื่นนอนและเข้านอนของคุณ",
+  "intervalModeDescription": "การแจ้งเตือนเป็นช่วงเวลาสม่ำเสมอตลอดทั้งวัน",
+  "customModeDescription": "ตั้งเวลาการแจ้งเตือนเฉพาะของคุณเอง",
+
+  "wakeUpAndBedtime": "เวลาตื่นนอนและเข้านอน",
+  "wakeUpAndBedtimeDescription": "เราจะกำหนดการแจ้งเตือนในช่วงเวลาที่คุณตื่นอยู่",
+
+  "advancedSettings": "การตั้งค่าขั้นสูง",
+  "skipIfGoalMet": "ข้ามหากบรรลุเป้าหมายแล้ว",
+  "skipIfGoalMetDescription": "ไม่ส่งการแจ้งเตือนหากคุณบรรลุเป้าหมายประจำวันแล้ว",
+  "doNotDisturb": "ห้ามรบกวน",
+  "doNotDisturbDescription": "หยุดการแจ้งเตือนชั่วคราวในช่วงเวลาที่กำหนด",
+  "doNotDisturbStart": "เริ่มห้ามรบกวน",
+  "doNotDisturbEnd": "สิ้นสุดห้ามรบกวน",
+
+  "reminderInterval": "ช่วงเวลาการแจ้งเตือน",
+  "customTimes": "เวลาที่กำหนดเอง",
+  "addTime": "เพิ่มเวลา",
+  "maxTimesReached": "ถึงจำนวนเวลาสูงสุดแล้ว",
+  "needAtLeastOneTime": "คุณต้องมีเวลาแจ้งเตือนอย่างน้อยหนึ่งเวลา",
+  "timeAlreadyExists": "เวลานี้มีอยู่แล้ว",
+
+  "hour": "ชั่วโมง",
+  "hours": "ชั่วโมง",
+  "minute": "นาที",
+  "minutes": "นาที",
+  "hourShort": "ชม.",
+  "minuteShort": "น.",
+
+  "congratulations": "ยินดีด้วย!",
+  "profileSetupComplete": "โปรไฟล์ของคุณได้รับการตั้งค่าเรียบร้อยแล้ว",
+  "yourDailyWaterIntake": "ปริมาณน้ำที่ดื่มประจำวันของคุณ",
+  "perDay": "ต่อวัน",
+  "basedOnWeather": "ขึ้นอยู่กับสภาพอากาศปัจจุบัน",
+  "waterIntakeExplanation": "คำแนะนำนี้อิงตามโปรไฟล์ของคุณและสภาพอากาศปัจจุบัน จะปรับเปลี่ยนเมื่อสภาพเปลี่ยนแปลง",
+
+  "liters": "ลิตร",
+  "fluidOunces": "ออนซ์",
+
+  "home": "หน้าหลัก",
+  "history": "ประวัติ",
+  "waterHistory": "ประวัติการดื่มน้ำ",
+  "day": "วัน",
+  "week": "สัปดาห์",
+  "month": "เดือน",
+  "year": "ปี",
+
+  "reminderTimes": "เวลาแจ้งเตือน",
+  "tapToToggleHint": "แตะเพื่อเปิดหรือปิดเวลาแจ้งเตือน",
+
+  "selectDrinkType": "เลือกประเภทเครื่องดื่ม",
+  "streak": "สถิติต่อเนื่อง",
+  "currentStreak": "สถิติต่อเนื่องปัจจุบัน",
+  "longestStreak": "สถิติต่อเนื่องยาวนานที่สุด",
+  "days": "วัน",
+  "noStreakYet": "ยังไม่มีสถิติต่อเนื่อง",
+  "drinkWaterToStartStreak": "ดื่มน้ำวันนี้เพื่อเริ่มสถิติต่อเนื่องของคุณ!",
+  "drinkTodayToKeepStreak": "ดื่มวันนี้!",
+
+  "selectAmount": "เลือกปริมาณ",
+  "select": "เลือก",
+
+  "totalWaterIntake": "ปริมาณน้ำทั้งหมด",
+  "sinceUsingApp": "ตั้งแต่เริ่มใช้แอป"
 }

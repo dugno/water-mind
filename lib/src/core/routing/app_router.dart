@@ -12,8 +12,8 @@ import 'package:water_mind/src/pages/introduction/introduction.dart';
 import 'package:water_mind/src/pages/main_navigation_page.dart';
 import 'package:water_mind/src/pages/profile/profile_page.dart';
 import 'package:water_mind/src/pages/reminders/reminder_settings_page.dart';
+import 'package:water_mind/src/pages/splash/splash_page.dart';
 
-import 'package:water_mind/src/ui/widgets/calendar/example/dashed_week_view_example.dart';
 import 'package:water_mind/src/ui/widgets/hydration/hydration_widgets.dart';
 import 'package:water_mind/src/ui/widgets/wheel_picker/example/wheel_picker_example.dart';
 
@@ -32,6 +32,13 @@ class AppRouter extends _$AppRouter {
 
   @override
   List<AutoRoute> get routes => [
+        // Splash page - initial route
+        AutoRoute(
+          path: '/splash',
+          page: SplashRoute.page,
+          initial: true,
+        ),
+
         AutoRoute(
           path: '/introduction',
           page: IntroductionRoute.page,
@@ -55,9 +62,8 @@ class AppRouter extends _$AppRouter {
 
         // Main navigation page
         AutoRoute(
-          path: '/',
+          path: '/main',
           page: MainNavigationRoute.page,
-          initial: true,
           guards: [GettingStartedGuard()],
         ),
 

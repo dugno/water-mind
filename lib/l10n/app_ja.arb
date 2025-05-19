@@ -133,5 +133,118 @@
   "lightRainThunder": "雷を伴う小雨",
   "heavyRainThunder": "雷を伴う大雨",
   "lightSnowThunder": "雷を伴う小雪",
-  "heavySnowThunder": "雷を伴う大雪"
+  "heavySnowThunder": "雷を伴う大雪",
+
+  "selectYourPreferredLanguage": "希望する言語を選択してください",
+  "dailyGoal": "1日の目標",
+  "useCustomDailyGoal": "カスタム1日目標を使用",
+  "setDailyGoal": "1日の目標を設定",
+  "dailyGoalDescription": "あなたのカスタム1日水分摂取目標を設定してください",
+  "recommendedRangeMetric": "推奨範囲：2000-3500 ml",
+  "recommendedRangeImperial": "推奨範囲：68-118 oz",
+
+  "soundAndVibration": "音と振動",
+  "enableSound": "音を有効にする",
+  "enableVibration": "振動を有効にする",
+
+  "units": "単位",
+  "measurementUnit": "測定単位",
+
+  "physicalAttributes": "身体的特徴",
+  "genderWeightHeight": "性別、体重と身長",
+
+  "timeSettings": "時間設定",
+
+  "about": "アプリについて",
+  "sendFeedback": "フィードバックを送信",
+  "privacyPolicy": "プライバシーポリシー",
+  "shareApp": "アプリを共有",
+  "aboutApp": "アプリについて",
+
+  "waterIntakeForecast": "水分摂取予測",
+  "noForecastData": "予測データがありません",
+  "refresh": "更新",
+  "refreshingForecast": "予測データを更新中...",
+  "recommendedIntake": "推奨",
+  "lastDrink": "最後の飲み物",
+
+  "yourProfile": "あなたのプロフィール",
+  "tapToEdit": "タップして編集",
+  "reminderSettings": "リマインダー設定",
+
+  "save": "保存",
+  "cancel": "キャンセル",
+  "notSet": "未設定",
+
+  "reminders": "リマインダー",
+  "enableReminders": "リマインダーを有効にする",
+  "enableRemindersDescription": "1日を通して水分摂取の通知を受け取る",
+  "reminderMode": "リマインダーモード",
+  "standardMode": "標準",
+  "intervalMode": "間隔",
+  "customMode": "カスタム",
+  "standardModeDescription": "起床時間と就寝時間に基づく最適なリマインダー",
+  "intervalModeDescription": "1日を通して定期的な間隔でリマインダー",
+  "customModeDescription": "特定のリマインダー時間を自分で設定",
+
+  "wakeUpAndBedtime": "起床と就寝時間",
+  "wakeUpAndBedtimeDescription": "活動時間中にリマインダーをスケジュールします",
+
+  "advancedSettings": "詳細設定",
+  "skipIfGoalMet": "目標達成時にスキップ",
+  "skipIfGoalMetDescription": "すでに1日の目標を達成している場合はリマインダーを送信しない",
+  "doNotDisturb": "おやすみモード",
+  "doNotDisturbDescription": "特定の時間帯にリマインダーを一時停止",
+  "doNotDisturbStart": "おやすみモード開始",
+  "doNotDisturbEnd": "おやすみモード終了",
+
+  "reminderInterval": "リマインダー間隔",
+  "customTimes": "カスタム時間",
+  "addTime": "時間を追加",
+  "maxTimesReached": "最大時間数に達しました",
+  "needAtLeastOneTime": "少なくとも1つのリマインダー時間が必要です",
+  "timeAlreadyExists": "この時間はすでに存在します",
+
+  "hour": "時間",
+  "hours": "時間",
+  "minute": "分",
+  "minutes": "分",
+  "hourShort": "時",
+  "minuteShort": "分",
+
+  "congratulations": "おめでとうございます！",
+  "profileSetupComplete": "プロフィールが正常に設定されました",
+  "yourDailyWaterIntake": "あなたの1日の水分摂取量",
+  "perDay": "1日あたり",
+  "basedOnWeather": "現在の天気に基づく",
+  "waterIntakeExplanation": "この推奨はあなたのプロフィールと現在の天候状況に基づいています。条件が変わると調整されます。",
+
+  "liters": "リットル",
+  "fluidOunces": "液量オンス",
+
+  "home": "ホーム",
+  "history": "履歴",
+  "waterHistory": "水分摂取履歴",
+  "day": "日",
+  "week": "週",
+  "month": "月",
+  "year": "年",
+
+  "reminderTimes": "リマインダー時間",
+  "tapToToggleHint": "タップしてリマインダー時間を有効または無効にする",
+
+  "selectDrinkType": "飲み物の種類を選択",
+  "streak": "連続記録",
+  "currentStreak": "現在の連続記録",
+  "longestStreak": "最長連続記録",
+  "days": "日",
+  "noStreakYet": "まだ連続記録はありません",
+  "drinkWaterToStartStreak": "今日水を飲んで連続記録を始めましょう！",
+  "drinkTodayToKeepStreak": "今日飲みましょう！",
+
+  "selectAmount": "量を選択",
+  "select": "選択",
+
+  "totalWaterIntake": "総水分摂取量",
+  "sinceUsingApp": "アプリ使用開始から"
 }

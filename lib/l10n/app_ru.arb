@@ -133,5 +133,118 @@
   "lightRainThunder": "Небольшой дождь с грозой",
   "heavyRainThunder": "Сильный дождь с грозой",
   "lightSnowThunder": "Небольшой снег с грозой",
-  "heavySnowThunder": "Сильный снегопад с грозой"
+  "heavySnowThunder": "Сильный снегопад с грозой",
+
+  "selectYourPreferredLanguage": "Выберите предпочитаемый язык",
+  "dailyGoal": "Дневная цель",
+  "useCustomDailyGoal": "Использовать пользовательскую дневную цель",
+  "setDailyGoal": "Установить дневную цель",
+  "dailyGoalDescription": "Установите вашу пользовательскую цель ежедневного потребления воды",
+  "recommendedRangeMetric": "Рекомендуемый диапазон: 2000-3500 мл",
+  "recommendedRangeImperial": "Рекомендуемый диапазон: 68-118 унций",
+
+  "soundAndVibration": "Звук и вибрация",
+  "enableSound": "Включить звук",
+  "enableVibration": "Включить вибрацию",
+
+  "units": "Единицы измерения",
+  "measurementUnit": "Единица измерения",
+
+  "physicalAttributes": "Физические характеристики",
+  "genderWeightHeight": "Пол, вес и рост",
+
+  "timeSettings": "Настройки времени",
+
+  "about": "О приложении",
+  "sendFeedback": "Отправить отзыв",
+  "privacyPolicy": "Политика конфиденциальности",
+  "shareApp": "Поделиться приложением",
+  "aboutApp": "О приложении",
+
+  "waterIntakeForecast": "Прогноз потребления воды",
+  "noForecastData": "Нет доступных данных прогноза",
+  "refresh": "Обновить",
+  "refreshingForecast": "Обновление данных прогноза...",
+  "recommendedIntake": "рекомендуемо",
+  "lastDrink": "Последний напиток",
+
+  "yourProfile": "Ваш профиль",
+  "tapToEdit": "Нажмите для редактирования",
+  "reminderSettings": "Настройки напоминаний",
+
+  "save": "Сохранить",
+  "cancel": "Отмена",
+  "notSet": "Не установлено",
+
+  "reminders": "Напоминания",
+  "enableReminders": "Включить напоминания",
+  "enableRemindersDescription": "Получать уведомления о питье воды в течение дня",
+  "reminderMode": "Режим напоминаний",
+  "standardMode": "Стандартный",
+  "intervalMode": "Интервальный",
+  "customMode": "Пользовательский",
+  "standardModeDescription": "Оптимальные напоминания на основе вашего времени пробуждения и сна",
+  "intervalModeDescription": "Напоминания через регулярные интервалы в течение дня",
+  "customModeDescription": "Установите свои собственные конкретные времена напоминаний",
+
+  "wakeUpAndBedtime": "Пробуждение и сон",
+  "wakeUpAndBedtimeDescription": "Мы запланируем напоминания в течение ваших активных часов",
+
+  "advancedSettings": "Расширенные настройки",
+  "skipIfGoalMet": "Пропускать, если цель достигнута",
+  "skipIfGoalMetDescription": "Не отправлять напоминания, если вы уже достигли дневной цели",
+  "doNotDisturb": "Не беспокоить",
+  "doNotDisturbDescription": "Приостановить напоминания в определенные часы",
+  "doNotDisturbStart": "Начало режима не беспокоить",
+  "doNotDisturbEnd": "Конец режима не беспокоить",
+
+  "reminderInterval": "Интервал напоминаний",
+  "customTimes": "Пользовательские времена",
+  "addTime": "Добавить время",
+  "maxTimesReached": "Достигнуто максимальное количество времен",
+  "needAtLeastOneTime": "Вам нужно хотя бы одно время напоминания",
+  "timeAlreadyExists": "Это время уже существует",
+
+  "hour": "час",
+  "hours": "часов",
+  "minute": "минута",
+  "minutes": "минут",
+  "hourShort": "ч",
+  "minuteShort": "м",
+
+  "congratulations": "Поздравляем!",
+  "profileSetupComplete": "Ваш профиль успешно настроен",
+  "yourDailyWaterIntake": "Ваше ежедневное потребление воды",
+  "perDay": "в день",
+  "basedOnWeather": "На основе текущей погоды",
+  "waterIntakeExplanation": "Эта рекомендация основана на вашем профиле и текущих погодных условиях. Она будет корректироваться при изменении условий.",
+
+  "liters": "литров",
+  "fluidOunces": "жидких унций",
+
+  "home": "Главная",
+  "history": "История",
+  "waterHistory": "История потребления воды",
+  "day": "День",
+  "week": "Неделя",
+  "month": "Месяц",
+  "year": "Год",
+
+  "reminderTimes": "Времена напоминаний",
+  "tapToToggleHint": "Нажмите, чтобы включить или отключить время напоминания",
+
+  "selectDrinkType": "Выберите тип напитка",
+  "streak": "Серия",
+  "currentStreak": "Текущая серия",
+  "longestStreak": "Самая длинная серия",
+  "days": "дней",
+  "noStreakYet": "Пока нет серии",
+  "drinkWaterToStartStreak": "Выпейте воды сегодня, чтобы начать серию!",
+  "drinkTodayToKeepStreak": "Пейте сегодня!",
+
+  "selectAmount": "Выберите количество",
+  "select": "Выбрать",
+
+  "totalWaterIntake": "Общее количество воды",
+  "sinceUsingApp": "с начала использования приложения"
 }

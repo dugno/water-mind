@@ -134,5 +134,118 @@
   "lightRainThunder": "Ploaie ușoară cu tunete",
   "heavyRainThunder": "Ploaie puternică cu tunete",
   "lightSnowThunder": "Ninsoare ușoară cu tunete",
-  "heavySnowThunder": "Ninsoare puternică cu tunete"
+  "heavySnowThunder": "Ninsoare puternică cu tunete",
+
+  "selectYourPreferredLanguage": "Selectați limba preferată",
+  "dailyGoal": "Obiectiv zilnic",
+  "useCustomDailyGoal": "Utilizați obiectiv zilnic personalizat",
+  "setDailyGoal": "Setați obiectiv zilnic",
+  "dailyGoalDescription": "Setați obiectivul personalizat de consum zilnic de apă",
+  "recommendedRangeMetric": "Interval recomandat: 2000-3500 ml",
+  "recommendedRangeImperial": "Interval recomandat: 68-118 oz",
+
+  "soundAndVibration": "Sunet și vibrație",
+  "enableSound": "Activați sunetul",
+  "enableVibration": "Activați vibrația",
+
+  "units": "Unități",
+  "measurementUnit": "Unitate de măsură",
+
+  "physicalAttributes": "Atribute fizice",
+  "genderWeightHeight": "Gen, greutate și înălțime",
+
+  "timeSettings": "Setări de timp",
+
+  "about": "Despre",
+  "sendFeedback": "Trimiteți feedback",
+  "privacyPolicy": "Politica de confidențialitate",
+  "shareApp": "Distribuiți aplicația",
+  "aboutApp": "Despre aplicație",
+
+  "waterIntakeForecast": "Prognoză consum de apă",
+  "noForecastData": "Nu există date de prognoză disponibile",
+  "refresh": "Reîmprospătare",
+  "refreshingForecast": "Reîmprospătare date prognoză...",
+  "recommendedIntake": "recomandat",
+  "lastDrink": "Ultima băutură",
+
+  "yourProfile": "Profilul dvs.",
+  "tapToEdit": "Atingeți pentru a edita",
+  "reminderSettings": "Setări memento",
+
+  "save": "Salvare",
+  "cancel": "Anulare",
+  "notSet": "Nesetat",
+
+  "reminders": "Memento-uri",
+  "enableReminders": "Activați memento-urile",
+  "enableRemindersDescription": "Primiți notificări pentru a bea apă pe parcursul zilei",
+  "reminderMode": "Mod memento",
+  "standardMode": "Standard",
+  "intervalMode": "Interval",
+  "customMode": "Personalizat",
+  "standardModeDescription": "Memento-uri optime bazate pe ora de trezire și de culcare",
+  "intervalModeDescription": "Memento-uri la intervale regulate pe parcursul zilei",
+  "customModeDescription": "Setați propriile ore specifice de memento",
+
+  "wakeUpAndBedtime": "Ora de trezire și de culcare",
+  "wakeUpAndBedtimeDescription": "Vom programa memento-uri în timpul orelor active",
+
+  "advancedSettings": "Setări avansate",
+  "skipIfGoalMet": "Omiteți dacă obiectivul este atins",
+  "skipIfGoalMetDescription": "Nu trimiteți memento-uri dacă ați atins deja obiectivul zilnic",
+  "doNotDisturb": "Nu deranjați",
+  "doNotDisturbDescription": "Întrerupeți memento-urile în anumite ore",
+  "doNotDisturbStart": "Începutul Nu deranjați",
+  "doNotDisturbEnd": "Sfârșitul Nu deranjați",
+
+  "reminderInterval": "Interval memento",
+  "customTimes": "Ore personalizate",
+  "addTime": "Adăugați oră",
+  "maxTimesReached": "Număr maxim de ore atins",
+  "needAtLeastOneTime": "Aveți nevoie de cel puțin o oră de memento",
+  "timeAlreadyExists": "Această oră există deja",
+
+  "hour": "oră",
+  "hours": "ore",
+  "minute": "minut",
+  "minutes": "minute",
+  "hourShort": "h",
+  "minuteShort": "m",
+
+  "congratulations": "Felicitări!",
+  "profileSetupComplete": "Profilul dvs. a fost configurat cu succes",
+  "yourDailyWaterIntake": "Consumul dvs. zilnic de apă",
+  "perDay": "pe zi",
+  "basedOnWeather": "Bazat pe vremea actuală",
+  "waterIntakeExplanation": "Această recomandare se bazează pe profilul dvs. și condițiile meteorologice actuale. Se va ajusta pe măsură ce condițiile se schimbă.",
+
+  "liters": "litri",
+  "fluidOunces": "uncie lichidă",
+
+  "home": "Acasă",
+  "history": "Istoric",
+  "waterHistory": "Istoric apă",
+  "day": "Zi",
+  "week": "Săptămână",
+  "month": "Lună",
+  "year": "An",
+
+  "reminderTimes": "Ore memento",
+  "tapToToggleHint": "Atingeți pentru a activa sau dezactiva o oră de memento",
+
+  "selectDrinkType": "Selectați tipul de băutură",
+  "streak": "Serie",
+  "currentStreak": "Serie curentă",
+  "longestStreak": "Cea mai lungă serie",
+  "days": "zile",
+  "noStreakYet": "Încă nu există serie",
+  "drinkWaterToStartStreak": "Beți apă astăzi pentru a începe seria dvs.!",
+  "drinkTodayToKeepStreak": "Beți astăzi!",
+
+  "selectAmount": "Selectați cantitatea",
+  "select": "Selectați",
+
+  "totalWaterIntake": "Apă totală",
+  "sinceUsingApp": "de când folosiți aplicația"
 }

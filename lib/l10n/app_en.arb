@@ -72,6 +72,10 @@
   "@changeLanguage": {
     "description": "Change language button"
   },
+  "selectYourPreferredLanguage": "Select your preferred language",
+  "@selectYourPreferredLanguage": {
+    "description": "Subtitle for language selection screen"
+  },
   "skip": "Skip",
   "@skip": {
     "description": "Skip button"

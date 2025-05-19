@@ -134,5 +134,118 @@
   "lightRainThunder": "Hujan Ringan dengan Petir",
   "heavyRainThunder": "Hujan Lebat dengan Petir",
   "lightSnowThunder": "Salju Ringan dengan Petir",
-  "heavySnowThunder": "Salju Lebat dengan Petir"
+  "heavySnowThunder": "Salju Lebat dengan Petir",
+
+  "selectYourPreferredLanguage": "Pilih bahasa yang Anda inginkan",
+  "dailyGoal": "Target Harian",
+  "useCustomDailyGoal": "Gunakan target harian kustom",
+  "setDailyGoal": "Atur target harian",
+  "dailyGoalDescription": "Atur target asupan air harian kustom Anda",
+  "recommendedRangeMetric": "Rentang yang direkomendasikan: 2000-3500 ml",
+  "recommendedRangeImperial": "Rentang yang direkomendasikan: 68-118 oz",
+
+  "soundAndVibration": "Suara & Getaran",
+  "enableSound": "Aktifkan suara",
+  "enableVibration": "Aktifkan getaran",
+
+  "units": "Satuan",
+  "measurementUnit": "Satuan pengukuran",
+
+  "physicalAttributes": "Atribut Fisik",
+  "genderWeightHeight": "Jenis kelamin, berat & tinggi",
+
+  "timeSettings": "Pengaturan Waktu",
+
+  "about": "Tentang",
+  "sendFeedback": "Kirim masukan",
+  "privacyPolicy": "Kebijakan privasi",
+  "shareApp": "Bagikan aplikasi",
+  "aboutApp": "Tentang aplikasi",
+
+  "waterIntakeForecast": "Perkiraan Asupan Air",
+  "noForecastData": "Tidak ada data perkiraan",
+  "refresh": "Segarkan",
+  "refreshingForecast": "Menyegarkan data perkiraan...",
+  "recommendedIntake": "direkomendasikan",
+  "lastDrink": "Minuman Terakhir",
+
+  "yourProfile": "Profil Anda",
+  "tapToEdit": "Ketuk untuk mengedit",
+  "reminderSettings": "Pengaturan pengingat",
+
+  "save": "Simpan",
+  "cancel": "Batal",
+  "notSet": "Belum diatur",
+
+  "reminders": "Pengingat",
+  "enableReminders": "Aktifkan Pengingat",
+  "enableRemindersDescription": "Dapatkan notifikasi untuk minum air sepanjang hari",
+  "reminderMode": "Mode Pengingat",
+  "standardMode": "Standar",
+  "intervalMode": "Interval",
+  "customMode": "Kustom",
+  "standardModeDescription": "Pengingat optimal berdasarkan waktu bangun dan tidur Anda",
+  "intervalModeDescription": "Pengingat pada interval teratur sepanjang hari",
+  "customModeDescription": "Atur waktu pengingat spesifik Anda sendiri",
+
+  "wakeUpAndBedtime": "Waktu Bangun & Tidur",
+  "wakeUpAndBedtimeDescription": "Kami akan menjadwalkan pengingat selama jam aktif Anda",
+
+  "advancedSettings": "Pengaturan Lanjutan",
+  "skipIfGoalMet": "Lewati Jika Target Terpenuhi",
+  "skipIfGoalMetDescription": "Jangan kirim pengingat jika Anda sudah memenuhi target harian",
+  "doNotDisturb": "Jangan Ganggu",
+  "doNotDisturbDescription": "Jeda pengingat selama jam tertentu",
+  "doNotDisturbStart": "Mulai Jangan Ganggu",
+  "doNotDisturbEnd": "Akhir Jangan Ganggu",
+
+  "reminderInterval": "Interval Pengingat",
+  "customTimes": "Waktu Kustom",
+  "addTime": "Tambah Waktu",
+  "maxTimesReached": "Jumlah maksimum waktu tercapai",
+  "needAtLeastOneTime": "Anda memerlukan setidaknya satu waktu pengingat",
+  "timeAlreadyExists": "Waktu ini sudah ada",
+
+  "hour": "jam",
+  "hours": "jam",
+  "minute": "menit",
+  "minutes": "menit",
+  "hourShort": "j",
+  "minuteShort": "m",
+
+  "congratulations": "Selamat!",
+  "profileSetupComplete": "Profil Anda telah berhasil diatur",
+  "yourDailyWaterIntake": "Asupan Air Harian Anda",
+  "perDay": "per hari",
+  "basedOnWeather": "Berdasarkan cuaca saat ini",
+  "waterIntakeExplanation": "Rekomendasi ini didasarkan pada profil Anda dan kondisi cuaca saat ini. Ini akan menyesuaikan saat kondisi berubah.",
+
+  "liters": "liter",
+  "fluidOunces": "fl oz",
+
+  "home": "Beranda",
+  "history": "Riwayat",
+  "waterHistory": "Riwayat Air",
+  "day": "Hari",
+  "week": "Minggu",
+  "month": "Bulan",
+  "year": "Tahun",
+
+  "reminderTimes": "Waktu Pengingat",
+  "tapToToggleHint": "Ketuk untuk mengaktifkan atau menonaktifkan waktu pengingat",
+
+  "selectDrinkType": "Pilih Jenis Minuman",
+  "streak": "Rangkaian",
+  "currentStreak": "Rangkaian Saat Ini",
+  "longestStreak": "Rangkaian Terpanjang",
+  "days": "hari",
+  "noStreakYet": "Belum ada rangkaian",
+  "drinkWaterToStartStreak": "Minum air hari ini untuk memulai rangkaian Anda!",
+  "drinkTodayToKeepStreak": "Minum hari ini!",
+
+  "selectAmount": "Pilih Jumlah",
+  "select": "Pilih",
+
+  "totalWaterIntake": "Total Air",
+  "sinceUsingApp": "sejak menggunakan aplikasi"
 }

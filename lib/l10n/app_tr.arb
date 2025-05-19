@@ -134,5 +134,118 @@
   "lightRainThunder": "Gök Gürültülü Hafif Yağmur",
   "heavyRainThunder": "Gök Gürültülü Şiddetli Yağmur",
   "lightSnowThunder": "Gök Gürültülü Hafif Kar",
-  "heavySnowThunder": "Gök Gürültülü Şiddetli Kar"
+  "heavySnowThunder": "Gök Gürültülü Şiddetli Kar",
+
+  "selectYourPreferredLanguage": "Tercih ettiğiniz dili seçin",
+  "dailyGoal": "Günlük Hedef",
+  "useCustomDailyGoal": "Özel günlük hedef kullan",
+  "setDailyGoal": "Günlük hedef belirle",
+  "dailyGoalDescription": "Özel günlük su tüketim hedefinizi belirleyin",
+  "recommendedRangeMetric": "Önerilen aralık: 2000-3500 ml",
+  "recommendedRangeImperial": "Önerilen aralık: 68-118 oz",
+
+  "soundAndVibration": "Ses ve Titreşim",
+  "enableSound": "Sesi etkinleştir",
+  "enableVibration": "Titreşimi etkinleştir",
+
+  "units": "Birimler",
+  "measurementUnit": "Ölçüm birimi",
+
+  "physicalAttributes": "Fiziksel Özellikler",
+  "genderWeightHeight": "Cinsiyet, kilo ve boy",
+
+  "timeSettings": "Zaman Ayarları",
+
+  "about": "Hakkında",
+  "sendFeedback": "Geri bildirim gönder",
+  "privacyPolicy": "Gizlilik politikası",
+  "shareApp": "Uygulamayı paylaş",
+  "aboutApp": "Uygulama hakkında",
+
+  "waterIntakeForecast": "Su Tüketimi Tahmini",
+  "noForecastData": "Tahmin verisi yok",
+  "refresh": "Yenile",
+  "refreshingForecast": "Tahmin verileri yenileniyor...",
+  "recommendedIntake": "önerilen",
+  "lastDrink": "Son İçecek",
+
+  "yourProfile": "Profiliniz",
+  "tapToEdit": "Düzenlemek için dokunun",
+  "reminderSettings": "Hatırlatıcı ayarları",
+
+  "save": "Kaydet",
+  "cancel": "İptal",
+  "notSet": "Ayarlanmadı",
+
+  "reminders": "Hatırlatıcılar",
+  "enableReminders": "Hatırlatıcıları Etkinleştir",
+  "enableRemindersDescription": "Gün boyunca su içmek için bildirimler alın",
+  "reminderMode": "Hatırlatıcı Modu",
+  "standardMode": "Standart",
+  "intervalMode": "Aralıklı",
+  "customMode": "Özel",
+  "standardModeDescription": "Uyanma ve yatma saatinize göre optimize edilmiş hatırlatıcılar",
+  "intervalModeDescription": "Gün boyunca düzenli aralıklarla hatırlatıcılar",
+  "customModeDescription": "Kendi özel hatırlatıcı zamanlarınızı belirleyin",
+
+  "wakeUpAndBedtime": "Uyanma ve Yatma Saati",
+  "wakeUpAndBedtimeDescription": "Aktif saatleriniz boyunca hatırlatıcılar programlayacağız",
+
+  "advancedSettings": "Gelişmiş Ayarlar",
+  "skipIfGoalMet": "Hedef Karşılandıysa Atla",
+  "skipIfGoalMetDescription": "Günlük hedefinize zaten ulaştıysanız hatırlatıcı gönderme",
+  "doNotDisturb": "Rahatsız Etme",
+  "doNotDisturbDescription": "Belirli saatlerde hatırlatıcıları duraklat",
+  "doNotDisturbStart": "Rahatsız Etme Başlangıcı",
+  "doNotDisturbEnd": "Rahatsız Etme Bitişi",
+
+  "reminderInterval": "Hatırlatıcı Aralığı",
+  "customTimes": "Özel Zamanlar",
+  "addTime": "Zaman Ekle",
+  "maxTimesReached": "Maksimum zaman sayısına ulaşıldı",
+  "needAtLeastOneTime": "En az bir hatırlatıcı zamanına ihtiyacınız var",
+  "timeAlreadyExists": "Bu zaman zaten var",
+
+  "hour": "saat",
+  "hours": "saat",
+  "minute": "dakika",
+  "minutes": "dakika",
+  "hourShort": "s",
+  "minuteShort": "d",
+
+  "congratulations": "Tebrikler!",
+  "profileSetupComplete": "Profiliniz başarıyla kuruldu",
+  "yourDailyWaterIntake": "Günlük Su Tüketiminiz",
+  "perDay": "günde",
+  "basedOnWeather": "Mevcut hava durumuna göre",
+  "waterIntakeExplanation": "Bu öneri, profilinize ve mevcut hava koşullarına dayanmaktadır. Koşullar değiştikçe ayarlanacaktır.",
+
+  "liters": "litre",
+  "fluidOunces": "sıvı ons",
+
+  "home": "Ana Sayfa",
+  "history": "Geçmiş",
+  "waterHistory": "Su Geçmişi",
+  "day": "Gün",
+  "week": "Hafta",
+  "month": "Ay",
+  "year": "Yıl",
+
+  "reminderTimes": "Hatırlatıcı Zamanları",
+  "tapToToggleHint": "Bir hatırlatıcı zamanını etkinleştirmek veya devre dışı bırakmak için dokunun",
+
+  "selectDrinkType": "İçecek Türü Seçin",
+  "streak": "Seri",
+  "currentStreak": "Mevcut Seri",
+  "longestStreak": "En Uzun Seri",
+  "days": "gün",
+  "noStreakYet": "Henüz seri yok",
+  "drinkWaterToStartStreak": "Serinizi başlatmak için bugün su için!",
+  "drinkTodayToKeepStreak": "Bugün için!",
+
+  "selectAmount": "Miktar Seçin",
+  "select": "Seç",
+
+  "totalWaterIntake": "Toplam Su",
+  "sinceUsingApp": "uygulamayı kullanmaya başladığınızdan beri"
 }

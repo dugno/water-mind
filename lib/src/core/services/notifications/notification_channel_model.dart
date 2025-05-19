@@ -34,7 +34,7 @@ class NotificationChannelModel {
     required this.channelName,
     required this.channelDescription,
     this.importance = 3, // Default to high importance
-    this.showBadge = true,
+    this.showBadge = false,
     this.playSound = true,
     this.enableVibration = true,
     this.enableLights = true,
@@ -84,7 +84,7 @@ class NotificationChannelModel {
       channelName: map['channelName'] as String,
       channelDescription: map['channelDescription'] as String,
       importance: map['importance'] as int? ?? 3,
-      showBadge: map['showBadge'] as bool? ?? true,
+      showBadge: map['showBadge'] as bool? ?? false,
       playSound: map['playSound'] as bool? ?? true,
       enableVibration: map['enableVibration'] as bool? ?? true,
       enableLights: map['enableLights'] as bool? ?? true,
