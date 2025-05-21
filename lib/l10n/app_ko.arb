@@ -26,17 +26,14 @@
   "male": "남성",
   "female": "여성",
   "other": "기타",
-
   "pregnant": "임신",
   "breastfeeding": "수유",
-
   "heightWeight": "키와 체중",
   "dateOfBirth": "생년월일",
   "activityLevel": "활동 수준",
   "livingEnvironment": "생활 환경",
   "wakeUpTime": "기상 시간",
   "bedTime": "취침 시간",
-
   "genderDescription": "이것은 맞춤형 계획을 조정하는 데 사용됩니다.",
   "heightWeightDescription": "키와 체중은 수분 섭취 필요량을 계산하는 데 도움이 됩니다.",
   "dateOfBirthDescription": "나이는 수분 섭취 요구량에 영향을 미칩니다.",
@@ -44,12 +41,10 @@
   "livingEnvironmentDescription": "생활 환경은 수분 섭취 필요량에 영향을 미칩니다.",
   "wakeUpTimeDescription": "기상 후 첫 번째 물 알림을 예약합니다.",
   "bedTimeDescription": "취침 전에 알림을 중지합니다.",
-
   "height": "키",
   "weight": "체중",
   "metric": "미터법",
   "imperial": "영국식",
-
   "january": "1월",
   "february": "2월",
   "march": "3월",
@@ -62,22 +57,18 @@
   "october": "10월",
   "november": "11월",
   "december": "12월",
-
   "am": "오전",
   "pm": "오후",
-
   "sedentary": "비활동적 (거의 또는 전혀 운동하지 않음)",
   "lightlyActive": "약간 활동적 (주 1-3일 가벼운 운동)",
   "moderatelyActive": "중간 활동적 (주 3-5일 운동)",
   "veryActive": "매우 활동적 (주 6-7일 격렬한 운동)",
   "extraActive": "극도로 활동적 (매우 격렬한 운동 또는 육체 노동)",
-
   "airConditioned": "에어컨 (실내)",
   "hotSunny": "덥고 맑음",
   "rainyHumid": "비와 습함",
   "cold": "추움",
   "moderate": "온화함 (적당한 온도)",
-
   "dailyWaterIntake": "일일 물 섭취량",
   "calculationFactors": "계산 요소",
   "baseIntake": "기본 섭취량",
@@ -87,7 +78,6 @@
   "ageFactor": "나이",
   "awakeHoursFactor": "깨어있는 시간",
   "weatherFactor": "날씨",
-
   "sunny": "맑음",
   "cloudy": "흐림",
   "rainy": "비",
@@ -96,7 +86,6 @@
   "coldWeather": "추움",
   "snowy": "눈",
   "windy": "바람",
-
   "partlyCloudy": "구름 조금",
   "overcast": "흐림",
   "mist": "안개",
@@ -135,7 +124,6 @@
   "heavyRainThunder": "폭우와 천둥",
   "lightSnowThunder": "가벼운 눈과 천둥",
   "heavySnowThunder": "폭설과 천둥",
-
   "selectYourPreferredLanguage": "선호하는 언어를 선택하세요",
   "dailyGoal": "일일 목표",
   "useCustomDailyGoal": "맞춤 일일 목표 사용",
@@ -143,40 +131,35 @@
   "dailyGoalDescription": "맞춤형 일일 물 섭취 목표를 설정하세요",
   "recommendedRangeMetric": "권장 범위: 2000-3500 ml",
   "recommendedRangeImperial": "권장 범위: 68-118 oz",
-
   "soundAndVibration": "소리 및 진동",
   "enableSound": "소리 활성화",
   "enableVibration": "진동 활성화",
-
   "units": "단위",
   "measurementUnit": "측정 단위",
-
   "physicalAttributes": "신체 특성",
   "genderWeightHeight": "성별, 체중 및 키",
-
   "timeSettings": "시간 설정",
-
   "about": "정보",
   "sendFeedback": "피드백 보내기",
+  "feedbackThankYou": "피드백 감사합니다!",
+  "enterFeedbackHint": "여기에 피드백을 입력하세요...",
+  "feedbackValidationEmpty": "피드백을 입력해 주세요",
+  "feedbackValidationTooShort": "피드백은 최소 10자 이상이어야 합니다",
   "privacyPolicy": "개인정보 처리방침",
   "shareApp": "앱 공유하기",
   "aboutApp": "앱 정보",
-
   "waterIntakeForecast": "물 섭취 예측",
   "noForecastData": "사용 가능한 예측 데이터 없음",
   "refresh": "새로고침",
   "refreshingForecast": "예측 데이터 새로고침 중...",
   "recommendedIntake": "권장",
   "lastDrink": "마지막 음료",
-
   "yourProfile": "내 프로필",
   "tapToEdit": "편집하려면 탭하세요",
   "reminderSettings": "알림 설정",
-
   "save": "저장",
   "cancel": "취소",
   "notSet": "설정되지 않음",
-
   "reminders": "알림",
   "enableReminders": "알림 활성화",
   "enableRemindersDescription": "하루 종일 물 마시기 알림 받기",
@@ -187,10 +170,8 @@
   "standardModeDescription": "기상 및 취침 시간에 기반한 최적의 알림",
   "intervalModeDescription": "하루 종일 일정한 간격으로 알림",
   "customModeDescription": "특정 알림 시간을 직접 설정",
-
   "wakeUpAndBedtime": "기상 및 취침 시간",
   "wakeUpAndBedtimeDescription": "활동 시간 동안 알림을 예약합니다",
-
   "advancedSettings": "고급 설정",
   "skipIfGoalMet": "목표 달성 시 건너뛰기",
   "skipIfGoalMetDescription": "이미 일일 목표를 달성한 경우 알림을 보내지 않음",
@@ -198,31 +179,26 @@
   "doNotDisturbDescription": "특정 시간 동안 알림 일시 중지",
   "doNotDisturbStart": "방해 금지 시작",
   "doNotDisturbEnd": "방해 금지 종료",
-
   "reminderInterval": "알림 간격",
   "customTimes": "맞춤 시간",
   "addTime": "시간 추가",
   "maxTimesReached": "최대 시간 수에 도달했습니다",
   "needAtLeastOneTime": "최소 하나의 알림 시간이 필요합니다",
   "timeAlreadyExists": "이 시간은 이미 존재합니다",
-
   "hour": "시간",
   "hours": "시간",
   "minute": "분",
   "minutes": "분",
   "hourShort": "시",
   "minuteShort": "분",
-
   "congratulations": "축하합니다!",
   "profileSetupComplete": "프로필이 성공적으로 설정되었습니다",
   "yourDailyWaterIntake": "일일 물 섭취량",
   "perDay": "하루",
   "basedOnWeather": "현재 날씨 기반",
   "waterIntakeExplanation": "이 권장 사항은 프로필과 현재 날씨 조건을 기반으로 합니다. 조건이 변경되면 조정됩니다.",
-
   "liters": "리터",
   "fluidOunces": "액량 온스",
-
   "home": "홈",
   "history": "기록",
   "waterHistory": "물 섭취 기록",
@@ -230,10 +206,8 @@
   "week": "주",
   "month": "월",
   "year": "년",
-
   "reminderTimes": "알림 시간",
   "tapToToggleHint": "알림 시간을 활성화하거나 비활성화하려면 탭하세요",
-
   "selectDrinkType": "음료 유형 선택",
   "streak": "연속 기록",
   "currentStreak": "현재 연속 기록",
@@ -242,10 +216,41 @@
   "noStreakYet": "아직 연속 기록 없음",
   "drinkWaterToStartStreak": "오늘 물을 마셔서 연속 기록을 시작하세요!",
   "drinkTodayToKeepStreak": "오늘 마시세요!",
-
   "selectAmount": "양 선택",
   "select": "선택",
-
   "totalWaterIntake": "총 물 섭취량",
-  "sinceUsingApp": "앱 사용 이후"
+  "sinceUsingApp": "앱 사용 이후",
+  "privacyPolicyChangesTitle": "이 정책의 변경",
+  "privacyPolicyIntroContent": "이 개인 정보 보호 정책은 Water Mind 애플리케이션을 사용할 때 귀하의 개인 정보를 수집, 사용 및 공유하는 방법에 대해 설명합니다. 당사는 귀하의 개인 정보를 존중하며 귀하의 개인 데이터를 보호하기 위해 최선을 다하고 있습니다.",
+  "aboutAppContactTitle": "연락하다",
+  "privacyPolicyCollectTitle": "우리가 수집 한 정보",
+  "privacyPolicyCollectContent": "우리는 귀하의 성별, 체중, 높이, 생년월일, 활동 수준, 생활 환경, 모닝 타임 및 취침 시간과 같이 귀하가 직접 제공하는 정보를 수집합니다. 또한 물 섭취 습관 및 앱 사용 패턴에 대한 정보도 수집합니다.",
+  "privacyPolicyIntroTitle": "소개",
+  "privacyPolicyContactTitle": "저희에게 연락하십시오",
+  "privacyPolicyLastUpdated": "마지막 업데이트 : 2023 년 6 월",
+  "aboutAppDeveloperTitle": "개발자",
+  "privacyPolicyFeedbackTitle": "피드백",
+  "aboutAppAcknowledgmentsContent": "Weatherapi.com에서 제공하는 날씨 데이터\n다양한 오픈 소스 라이브러리의 아이콘 및 그래픽",
+  "privacyPolicyFeedbackContent": "앱을 통해 피드백을 제공 할 때는 서비스를 개선하는 데 도움이되는 기본 장치 정보와 함께 귀하가 제출 한 정보를 수집합니다.",
+  "aboutAppDescriptionTitle": "설명",
+  "aboutAppLoadingVersion": "로드 버전 ...",
+  "privacyPolicyStorageContent": "귀하의 데이터는 주로 장치에 로컬로 저장됩니다. 앱 개선 목적으로 일부 익명 사용 데이터가 수집 될 수 있습니다.",
+  "privacyPolicyRightsContent": "귀하는 앱 설정을 통해 언제든지 개인 정보에 액세스, 수정 또는 삭제할 권리가 있습니다.",
+  "privacyPolicyUseTitle": "귀하의 정보를 사용하는 방법",
+  "privacyPolicyUseContent": "당사는 우리가 수집 한 정보를 사용하여 권장 일일 물 섭취량을 계산하고, 수화 알림을 보내고, 진행 상황을 추적하는 등 서비스를 제공, 유지 및 개선합니다.",
+  "aboutAppDeveloperContent": "Vie Tech가 개발했습니다",
+  "privacyPolicyContactContent": "이 개인 정보 보호 정책에 대해 궁금한 점이 있으시면 support@watermind.app로 문의하십시오.",
+  "privacyPolicyChangesContent": "이 개인 정보 보호 정책을 수시로 업데이트 할 수 있습니다. 이 페이지에 새로운 개인 정보 보호 정책을 게시하여 변경 사항을 알려드립니다.",
+  "aboutAppDescriptionContent": "Water Mind는 하루 종일 최적의 수화 수준을 유지하도록 설계된 수화 추적 앱입니다. 앱은 개인 프로필 및 환경 요인에 따라 권장 물 섭취량을 계산합니다.",
+  "aboutAppFeaturesContent": "• 개인화 된 물 섭취 권장 사항\n• 날씨 기반 수화 조정\n• 사용자 정의 가능한 알림\n• 상세한 수화 이력\n• 동기 부여를위한 줄무늬 추적",
+  "aboutAppCopyright": "© {year} Vie Tech. 판권 소유.",
+  "privacyPolicyWeatherTitle": "날씨 데이터",
+  "privacyPolicyRightsTitle": "당신의 권리",
+  "privacyPolicyStorageTitle": "데이터 저장",
+  "aboutAppFeaturesTitle": "특징",
+  "privacyPolicyTitle": "개인 정보 보호 정책",
+  "aboutAppContactContent": "지원 또는 피드백은 다음과 같이 문의하십시오.\nsupport@watermind.app",
+  "privacyPolicyWeatherContent": "귀하의 허락하에, 당사는 귀하의 위치에 액세스하여 날씨 기반 수화 권장 사항을 제공합니다. 이 데이터는 앱 내에서만 사용되며 타사와 공유되지 않습니다.",
+  "aboutAppAcknowledgmentsTitle": "감사의 말",
+  "aboutAppVersion": "Version {version} ({buildNumber})"
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
@@ -137,7 +136,7 @@ class _LanguageSelectorFullscreenState extends State<LanguageSelectorFullscreen>
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
                 side: isSelected
-                    ? BorderSide(color: AppColor.thirdColor, width: 2)
+                    ? const BorderSide(color: AppColor.thirdColor, width: 2)
                     : BorderSide.none,
               ),
               color: isSelected

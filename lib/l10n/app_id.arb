@@ -26,17 +26,14 @@
   "male": "Laki-laki",
   "female": "Perempuan",
   "other": "Lainnya",
-
   "pregnant": "Hamil",
   "breastfeeding": "Menyusui",
-
   "heightWeight": "TINGGI & BERAT",
   "dateOfBirth": "TANGGAL LAHIR",
   "activityLevel": "TINGKAT AKTIVITAS",
   "livingEnvironment": "KONDISI HIDUP",
   "wakeUpTime": "WAKTU BANGUN",
   "bedTime": "WAKTU TIDUR",
-
   "genderDescription": "Ini akan digunakan untuk mengkalibrasi rencana khusus Anda.",
   "heightWeightDescription": "Tinggi dan berat badan Anda membantu kami menghitung kebutuhan hidrasi Anda.",
   "dateOfBirthDescription": "Usia Anda mempengaruhi kebutuhan hidrasi Anda.",
@@ -44,12 +41,10 @@
   "livingEnvironmentDescription": "Kondisi hidup Anda mempengaruhi kebutuhan hidrasi Anda.",
   "wakeUpTimeDescription": "Kami akan menjadwalkan pengingat air pertama Anda setelah Anda bangun.",
   "bedTimeDescription": "Kami akan menghentikan pengingat sebelum waktu tidur Anda.",
-
   "height": "Tinggi",
   "weight": "Berat",
   "metric": "Metrik",
   "imperial": "Imperial",
-
   "january": "Jan",
   "february": "Feb",
   "march": "Mar",
@@ -62,22 +57,18 @@
   "october": "Okt",
   "november": "Nov",
   "december": "Des",
-
   "am": "AM",
   "pm": "PM",
-
   "sedentary": "Tidak aktif (sedikit atau tidak ada olahraga)",
   "lightlyActive": "Sedikit aktif (olahraga ringan 1-3 hari/minggu)",
   "moderatelyActive": "Cukup aktif (olahraga 3-5 hari/minggu)",
   "veryActive": "Sangat aktif (olahraga berat 6-7 hari/minggu)",
   "extraActive": "Ekstra aktif (olahraga sangat berat atau pekerjaan fisik)",
-
   "airConditioned": "Ber-AC (dalam ruangan)",
   "hotSunny": "Panas dan cerah",
   "rainyHumid": "Hujan dan lembab",
   "cold": "Dingin",
   "moderate": "Sedang (suhu ringan)",
-
   "dailyWaterIntake": "Asupan Air Harian Anda",
   "calculationFactors": "Faktor Perhitungan",
   "baseIntake": "Asupan dasar",
@@ -87,7 +78,6 @@
   "ageFactor": "Usia",
   "awakeHoursFactor": "Jam terjaga",
   "weatherFactor": "Cuaca",
-
   "sunny": "Cerah",
   "cloudy": "Berawan",
   "rainy": "Hujan",
@@ -96,7 +86,6 @@
   "coldWeather": "Dingin",
   "snowy": "Bersalju",
   "windy": "Berangin",
-
   "partlyCloudy": "Berawan Sebagian",
   "overcast": "Mendung",
   "mist": "Kabut Tipis",
@@ -135,7 +124,6 @@
   "heavyRainThunder": "Hujan Lebat dengan Petir",
   "lightSnowThunder": "Salju Ringan dengan Petir",
   "heavySnowThunder": "Salju Lebat dengan Petir",
-
   "selectYourPreferredLanguage": "Pilih bahasa yang Anda inginkan",
   "dailyGoal": "Target Harian",
   "useCustomDailyGoal": "Gunakan target harian kustom",
@@ -143,40 +131,35 @@
   "dailyGoalDescription": "Atur target asupan air harian kustom Anda",
   "recommendedRangeMetric": "Rentang yang direkomendasikan: 2000-3500 ml",
   "recommendedRangeImperial": "Rentang yang direkomendasikan: 68-118 oz",
-
   "soundAndVibration": "Suara & Getaran",
   "enableSound": "Aktifkan suara",
   "enableVibration": "Aktifkan getaran",
-
   "units": "Satuan",
   "measurementUnit": "Satuan pengukuran",
-
   "physicalAttributes": "Atribut Fisik",
   "genderWeightHeight": "Jenis kelamin, berat & tinggi",
-
   "timeSettings": "Pengaturan Waktu",
-
   "about": "Tentang",
   "sendFeedback": "Kirim masukan",
+  "feedbackThankYou": "Terima kasih atas masukan Anda!",
+  "enterFeedbackHint": "Masukkan masukan Anda di sini...",
+  "feedbackValidationEmpty": "Silakan masukkan masukan Anda",
+  "feedbackValidationTooShort": "Masukan harus minimal 10 karakter",
   "privacyPolicy": "Kebijakan privasi",
   "shareApp": "Bagikan aplikasi",
   "aboutApp": "Tentang aplikasi",
-
   "waterIntakeForecast": "Perkiraan Asupan Air",
   "noForecastData": "Tidak ada data perkiraan",
   "refresh": "Segarkan",
   "refreshingForecast": "Menyegarkan data perkiraan...",
   "recommendedIntake": "direkomendasikan",
   "lastDrink": "Minuman Terakhir",
-
   "yourProfile": "Profil Anda",
   "tapToEdit": "Ketuk untuk mengedit",
   "reminderSettings": "Pengaturan pengingat",
-
   "save": "Simpan",
   "cancel": "Batal",
   "notSet": "Belum diatur",
-
   "reminders": "Pengingat",
   "enableReminders": "Aktifkan Pengingat",
   "enableRemindersDescription": "Dapatkan notifikasi untuk minum air sepanjang hari",
@@ -187,10 +170,8 @@
   "standardModeDescription": "Pengingat optimal berdasarkan waktu bangun dan tidur Anda",
   "intervalModeDescription": "Pengingat pada interval teratur sepanjang hari",
   "customModeDescription": "Atur waktu pengingat spesifik Anda sendiri",
-
   "wakeUpAndBedtime": "Waktu Bangun & Tidur",
   "wakeUpAndBedtimeDescription": "Kami akan menjadwalkan pengingat selama jam aktif Anda",
-
   "advancedSettings": "Pengaturan Lanjutan",
   "skipIfGoalMet": "Lewati Jika Target Terpenuhi",
   "skipIfGoalMetDescription": "Jangan kirim pengingat jika Anda sudah memenuhi target harian",
@@ -198,31 +179,26 @@
   "doNotDisturbDescription": "Jeda pengingat selama jam tertentu",
   "doNotDisturbStart": "Mulai Jangan Ganggu",
   "doNotDisturbEnd": "Akhir Jangan Ganggu",
-
   "reminderInterval": "Interval Pengingat",
   "customTimes": "Waktu Kustom",
   "addTime": "Tambah Waktu",
   "maxTimesReached": "Jumlah maksimum waktu tercapai",
   "needAtLeastOneTime": "Anda memerlukan setidaknya satu waktu pengingat",
   "timeAlreadyExists": "Waktu ini sudah ada",
-
   "hour": "jam",
   "hours": "jam",
   "minute": "menit",
   "minutes": "menit",
   "hourShort": "j",
   "minuteShort": "m",
-
   "congratulations": "Selamat!",
   "profileSetupComplete": "Profil Anda telah berhasil diatur",
   "yourDailyWaterIntake": "Asupan Air Harian Anda",
   "perDay": "per hari",
   "basedOnWeather": "Berdasarkan cuaca saat ini",
   "waterIntakeExplanation": "Rekomendasi ini didasarkan pada profil Anda dan kondisi cuaca saat ini. Ini akan menyesuaikan saat kondisi berubah.",
-
   "liters": "liter",
   "fluidOunces": "fl oz",
-
   "home": "Beranda",
   "history": "Riwayat",
   "waterHistory": "Riwayat Air",
@@ -230,10 +206,8 @@
   "week": "Minggu",
   "month": "Bulan",
   "year": "Tahun",
-
   "reminderTimes": "Waktu Pengingat",
   "tapToToggleHint": "Ketuk untuk mengaktifkan atau menonaktifkan waktu pengingat",
-
   "selectDrinkType": "Pilih Jenis Minuman",
   "streak": "Rangkaian",
   "currentStreak": "Rangkaian Saat Ini",
@@ -242,10 +216,41 @@
   "noStreakYet": "Belum ada rangkaian",
   "drinkWaterToStartStreak": "Minum air hari ini untuk memulai rangkaian Anda!",
   "drinkTodayToKeepStreak": "Minum hari ini!",
-
   "selectAmount": "Pilih Jumlah",
   "select": "Pilih",
-
   "totalWaterIntake": "Total Air",
-  "sinceUsingApp": "sejak menggunakan aplikasi"
+  "sinceUsingApp": "sejak menggunakan aplikasi",
+  "privacyPolicyChangesTitle": "Perubahan Kebijakan Ini",
+  "privacyPolicyIntroContent": "Kebijakan privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan membagikan informasi pribadi Anda saat Anda menggunakan aplikasi Water Mind kami. Kami menghormati privasi Anda dan berkomitmen untuk melindungi data pribadi Anda.",
+  "aboutAppContactTitle": "Kontak",
+  "privacyPolicyCollectTitle": "Informasi yang kami kumpulkan",
+  "privacyPolicyCollectContent": "Kami mengumpulkan informasi yang Anda berikan langsung kepada kami, seperti jenis kelamin, berat badan, tinggi, tanggal lahir, tingkat aktivitas, lingkungan hidup, waktu bangun, dan waktu tidur. Kami juga mengumpulkan informasi tentang kebiasaan asupan air Anda dan pola penggunaan aplikasi.",
+  "privacyPolicyIntroTitle": "Perkenalan",
+  "privacyPolicyContactTitle": "Hubungi kami",
+  "privacyPolicyLastUpdated": "Terakhir Diperbarui: Juni 2023",
+  "aboutAppDeveloperTitle": "Pengembang",
+  "privacyPolicyFeedbackTitle": "Masukan",
+  "aboutAppAcknowledgmentsContent": "Data cuaca disediakan oleh weatherapi.com\nIkon dan grafik dari berbagai perpustakaan open-source",
+  "privacyPolicyFeedbackContent": "Saat Anda memberikan umpan balik melalui aplikasi kami, kami mengumpulkan informasi yang Anda kirimkan bersama dengan informasi perangkat dasar untuk membantu kami meningkatkan layanan kami.",
+  "aboutAppDescriptionTitle": "Keterangan",
+  "aboutAppLoadingVersion": "Versi Memuat ...",
+  "privacyPolicyStorageContent": "Data Anda terutama disimpan secara lokal di perangkat Anda. Beberapa data penggunaan anonim dapat dikumpulkan untuk tujuan peningkatan aplikasi.",
+  "privacyPolicyRightsContent": "Anda memiliki hak untuk mengakses, memperbaiki, atau menghapus informasi pribadi Anda kapan saja melalui pengaturan aplikasi.",
+  "privacyPolicyUseTitle": "Bagaimana kami menggunakan informasi Anda",
+  "privacyPolicyUseContent": "Kami menggunakan informasi yang kami kumpulkan untuk menyediakan, memelihara, dan meningkatkan layanan kami, termasuk menghitung asupan air harian yang Anda rekomendasikan, mengirimi Anda pengingat hidrasi, dan melacak kemajuan Anda.",
+  "aboutAppDeveloperContent": "Dikembangkan oleh Vie Tech",
+  "privacyPolicyContactContent": "Jika Anda memiliki pertanyaan tentang kebijakan privasi ini, silakan hubungi kami di support@watermind.app",
+  "privacyPolicyChangesContent": "Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Kami akan memberi tahu Anda tentang perubahan apa pun dengan memposting kebijakan privasi baru di halaman ini.",
+  "aboutAppDescriptionContent": "Water Mind adalah aplikasi pelacakan hidrasi yang dirancang untuk membantu Anda mempertahankan tingkat hidrasi yang optimal sepanjang hari. Aplikasi ini menghitung asupan air yang Anda rekomendasikan berdasarkan profil pribadi dan faktor lingkungan Anda.",
+  "aboutAppFeaturesContent": "• Rekomendasi Asupan Air yang Dipersonalisasi\n• Penyesuaian hidrasi berbasis cuaca\n• Pengingat yang dapat disesuaikan\n• Riwayat hidrasi yang terperinci\n• Pelacakan goresan untuk motivasi",
+  "aboutAppCopyright": "© {year} Vie Tech. Semua hak dilindungi undang -undang.",
+  "privacyPolicyWeatherTitle": "Data cuaca",
+  "privacyPolicyRightsTitle": "Hak Anda",
+  "privacyPolicyStorageTitle": "Penyimpanan data",
+  "aboutAppFeaturesTitle": "Fitur",
+  "privacyPolicyTitle": "Kebijakan Privasi",
+  "aboutAppContactContent": "Untuk dukungan atau umpan balik, silakan hubungi kami di:\nsupport@watermind.app",
+  "privacyPolicyWeatherContent": "Dengan izin Anda, kami mengakses lokasi Anda untuk memberikan rekomendasi hidrasi berbasis cuaca. Data ini hanya digunakan dalam aplikasi dan tidak dibagikan dengan pihak ketiga.",
+  "aboutAppAcknowledgmentsTitle": "Ucapan Terima Kasih",
+  "aboutAppVersion": "Version {version} ({buildNumber})"
 }

@@ -173,6 +173,7 @@ class SummaryPage extends ConsumerWidget {
                         ),
                         child: WaterIntakeDisplay(
                           userModel: userModel,
+                          saveToDatabase: true,
                         ),
                       ),
                     ],

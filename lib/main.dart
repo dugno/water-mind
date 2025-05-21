@@ -11,6 +11,7 @@ import 'src/core/services/firebase/firebase_remote_config_service.dart';
 import 'src/core/services/kv_store/kv_store.dart';
 import 'src/core/services/logger/app_logger.dart';
 import 'src/core/services/notifications/notification_riverpod_provider.dart';
+import 'src/core/services/premium/revenue_cat_service.dart';
 import 'src/core/services/reminders/reminder_service_provider.dart';
 
 void main() async {
@@ -25,6 +26,10 @@ void main() async {
 
     await KVStoreService.init();
     AppLogger.info('KVStore initialized');
+
+    // Log the detected language
+    final detectedLanguage = KVStoreService.appLanguage;
+    AppLogger.info('Detected language: $detectedLanguage');
 
     // Initialize Database Service
     final databaseService = DatabaseService();
@@ -76,6 +81,16 @@ void main() async {
     final reminderService = container.read(reminderServiceProvider);
     await reminderService.initialize();
     AppLogger.info('Reminder service initialized');
+
+    // Initialize RevenueCat for in-app purchases
+    try {
+      final revenueCatService = RevenueCatService();
+      await revenueCatService.initialize();
+      AppLogger.info('RevenueCat service initialized');
+    } catch (e, stackTrace) {
+      AppLogger.reportError(e, stackTrace, 'Failed to initialize RevenueCat');
+    }
+
     // Dispose the container as we'll create a new one for the app
     container.dispose();
 

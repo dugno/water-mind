@@ -1,4 +1,5 @@
 
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_mind/src/common/constant/strings/shared_preferences.dart';
 
@@ -57,8 +58,32 @@ abstract class KVStoreService {
   // ----------------------
 
   /// Get app language code
-  static String get appLanguage =>
-      sharedPreferences.getString(SharedPreferencesConst.appLanguage) ?? 'en';
+  /// If no language is set, it will try to use the device's language
+  /// If the device's language is not supported, it will fallback to English
+  static String get appLanguage {
+    // Check if a language has been explicitly set
+    final savedLanguage = sharedPreferences.getString(SharedPreferencesConst.appLanguage);
+    if (savedLanguage != null) {
+      return savedLanguage;
+    }
+
+    // Try to use the device's language
+    final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
+    final deviceLanguage = deviceLocale.languageCode;
+
+    // Check if the device language is supported
+    // This list should match the supported locales in the app
+    const supportedLanguages = [
+      'en', 'vi', 'zh', 'ja', 'ro', 'es', 'fr', 'ru', 'pt', 'id', 'de', 'tr', 'ko', 'th', 'it', 'hi'
+    ];
+
+    if (supportedLanguages.contains(deviceLanguage)) {
+      return deviceLanguage;
+    }
+
+    // Fallback to English
+    return 'en';
+  }
 
   /// Set app language code
   static Future<void> setAppLanguage(String languageCode) async =>

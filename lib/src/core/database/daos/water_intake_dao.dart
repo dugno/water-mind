@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:water_mind/src/core/database/database.dart';
 import 'package:water_mind/src/core/models/drink_type.dart';
 import 'package:water_mind/src/core/models/water_intake_entry.dart';
 import 'package:water_mind/src/core/models/water_intake_history.dart';
+import 'package:water_mind/src/core/services/kv_store/kv_store.dart';
 import 'package:water_mind/src/core/services/logger/app_logger.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 
@@ -189,11 +191,38 @@ class WaterIntakeDao {
       // Nếu chưa có, tạo mới với mục tiêu mặc định
       if (historyData == null) {
         AppLogger.info('No history found for date: $dateString, creating new one');
+
+        // Lấy giá trị daily goal từ profile settings hoặc sử dụng giá trị mặc định
+        // Giá trị này sẽ được cập nhật sau bởi WaterIntakeDisplay nếu cần
+        double dailyGoal = 2500; // Giá trị mặc định tạm thời
+        MeasureUnit measureUnit = MeasureUnit.metric;
+
+        try {
+          // Lấy profile settings từ SharedPreferences
+          final profileSettingsJson = KVStoreService.sharedPreferences.getString('profile_settings');
+          if (profileSettingsJson != null) {
+            final profileSettings = jsonDecode(profileSettingsJson) as Map<String, dynamic>;
+
+            // Nếu người dùng đã thiết lập custom daily goal
+            if (profileSettings['useCustomDailyGoal'] == true && profileSettings['customDailyGoal'] != null) {
+              dailyGoal = profileSettings['customDailyGoal'].toDouble();
+              AppLogger.info('Using custom daily goal from profile settings: $dailyGoal');
+            }
+
+            // Lấy đơn vị đo
+            if (profileSettings['measureUnit'] != null) {
+              measureUnit = profileSettings['measureUnit'] == 0 ? MeasureUnit.metric : MeasureUnit.imperial;
+            }
+          }
+        } catch (e) {
+          AppLogger.reportError(e, StackTrace.current, 'Error getting daily goal from profile settings');
+        }
+
         final defaultHistory = WaterIntakeHistory(
           date: normalizedDate,
           entries: [],
-          dailyGoal: 2500, // Mục tiêu mặc định
-          measureUnit: MeasureUnit.metric,
+          dailyGoal: dailyGoal,
+          measureUnit: measureUnit,
         );
 
         // Tạo companion và thêm vào database

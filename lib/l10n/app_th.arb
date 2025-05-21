@@ -26,17 +26,14 @@
   "male": "ชาย",
   "female": "หญิง",
   "other": "อื่นๆ",
-
   "pregnant": "ตั้งครรภ์",
   "breastfeeding": "ให้นมบุตร",
-
   "heightWeight": "ส่วนสูงและน้ำหนัก",
   "dateOfBirth": "วันเกิด",
   "activityLevel": "ระดับกิจกรรม",
   "livingEnvironment": "สภาพแวดล้อมการอยู่อาศัย",
   "wakeUpTime": "เวลาตื่นนอน",
   "bedTime": "เวลาเข้านอน",
-
   "genderDescription": "ข้อมูลนี้จะใช้ในการปรับแต่งแผนส่วนตัวของคุณ",
   "heightWeightDescription": "ส่วนสูงและน้ำหนักของคุณช่วยให้เราคำนวณความต้องการน้ำของคุณ",
   "dateOfBirthDescription": "อายุของคุณมีผลต่อความต้องการน้ำ",
@@ -44,12 +41,10 @@
   "livingEnvironmentDescription": "สภาพแวดล้อมการอยู่อาศัยของคุณมีผลต่อความต้องการน้ำ",
   "wakeUpTimeDescription": "เราจะกำหนดการแจ้งเตือนน้ำครั้งแรกหลังจากคุณตื่นนอน",
   "bedTimeDescription": "เราจะหยุดการแจ้งเตือนก่อนเวลาเข้านอนของคุณ",
-
   "height": "ส่วนสูง",
   "weight": "น้ำหนัก",
   "metric": "เมตริก",
   "imperial": "อิมพีเรียล",
-
   "january": "ม.ค.",
   "february": "ก.พ.",
   "march": "มี.ค.",
@@ -62,22 +57,18 @@
   "october": "ต.ค.",
   "november": "พ.ย.",
   "december": "ธ.ค.",
-
   "am": "เช้า",
   "pm": "บ่าย",
-
   "sedentary": "นั่งอยู่กับที่ (ออกกำลังกายน้อยหรือไม่ออกเลย)",
   "lightlyActive": "กิจกรรมเบา (ออกกำลังกายเบา 1-3 วัน/สัปดาห์)",
   "moderatelyActive": "กิจกรรมปานกลาง (ออกกำลังกาย 3-5 วัน/สัปดาห์)",
   "veryActive": "กิจกรรมมาก (ออกกำลังกายหนัก 6-7 วัน/สัปดาห์)",
   "extraActive": "กิจกรรมหนักมาก (ออกกำลังกายหนักมากหรืองานกายภาพ)",
-
   "airConditioned": "ปรับอากาศ (ในร่ม)",
   "hotSunny": "ร้อนและแดดจัด",
   "rainyHumid": "ฝนตกและชื้น",
   "cold": "หนาว",
   "moderate": "ปานกลาง (อุณหภูมิอ่อน)",
-
   "dailyWaterIntake": "ปริมาณน้ำที่ดื่มต่อวัน",
   "calculationFactors": "ปัจจัยการคำนวณ",
   "baseIntake": "ปริมาณพื้นฐาน",
@@ -87,7 +78,6 @@
   "ageFactor": "อายุ",
   "awakeHoursFactor": "ชั่วโมงตื่น",
   "weatherFactor": "สภาพอากาศ",
-
   "sunny": "แดดจัด",
   "cloudy": "มีเมฆมาก",
   "rainy": "ฝนตก",
@@ -96,7 +86,6 @@
   "coldWeather": "หนาว",
   "snowy": "หิมะตก",
   "windy": "ลมแรง",
-
   "partlyCloudy": "มีเมฆบางส่วน",
   "overcast": "เมฆครึ้ม",
   "mist": "หมอกบาง",
@@ -135,7 +124,6 @@
   "heavyRainThunder": "ฝนหนักพร้อมฟ้าผ่า",
   "lightSnowThunder": "หิมะเบาพร้อมฟ้าผ่า",
   "heavySnowThunder": "หิมะหนักพร้อมฟ้าผ่า",
-
   "selectYourPreferredLanguage": "เลือกภาษาที่คุณต้องการ",
   "dailyGoal": "เป้าหมายประจำวัน",
   "useCustomDailyGoal": "ใช้เป้าหมายประจำวันแบบกำหนดเอง",
@@ -143,40 +131,35 @@
   "dailyGoalDescription": "ตั้งเป้าหมายการดื่มน้ำประจำวันแบบกำหนดเองของคุณ",
   "recommendedRangeMetric": "ช่วงที่แนะนำ: 2000-3500 มล.",
   "recommendedRangeImperial": "ช่วงที่แนะนำ: 68-118 ออนซ์",
-
   "soundAndVibration": "เสียงและการสั่น",
   "enableSound": "เปิดใช้งานเสียง",
   "enableVibration": "เปิดใช้งานการสั่น",
-
   "units": "หน่วย",
   "measurementUnit": "หน่วยการวัด",
-
   "physicalAttributes": "คุณลักษณะทางกายภาพ",
   "genderWeightHeight": "เพศ น้ำหนักและส่วนสูง",
-
   "timeSettings": "การตั้งค่าเวลา",
-
   "about": "เกี่ยวกับ",
   "sendFeedback": "ส่งความคิดเห็น",
+  "feedbackThankYou": "ขอบคุณสำหรับความคิดเห็นของคุณ!",
+  "enterFeedbackHint": "ป้อนความคิดเห็นของคุณที่นี่...",
+  "feedbackValidationEmpty": "กรุณาป้อนความคิดเห็นของคุณ",
+  "feedbackValidationTooShort": "ความคิดเห็นต้องมีอย่างน้อย 10 ตัวอักษร",
   "privacyPolicy": "นโยบายความเป็นส่วนตัว",
   "shareApp": "แชร์แอป",
   "aboutApp": "เกี่ยวกับแอป",
-
   "waterIntakeForecast": "การคาดการณ์การดื่มน้ำ",
   "noForecastData": "ไม่มีข้อมูลการคาดการณ์",
   "refresh": "รีเฟรช",
   "refreshingForecast": "กำลังรีเฟรชข้อมูลการคาดการณ์...",
   "recommendedIntake": "แนะนำ",
   "lastDrink": "เครื่องดื่มล่าสุด",
-
   "yourProfile": "โปรไฟล์ของคุณ",
   "tapToEdit": "แตะเพื่อแก้ไข",
   "reminderSettings": "การตั้งค่าการแจ้งเตือน",
-
   "save": "บันทึก",
   "cancel": "ยกเลิก",
   "notSet": "ไม่ได้ตั้งค่า",
-
   "reminders": "การแจ้งเตือน",
   "enableReminders": "เปิดใช้งานการแจ้งเตือน",
   "enableRemindersDescription": "รับการแจ้งเตือนให้ดื่มน้ำตลอดทั้งวัน",
@@ -187,10 +170,8 @@
   "standardModeDescription": "การแจ้งเตือนที่เหมาะสมตามเวลาตื่นนอนและเข้านอนของคุณ",
   "intervalModeDescription": "การแจ้งเตือนเป็นช่วงเวลาสม่ำเสมอตลอดทั้งวัน",
   "customModeDescription": "ตั้งเวลาการแจ้งเตือนเฉพาะของคุณเอง",
-
   "wakeUpAndBedtime": "เวลาตื่นนอนและเข้านอน",
   "wakeUpAndBedtimeDescription": "เราจะกำหนดการแจ้งเตือนในช่วงเวลาที่คุณตื่นอยู่",
-
   "advancedSettings": "การตั้งค่าขั้นสูง",
   "skipIfGoalMet": "ข้ามหากบรรลุเป้าหมายแล้ว",
   "skipIfGoalMetDescription": "ไม่ส่งการแจ้งเตือนหากคุณบรรลุเป้าหมายประจำวันแล้ว",
@@ -198,31 +179,26 @@
   "doNotDisturbDescription": "หยุดการแจ้งเตือนชั่วคราวในช่วงเวลาที่กำหนด",
   "doNotDisturbStart": "เริ่มห้ามรบกวน",
   "doNotDisturbEnd": "สิ้นสุดห้ามรบกวน",
-
   "reminderInterval": "ช่วงเวลาการแจ้งเตือน",
   "customTimes": "เวลาที่กำหนดเอง",
   "addTime": "เพิ่มเวลา",
   "maxTimesReached": "ถึงจำนวนเวลาสูงสุดแล้ว",
   "needAtLeastOneTime": "คุณต้องมีเวลาแจ้งเตือนอย่างน้อยหนึ่งเวลา",
   "timeAlreadyExists": "เวลานี้มีอยู่แล้ว",
-
   "hour": "ชั่วโมง",
   "hours": "ชั่วโมง",
   "minute": "นาที",
   "minutes": "นาที",
   "hourShort": "ชม.",
   "minuteShort": "น.",
-
   "congratulations": "ยินดีด้วย!",
   "profileSetupComplete": "โปรไฟล์ของคุณได้รับการตั้งค่าเรียบร้อยแล้ว",
   "yourDailyWaterIntake": "ปริมาณน้ำที่ดื่มประจำวันของคุณ",
   "perDay": "ต่อวัน",
   "basedOnWeather": "ขึ้นอยู่กับสภาพอากาศปัจจุบัน",
   "waterIntakeExplanation": "คำแนะนำนี้อิงตามโปรไฟล์ของคุณและสภาพอากาศปัจจุบัน จะปรับเปลี่ยนเมื่อสภาพเปลี่ยนแปลง",
-
   "liters": "ลิตร",
   "fluidOunces": "ออนซ์",
-
   "home": "หน้าหลัก",
   "history": "ประวัติ",
   "waterHistory": "ประวัติการดื่มน้ำ",
@@ -230,10 +206,8 @@
   "week": "สัปดาห์",
   "month": "เดือน",
   "year": "ปี",
-
   "reminderTimes": "เวลาแจ้งเตือน",
   "tapToToggleHint": "แตะเพื่อเปิดหรือปิดเวลาแจ้งเตือน",
-
   "selectDrinkType": "เลือกประเภทเครื่องดื่ม",
   "streak": "สถิติต่อเนื่อง",
   "currentStreak": "สถิติต่อเนื่องปัจจุบัน",
@@ -242,10 +216,41 @@
   "noStreakYet": "ยังไม่มีสถิติต่อเนื่อง",
   "drinkWaterToStartStreak": "ดื่มน้ำวันนี้เพื่อเริ่มสถิติต่อเนื่องของคุณ!",
   "drinkTodayToKeepStreak": "ดื่มวันนี้!",
-
   "selectAmount": "เลือกปริมาณ",
   "select": "เลือก",
-
   "totalWaterIntake": "ปริมาณน้ำทั้งหมด",
-  "sinceUsingApp": "ตั้งแต่เริ่มใช้แอป"
+  "sinceUsingApp": "ตั้งแต่เริ่มใช้แอป",
+  "privacyPolicyChangesTitle": "การเปลี่ยนแปลงนโยบายนี้",
+  "privacyPolicyIntroContent": "นโยบายความเป็นส่วนตัวนี้อธิบายถึงวิธีที่เรารวบรวมใช้และแบ่งปันข้อมูลส่วนบุคคลของคุณเมื่อคุณใช้แอปพลิเคชัน Water Mind ของเรา เราเคารพความเป็นส่วนตัวของคุณและมุ่งมั่นที่จะปกป้องข้อมูลส่วนบุคคลของคุณ",
+  "aboutAppContactTitle": "ติดต่อ",
+  "privacyPolicyCollectTitle": "ข้อมูลที่เรารวบรวม",
+  "privacyPolicyCollectContent": "เรารวบรวมข้อมูลที่คุณให้โดยตรงกับเราเช่นเพศน้ำหนักความสูงวันเดือนปีเกิดระดับกิจกรรมสภาพแวดล้อมการใช้ชีวิตเวลาปลุกและเวลานอน นอกจากนี้เรายังรวบรวมข้อมูลเกี่ยวกับพฤติกรรมการบริโภคน้ำและรูปแบบการใช้แอพ",
+  "privacyPolicyIntroTitle": "การแนะนำ",
+  "privacyPolicyContactTitle": "ติดต่อเรา",
+  "privacyPolicyLastUpdated": "อัปเดตล่าสุด: มิถุนายน 2566",
+  "aboutAppDeveloperTitle": "ผู้พัฒนา",
+  "privacyPolicyFeedbackTitle": "ข้อเสนอแนะ",
+  "aboutAppAcknowledgmentsContent": "ข้อมูลสภาพอากาศที่จัดทำโดย Weatherapi.com\nไอคอนและกราฟิกจากห้องสมุดโอเพนซอร์ซต่างๆ",
+  "privacyPolicyFeedbackContent": "เมื่อคุณให้ข้อเสนอแนะผ่านแอพของเราเราจะรวบรวมข้อมูลที่คุณส่งพร้อมกับข้อมูลอุปกรณ์พื้นฐานเพื่อช่วยเราปรับปรุงบริการของเรา",
+  "aboutAppDescriptionTitle": "คำอธิบาย",
+  "aboutAppLoadingVersion": "โหลดเวอร์ชัน ...",
+  "privacyPolicyStorageContent": "ข้อมูลของคุณถูกเก็บไว้เป็นหลักในอุปกรณ์ของคุณ ข้อมูลการใช้งานที่ไม่ระบุชื่อบางอย่างอาจถูกรวบรวมเพื่อวัตถุประสงค์ในการปรับปรุงแอพ",
+  "privacyPolicyRightsContent": "คุณมีสิทธิ์ในการเข้าถึงแก้ไขหรือลบข้อมูลส่วนบุคคลของคุณได้ตลอดเวลาผ่านการตั้งค่าแอป",
+  "privacyPolicyUseTitle": "เราใช้ข้อมูลของคุณอย่างไร",
+  "privacyPolicyUseContent": "เราใช้ข้อมูลที่เรารวบรวมเพื่อให้การบำรุงรักษาและปรับปรุงบริการของเรารวมถึงการคำนวณปริมาณน้ำทุกวันที่คุณแนะนำส่งการเตือนความชุ่มชื้นและติดตามความคืบหน้าของคุณ",
+  "aboutAppDeveloperContent": "พัฒนาโดย Vie Tech",
+  "privacyPolicyContactContent": "หากคุณมีคำถามใด ๆ เกี่ยวกับนโยบายความเป็นส่วนตัวนี้โปรดติดต่อเราที่ support@watermind.app",
+  "privacyPolicyChangesContent": "เราอาจอัปเดตนโยบายความเป็นส่วนตัวนี้เป็นครั้งคราว เราจะแจ้งให้คุณทราบถึงการเปลี่ยนแปลงใด ๆ โดยการโพสต์นโยบายความเป็นส่วนตัวใหม่ในหน้านี้",
+  "aboutAppDescriptionContent": "Water Mind เป็นแอพติดตามความชุ่มชื้นที่ออกแบบมาเพื่อช่วยให้คุณรักษาระดับความชุ่มชื้นที่ดีที่สุดตลอดทั้งวัน แอพนี้คำนวณปริมาณน้ำที่แนะนำของคุณตามโปรไฟล์ส่วนบุคคลและปัจจัยด้านสิ่งแวดล้อมของคุณ",
+  "aboutAppFeaturesContent": "•คำแนะนำการดื่มน้ำส่วนบุคคล\n•การปรับความชุ่มชื้นตามสภาพอากาศ\n•การเตือนที่ปรับแต่งได้\n•ประวัติความชุ่มชื้นโดยละเอียด\n•การติดตามแนวเพื่อสร้างแรงจูงใจ",
+  "aboutAppCopyright": "© {year} Vie Tech สงวนลิขสิทธิ์",
+  "privacyPolicyWeatherTitle": "ข้อมูลสภาพอากาศ",
+  "privacyPolicyRightsTitle": "สิทธิของคุณ",
+  "privacyPolicyStorageTitle": "การจัดเก็บข้อมูล",
+  "aboutAppFeaturesTitle": "คุณสมบัติ",
+  "privacyPolicyTitle": "นโยบายความเป็นส่วนตัว",
+  "aboutAppContactContent": "สำหรับการสนับสนุนหรือข้อเสนอแนะโปรดติดต่อเราที่:\nsupport@watermind.app",
+  "privacyPolicyWeatherContent": "ด้วยการอนุญาตของคุณเราเข้าถึงสถานที่ของคุณเพื่อให้คำแนะนำการให้ความชุ่มชื้นตามสภาพอากาศ ข้อมูลนี้ใช้เฉพาะภายในแอปและไม่ได้แชร์กับบุคคลที่สาม",
+  "aboutAppAcknowledgmentsTitle": "กิตติกรรมประกาศ",
+  "aboutAppVersion": "Version {version} ({buildNumber})"
 }

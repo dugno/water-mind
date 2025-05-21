@@ -394,6 +394,22 @@
   "@sendFeedback": {
     "description": "Option to send feedback"
   },
+  "feedbackThankYou": "Thank you for your feedback!",
+  "@feedbackThankYou": {
+    "description": "Message shown after feedback is submitted"
+  },
+  "enterFeedbackHint": "Enter your feedback here...",
+  "@enterFeedbackHint": {
+    "description": "Hint text for feedback input field"
+  },
+  "feedbackValidationEmpty": "Please enter your feedback",
+  "@feedbackValidationEmpty": {
+    "description": "Validation message for empty feedback"
+  },
+  "feedbackValidationTooShort": "Feedback must be at least 10 characters",
+  "@feedbackValidationTooShort": {
+    "description": "Validation message for feedback that is too short"
+  },
   "privacyPolicy": "Privacy policy",
   "@privacyPolicy": {
     "description": "Privacy policy link"
@@ -481,6 +497,87 @@
   "cold": "Cold",
   "@cold": {
     "description": "Cold weather"
+  },
+
+  "premiumSubscription": "Premium Subscription",
+  "@premiumSubscription": {
+    "description": "Premium subscription title"
+  },
+  "unlockPremiumFeatures": "Unlock premium features to enhance your hydration experience",
+  "@unlockPremiumFeatures": {
+    "description": "Premium subscription subtitle"
+  },
+  "subscribeToPremium": "Subscribe to Premium",
+  "@subscribeToPremium": {
+    "description": "Button to subscribe to premium"
+  },
+  "premiumActive": "Premium Active",
+  "@premiumActive": {
+    "description": "Indicates premium subscription is active"
+  },
+  "enjoyPremiumFeatures": "You're enjoying all premium features!",
+  "@enjoyPremiumFeatures": {
+    "description": "Message when premium is active"
+  },
+  "deactivatePremium": "Deactivate Premium",
+  "@deactivatePremium": {
+    "description": "Button to deactivate premium (for testing)"
+  },
+  "errorLoadingPremiumStatus": "Error loading premium status",
+  "@errorLoadingPremiumStatus": {
+    "description": "Error message when premium status can't be loaded"
+  },
+  "premiumFeatureMessage": "Premium Feature\nTap to unlock",
+  "@premiumFeatureMessage": {
+    "description": "Message shown on premium feature lock"
+  },
+  "premiumDrinkTypeMessage": "Unlock premium to access all drink types",
+  "@premiumDrinkTypeMessage": {
+    "description": "Message shown on premium drink type lock"
+  },
+  "premiumAmountMessage": "Unlock premium to customize drink amounts",
+  "@premiumAmountMessage": {
+    "description": "Message shown on premium amount lock"
+  },
+  "weatherBasedWaterIntake": "Weather-Based Water Intake",
+  "@weatherBasedWaterIntake": {
+    "description": "Premium feature: Weather-based water intake"
+  },
+  "weatherBasedWaterIntakeDesc": "Automatically adjust your daily water goal based on local weather conditions",
+  "@weatherBasedWaterIntakeDesc": {
+    "description": "Description for weather-based water intake feature"
+  },
+  "customDrinkAmount": "Custom Drink Amounts",
+  "@customDrinkAmount": {
+    "description": "Premium feature: Custom drink amounts"
+  },
+  "customDrinkAmountDesc": "Choose from a wide range of drink amounts beyond the default 200ml",
+  "@customDrinkAmountDesc": {
+    "description": "Description for custom drink amounts feature"
+  },
+  "customDrinkType": "Custom Drink Types",
+  "@customDrinkType": {
+    "description": "Premium feature: Custom drink types"
+  },
+  "customDrinkTypeDesc": "Track different beverages like coffee, tea, juice, and more",
+  "@customDrinkTypeDesc": {
+    "description": "Description for custom drink types feature"
+  },
+  "customReminderMode": "Advanced Reminder Modes",
+  "@customReminderMode": {
+    "description": "Premium feature: Custom reminder modes"
+  },
+  "customReminderModeDesc": "Set interval-based or fully customized reminder schedules",
+  "@customReminderModeDesc": {
+    "description": "Description for custom reminder modes feature"
+  },
+  "customDailyGoal": "Custom Daily Goal",
+  "@customDailyGoal": {
+    "description": "Premium feature: Custom daily goal"
+  },
+  "customDailyGoalDesc": "Set your own daily water intake goal instead of using the calculated recommendation",
+  "@customDailyGoalDesc": {
+    "description": "Description for custom daily goal feature"
   },
   "coldWeather": "Cold",
   "@coldWeather": {
@@ -781,10 +878,6 @@
   "@profileSetupComplete": {
     "description": "Profile setup complete message"
   },
-  "yourProfile": "Your Profile",
-  "@yourProfile": {
-    "description": "Your profile title"
-  },
   "yourDailyWaterIntake": "Your Daily Water Intake",
   "@yourDailyWaterIntake": {
     "description": "Your daily water intake title"
@@ -892,5 +985,207 @@
   "sinceUsingApp": "since using the app",
   "@sinceUsingApp": {
     "description": "Text indicating the period since using the app"
+  },
+
+  "privacyPolicyTitle": "Privacy Policy",
+  "@privacyPolicyTitle": {
+    "description": "Privacy policy page title"
+  },
+  "privacyPolicyLastUpdated": "Last updated: June 2023",
+  "@privacyPolicyLastUpdated": {
+    "description": "Last updated date for privacy policy"
+  },
+  "privacyPolicyIntroTitle": "Introduction",
+  "@privacyPolicyIntroTitle": {
+    "description": "Introduction section title in privacy policy"
+  },
+  "privacyPolicyIntroContent": "This Privacy Policy describes how we collect, use, and share your personal information when you use our Water Mind application. We respect your privacy and are committed to protecting your personal data.",
+  "@privacyPolicyIntroContent": {
+    "description": "Introduction content in privacy policy"
+  },
+  "privacyPolicyCollectTitle": "Information We Collect",
+  "@privacyPolicyCollectTitle": {
+    "description": "Information collection section title in privacy policy"
+  },
+  "privacyPolicyCollectContent": "We collect information that you provide directly to us, such as your gender, weight, height, date of birth, activity level, living environment, wake-up time, and bedtime. We also collect information about your water intake habits and app usage patterns.",
+  "@privacyPolicyCollectContent": {
+    "description": "Information collection content in privacy policy"
+  },
+  "privacyPolicyUseTitle": "How We Use Your Information",
+  "@privacyPolicyUseTitle": {
+    "description": "Information usage section title in privacy policy"
+  },
+  "privacyPolicyUseContent": "We use the information we collect to provide, maintain, and improve our services, including calculating your recommended daily water intake, sending you hydration reminders, and tracking your progress.",
+  "@privacyPolicyUseContent": {
+    "description": "Information usage content in privacy policy"
+  },
+  "privacyPolicyStorageTitle": "Data Storage",
+  "@privacyPolicyStorageTitle": {
+    "description": "Data storage section title in privacy policy"
+  },
+  "privacyPolicyStorageContent": "Your data is primarily stored locally on your device. Some anonymous usage data may be collected for app improvement purposes.",
+  "@privacyPolicyStorageContent": {
+    "description": "Data storage content in privacy policy"
+  },
+  "privacyPolicyWeatherTitle": "Weather Data",
+  "@privacyPolicyWeatherTitle": {
+    "description": "Weather data section title in privacy policy"
+  },
+  "privacyPolicyWeatherContent": "With your permission, we access your location to provide weather-based hydration recommendations. This data is only used within the app and is not shared with third parties.",
+  "@privacyPolicyWeatherContent": {
+    "description": "Weather data content in privacy policy"
+  },
+  "privacyPolicyFeedbackTitle": "Feedback",
+  "@privacyPolicyFeedbackTitle": {
+    "description": "Feedback section title in privacy policy"
+  },
+  "privacyPolicyFeedbackContent": "When you provide feedback through our app, we collect the information you submit along with basic device information to help us improve our services.",
+  "@privacyPolicyFeedbackContent": {
+    "description": "Feedback content in privacy policy"
+  },
+  "privacyPolicyRightsTitle": "Your Rights",
+  "@privacyPolicyRightsTitle": {
+    "description": "User rights section title in privacy policy"
+  },
+  "privacyPolicyRightsContent": "You have the right to access, correct, or delete your personal information at any time through the app settings.",
+  "@privacyPolicyRightsContent": {
+    "description": "User rights content in privacy policy"
+  },
+  "privacyPolicyChangesTitle": "Changes to This Policy",
+  "@privacyPolicyChangesTitle": {
+    "description": "Policy changes section title in privacy policy"
+  },
+  "privacyPolicyChangesContent": "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.",
+  "@privacyPolicyChangesContent": {
+    "description": "Policy changes content in privacy policy"
+  },
+  "privacyPolicyContactTitle": "Contact Us",
+  "@privacyPolicyContactTitle": {
+    "description": "Contact section title in privacy policy"
+  },
+  "privacyPolicyContactContent": "If you have any questions about this Privacy Policy, please contact us at support@watermind.app",
+  "@privacyPolicyContactContent": {
+    "description": "Contact content in privacy policy"
+  },
+
+  "aboutAppVersion": "Version {version} ({buildNumber})",
+  "@aboutAppVersion": {
+    "description": "App version display",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.0.0"
+      },
+      "buildNumber": {
+        "type": "String",
+        "example": "1"
+      }
+    }
+  },
+  "aboutAppLoadingVersion": "Loading version...",
+  "@aboutAppLoadingVersion": {
+    "description": "Loading version text"
+  },
+  "aboutAppDescriptionTitle": "Description",
+  "@aboutAppDescriptionTitle": {
+    "description": "Description section title in about app"
+  },
+  "aboutAppDescriptionContent": "Water Mind is a hydration tracking app designed to help you maintain optimal hydration levels throughout the day. The app calculates your recommended water intake based on your personal profile and environmental factors.",
+  "@aboutAppDescriptionContent": {
+    "description": "Description content in about app"
+  },
+  "aboutAppFeaturesTitle": "Features",
+  "@aboutAppFeaturesTitle": {
+    "description": "Features section title in about app"
+  },
+  "aboutAppFeaturesContent": "• Personalized water intake recommendations\n• Weather-based hydration adjustments\n• Customizable reminders\n• Detailed hydration history\n• Streak tracking for motivation",
+  "@aboutAppFeaturesContent": {
+    "description": "Features content in about app"
+  },
+  "aboutAppDeveloperTitle": "Developer",
+  "@aboutAppDeveloperTitle": {
+    "description": "Developer section title in about app"
+  },
+  "aboutAppDeveloperContent": "Developed by Vie Tech",
+  "@aboutAppDeveloperContent": {
+    "description": "Developer content in about app"
+  },
+  "aboutAppContactTitle": "Contact",
+  "@aboutAppContactTitle": {
+    "description": "Contact section title in about app"
+  },
+  "aboutAppContactContent": "For support or feedback, please contact us at:\nsupport@watermind.app",
+  "@aboutAppContactContent": {
+    "description": "Contact content in about app"
+  },
+  "aboutAppAcknowledgmentsTitle": "Acknowledgments",
+  "@aboutAppAcknowledgmentsTitle": {
+    "description": "Acknowledgments section title in about app"
+  },
+  "aboutAppAcknowledgmentsContent": "Weather data provided by WeatherAPI.com\nIcons and graphics from various open-source libraries",
+  "@aboutAppAcknowledgmentsContent": {
+    "description": "Acknowledgments content in about app"
+  },
+  "aboutAppCopyright": "© {year} Vie Tech. All rights reserved.",
+  "@aboutAppCopyright": {
+    "description": "Copyright text in about app",
+    "placeholders": {
+      "year": {
+        "type": "int",
+        "example": "2023"
+      }
+    }
+  },
+  "premiumFeature": "Premium Feature",
+  "@premiumFeature": {
+    "description": "Premium feature title"
+  },
+  "restorePurchases": "Restore Purchases",
+  "@restorePurchases": {
+    "description": "Button to restore purchases"
+  },
+  "purchasesRestored": "Purchases restored successfully",
+  "@purchasesRestored": {
+    "description": "Message when purchases are restored"
+  },
+  "noPurchasesToRestore": "No purchases to restore",
+  "@noPurchasesToRestore": {
+    "description": "Message when there are no purchases to restore"
+  },
+  "errorLoadingSubscriptions": "Error loading subscription options. Please try again.",
+  "@errorLoadingSubscriptions": {
+    "description": "Error message when subscription options can't be loaded"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "chooseSubscriptionPlan": "Choose your subscription plan",
+  "@chooseSubscriptionPlan": {
+    "description": "Title for subscription plan selection"
+  },
+  "lifetimePremium": "Lifetime Premium",
+  "@lifetimePremium": {
+    "description": "Lifetime premium option"
+  },
+  "lifetimePremiumDesc": "One-time purchase for unlimited access to all premium features",
+  "@lifetimePremiumDesc": {
+    "description": "Description for lifetime premium"
+  },
+  "unlockPremiumForever": "Unlock Premium Forever",
+  "@unlockPremiumForever": {
+    "description": "Title for lifetime premium section"
+  },
+  "premium": "Premium",
+  "@premium": {
+    "description": "Premium label for buttons and headers"
+  },
+  "purchaseSuccessful": "Purchase successful! Enjoy your premium features.",
+  "@purchaseSuccessful": {
+    "description": "Message when purchase is successful"
+  },
+  "purchaseFailed": "Purchase failed. Please try again.",
+  "@purchaseFailed": {
+    "description": "Message when purchase fails"
   }
 }

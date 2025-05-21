@@ -28,14 +28,12 @@
   "pregnant": "妊娠中",
   "breastfeeding": "授乳中",
   "other": "その他",
-
   "heightWeight": "身長と体重",
   "dateOfBirth": "生年月日",
   "activityLevel": "活動レベル",
   "livingEnvironment": "生活環境",
   "wakeUpTime": "起床時間",
   "bedTime": "就寝時間",
-
   "genderDescription": "これはあなたの個別プランを調整するために使用されます。",
   "heightWeightDescription": "あなたの身長と体重は水分摂取の必要量を計算するのに役立ちます。",
   "dateOfBirthDescription": "あなたの年齢は水分摂取の必要量に影響します。",
@@ -43,12 +41,10 @@
   "livingEnvironmentDescription": "あなたの生活環境は水分摂取の必要量に影響します。",
   "wakeUpTimeDescription": "起床後に最初の水分摂取リマインダーをスケジュールします。",
   "bedTimeDescription": "就寝前にリマインダーを停止します。",
-
   "height": "身長",
   "weight": "体重",
   "metric": "メートル法",
   "imperial": "ヤード・ポンド法",
-
   "january": "1月",
   "february": "2月",
   "march": "3月",
@@ -61,22 +57,18 @@
   "october": "10月",
   "november": "11月",
   "december": "12月",
-
   "am": "午前",
   "pm": "午後",
-
   "sedentary": "座りがち（ほとんど運動なし）",
   "lightlyActive": "軽い活動（週1-3日の軽い運動）",
   "moderatelyActive": "中程度の活動（週3-5日の運動）",
   "veryActive": "非常に活動的（週6-7日のハードな運動）",
   "extraActive": "極めて活動的（非常にハードな運動または肉体労働）",
-
   "airConditioned": "空調環境（室内）",
   "hotSunny": "暑く晴れた環境",
   "rainyHumid": "雨が多く湿度の高い環境",
   "cold": "寒冷環境",
   "moderate": "穏やかな環境（適温）",
-
   "dailyWaterIntake": "あなたの1日の水分摂取量",
   "calculationFactors": "計算要素",
   "baseIntake": "基本摂取量",
@@ -86,7 +78,6 @@
   "ageFactor": "年齢",
   "awakeHoursFactor": "起きている時間",
   "weatherFactor": "天気",
-
   "sunny": "晴れ",
   "cloudy": "曇り",
   "rainy": "雨",
@@ -95,7 +86,6 @@
   "coldWeather": "寒い",
   "snowy": "雪",
   "windy": "風が強い",
-
   "partlyCloudy": "晴れ時々曇り",
   "overcast": "曇天",
   "mist": "霧",
@@ -134,7 +124,6 @@
   "heavyRainThunder": "雷を伴う大雨",
   "lightSnowThunder": "雷を伴う小雪",
   "heavySnowThunder": "雷を伴う大雪",
-
   "selectYourPreferredLanguage": "希望する言語を選択してください",
   "dailyGoal": "1日の目標",
   "useCustomDailyGoal": "カスタム1日目標を使用",
@@ -142,40 +131,35 @@
   "dailyGoalDescription": "あなたのカスタム1日水分摂取目標を設定してください",
   "recommendedRangeMetric": "推奨範囲：2000-3500 ml",
   "recommendedRangeImperial": "推奨範囲：68-118 oz",
-
   "soundAndVibration": "音と振動",
   "enableSound": "音を有効にする",
   "enableVibration": "振動を有効にする",
-
   "units": "単位",
   "measurementUnit": "測定単位",
-
   "physicalAttributes": "身体的特徴",
   "genderWeightHeight": "性別、体重と身長",
-
   "timeSettings": "時間設定",
-
   "about": "アプリについて",
   "sendFeedback": "フィードバックを送信",
+  "feedbackThankYou": "フィードバックをありがとうございます！",
+  "enterFeedbackHint": "ここにフィードバックを入力してください...",
+  "feedbackValidationEmpty": "フィードバックを入力してください",
+  "feedbackValidationTooShort": "フィードバックは10文字以上である必要があります",
   "privacyPolicy": "プライバシーポリシー",
   "shareApp": "アプリを共有",
   "aboutApp": "アプリについて",
-
   "waterIntakeForecast": "水分摂取予測",
   "noForecastData": "予測データがありません",
   "refresh": "更新",
   "refreshingForecast": "予測データを更新中...",
   "recommendedIntake": "推奨",
   "lastDrink": "最後の飲み物",
-
   "yourProfile": "あなたのプロフィール",
   "tapToEdit": "タップして編集",
   "reminderSettings": "リマインダー設定",
-
   "save": "保存",
   "cancel": "キャンセル",
   "notSet": "未設定",
-
   "reminders": "リマインダー",
   "enableReminders": "リマインダーを有効にする",
   "enableRemindersDescription": "1日を通して水分摂取の通知を受け取る",
@@ -186,10 +170,8 @@
   "standardModeDescription": "起床時間と就寝時間に基づく最適なリマインダー",
   "intervalModeDescription": "1日を通して定期的な間隔でリマインダー",
   "customModeDescription": "特定のリマインダー時間を自分で設定",
-
   "wakeUpAndBedtime": "起床と就寝時間",
   "wakeUpAndBedtimeDescription": "活動時間中にリマインダーをスケジュールします",
-
   "advancedSettings": "詳細設定",
   "skipIfGoalMet": "目標達成時にスキップ",
   "skipIfGoalMetDescription": "すでに1日の目標を達成している場合はリマインダーを送信しない",
@@ -197,31 +179,26 @@
   "doNotDisturbDescription": "特定の時間帯にリマインダーを一時停止",
   "doNotDisturbStart": "おやすみモード開始",
   "doNotDisturbEnd": "おやすみモード終了",
-
   "reminderInterval": "リマインダー間隔",
   "customTimes": "カスタム時間",
   "addTime": "時間を追加",
   "maxTimesReached": "最大時間数に達しました",
   "needAtLeastOneTime": "少なくとも1つのリマインダー時間が必要です",
   "timeAlreadyExists": "この時間はすでに存在します",
-
   "hour": "時間",
   "hours": "時間",
   "minute": "分",
   "minutes": "分",
   "hourShort": "時",
   "minuteShort": "分",
-
   "congratulations": "おめでとうございます！",
   "profileSetupComplete": "プロフィールが正常に設定されました",
   "yourDailyWaterIntake": "あなたの1日の水分摂取量",
   "perDay": "1日あたり",
   "basedOnWeather": "現在の天気に基づく",
   "waterIntakeExplanation": "この推奨はあなたのプロフィールと現在の天候状況に基づいています。条件が変わると調整されます。",
-
   "liters": "リットル",
   "fluidOunces": "液量オンス",
-
   "home": "ホーム",
   "history": "履歴",
   "waterHistory": "水分摂取履歴",
@@ -229,10 +206,8 @@
   "week": "週",
   "month": "月",
   "year": "年",
-
   "reminderTimes": "リマインダー時間",
   "tapToToggleHint": "タップしてリマインダー時間を有効または無効にする",
-
   "selectDrinkType": "飲み物の種類を選択",
   "streak": "連続記録",
   "currentStreak": "現在の連続記録",
@@ -241,10 +216,41 @@
   "noStreakYet": "まだ連続記録はありません",
   "drinkWaterToStartStreak": "今日水を飲んで連続記録を始めましょう！",
   "drinkTodayToKeepStreak": "今日飲みましょう！",
-
   "selectAmount": "量を選択",
   "select": "選択",
-
   "totalWaterIntake": "総水分摂取量",
-  "sinceUsingApp": "アプリ使用開始から"
+  "sinceUsingApp": "アプリ使用開始から",
+  "privacyPolicyChangesTitle": "このポリシーの変更",
+  "privacyPolicyIntroContent": "このプライバシーポリシーでは、Water Mindアプリケーションを使用する際の個人情報を収集、使用、共有する方法について説明します。私たちはあなたのプライバシーを尊重し、あなたの個人データの保護に取り組んでいます。",
+  "aboutAppContactTitle": "接触",
+  "privacyPolicyCollectTitle": "私たちが収集する情報",
+  "privacyPolicyCollectContent": "私たちは、性別、体重、身長、生年月日、活動レベル、生活環境、目覚めの時間、就寝時間など、私たちに直接提供する情報を収集します。また、水の摂取習慣とアプリの使用パターンに関する情報も収集します。",
+  "privacyPolicyIntroTitle": "導入",
+  "privacyPolicyContactTitle": "お問い合わせ",
+  "privacyPolicyLastUpdated": "最終更新：2023年6月",
+  "aboutAppDeveloperTitle": "開発者",
+  "privacyPolicyFeedbackTitle": "フィードバック",
+  "aboutAppAcknowledgmentsContent": "Weatherapi.comが提供する気象データ\nさまざまなオープンソースライブラリのアイコンとグラフィック",
+  "privacyPolicyFeedbackContent": "アプリを介してフィードバックを提供するとき、私たちはサービスを改善するのに役立つ基本的なデバイス情報と一緒に送信した情報を収集します。",
+  "aboutAppDescriptionTitle": "説明",
+  "aboutAppLoadingVersion": "読み込みバージョン...",
+  "privacyPolicyStorageContent": "データは主にデバイスにローカルに保存されます。アプリの改善のために、いくつかの匿名の使用データを収集することができます。",
+  "privacyPolicyRightsContent": "アプリの設定を介して、いつでも個人情報にアクセス、修正、または削除する権利があります。",
+  "privacyPolicyUseTitle": "お客様の情報の使用方法",
+  "privacyPolicyUseContent": "私たちが収集した情報を使用して、推奨される毎日の水摂取量の計算、水分補給リマインダーの送信、進捗状況の追跡など、サービスを提供、維持、改善します。",
+  "aboutAppDeveloperContent": "Vie Techによって開発されました",
+  "privacyPolicyContactContent": "このプライバシーポリシーについてご質問がある場合は、support@watermind.appまでお問い合わせください。",
+  "privacyPolicyChangesContent": "このプライバシーポリシーを随時更新する場合があります。このページに新しいプライバシーポリシーを投稿することにより、変更を変更します。",
+  "aboutAppDescriptionContent": "Water Mindは、1日を通して最適な水分補給レベルを維持するのに役立つように設計された水分補給追跡アプリです。アプリは、個人のプロフィールと環境要因に基づいて、推奨される水分摂取量を計算します。",
+  "aboutAppFeaturesContent": "•パーソナライズされた水分摂取の推奨事項\n•気象ベースの水分補給調整\n•カスタマイズ可能なリマインダー\n•詳細な水分補給の履歴\n•モチベーションのためのストリーク追跡",
+  "aboutAppCopyright": "© {year} Vie Tech. 無断転載を禁じます.",
+  "privacyPolicyWeatherTitle": "気象データ",
+  "privacyPolicyRightsTitle": "あなたの権利",
+  "privacyPolicyStorageTitle": "データストレージ",
+  "aboutAppFeaturesTitle": "特徴",
+  "privacyPolicyTitle": "プライバシーポリシー",
+  "aboutAppContactContent": "サポートまたはフィードバックについては、以下をお問い合わせください。\nsupport@watermind.app",
+  "privacyPolicyWeatherContent": "あなたの許可を得て、私たちはあなたの場所にアクセスして、気象ベースの水分補給の推奨事項を提供します。このデータはアプリ内でのみ使用され、第三者と共有されていません。",
+  "aboutAppAcknowledgmentsTitle": "謝辞",
+  "aboutAppVersion": "Version {version} ({buildNumber})"
 }

@@ -2,8 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:water_mind/src/common/constant/app_color.dart';
+import 'package:water_mind/src/core/routing/app_router.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
+import 'package:water_mind/src/core/services/premium/premium_service_provider.dart';
 import 'package:water_mind/src/core/services/reminders/models/reminder_mode.dart';
 import 'package:water_mind/src/core/services/reminders/models/standard_reminder_time.dart';
 import 'package:water_mind/src/core/services/reminders/models/water_reminder_model.dart';
@@ -11,7 +13,9 @@ import 'package:water_mind/src/core/services/reminders/reminder_service_provider
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/pages/profile/providers/profile_provider.dart';
 import 'package:water_mind/src/pages/reminders/widgets/interval_selector.dart';
+import 'package:water_mind/src/pages/reminders/widgets/premium_mode_card.dart';
 import 'package:water_mind/src/pages/reminders/widgets/time_picker_bottom_sheet.dart';
+import 'package:water_mind/src/ui/widgets/premium/premium_feature_lock.dart';
 
 /// Page for configuring water reminder settings
 @RoutePage()
@@ -400,76 +404,42 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          // Standard mode card
+          // Standard mode card with premium check
           Expanded(
-            child: _buildModeCard(
+            child: PremiumModeCard(
               mode: ReminderMode.standard,
               icon: Icons.access_time,
+              isSelected: _settings!.mode == ReminderMode.standard,
+              onSelected: (mode) {
+                _saveSettings(_settings!.copyWith(mode: mode), showLoading: true);
+              },
             ),
           ),
 
-          // Interval mode card
+          // Interval mode card with premium check
           Expanded(
-            child: _buildModeCard(
+            child: PremiumModeCard(
               mode: ReminderMode.interval,
               icon: Icons.timer,
+              isSelected: _settings!.mode == ReminderMode.interval,
+              onSelected: (mode) {
+                _saveSettings(_settings!.copyWith(mode: mode), showLoading: true);
+              },
             ),
           ),
 
-          // Custom mode card
+          // Custom mode card with premium check
           Expanded(
-            child: _buildModeCard(
+            child: PremiumModeCard(
               mode: ReminderMode.custom,
               icon: Icons.edit_calendar,
+              isSelected: _settings!.mode == ReminderMode.custom,
+              onSelected: (mode) {
+                _saveSettings(_settings!.copyWith(mode: mode), showLoading: true);
+              },
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildModeCard({
-    required ReminderMode mode,
-    required IconData icon,
-  }) {
-    final isSelected = _settings!.mode == mode;
-
-    return Card(
-      elevation: isSelected ? 4 : 1,
-      color: isSelected ? AppColor.primaryColor : AppColor.thirdColor.withOpacity(0.7),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: isSelected
-            ? const BorderSide(color: Colors.white, width: 2)
-            : BorderSide.none,
-      ),
-      child: InkWell(
-        onTap: () {
-          haptic(HapticFeedbackType.selection);
-          _saveSettings(_settings!.copyWith(mode: mode), showLoading: true);
-        },
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                icon,
-                size: 32,
-                color: Colors.white,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                mode.getName(context),
-                style: TextStyle(
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -700,6 +670,8 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
   }
 
   Widget _buildIntervalModeSettings() {
+    final isPremiumActiveAsync = ref.watch(isPremiumActiveProvider);
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -710,30 +682,59 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
             style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 16),
-          Theme(
-            data: Theme.of(context).copyWith(
-              sliderTheme: SliderThemeData(
-                activeTrackColor: Colors.white,
-                thumbColor: Colors.white,
-                overlayColor: Colors.white.withOpacity(0.3),
-                valueIndicatorColor: AppColor.primaryColor,
-                valueIndicatorTextStyle: const TextStyle(color: Colors.white),
-              ),
-            ),
-            child: IntervalSelector(
-              initialValue: _settings!.intervalMinutes,
-              onChanged: (value) {
-                haptic(HapticFeedbackType.selection);
-                _saveSettings(_settings!.copyWith(intervalMinutes: value), showLoading: false);
-              },
-            ),
+
+          // Interval selector with premium check
+          isPremiumActiveAsync.when(
+            data: (isPremiumActive) {
+              if (isPremiumActive) {
+                return _buildIntervalSelector();
+              } else {
+                return PremiumFeatureLock(
+                  message: context.l10n.customReminderModeDesc,
+                  child: _buildIntervalSelector(),
+                );
+              }
+            },
+            loading: () => _buildIntervalSelector(),
+            error: (_, __) => _buildIntervalSelector(),
           ),
         ],
       ),
     );
   }
 
+  Widget _buildIntervalSelector() {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        sliderTheme: SliderThemeData(
+          activeTrackColor: Colors.white,
+          thumbColor: Colors.white,
+          overlayColor: Colors.white.withOpacity(0.3),
+          valueIndicatorColor: AppColor.primaryColor,
+          valueIndicatorTextStyle: const TextStyle(color: Colors.white),
+        ),
+      ),
+      child: IntervalSelector(
+        initialValue: _settings!.intervalMinutes,
+        onChanged: (value) {
+          haptic(HapticFeedbackType.selection);
+
+          // Check if premium is active
+          final isPremiumActive = ref.read(isPremiumActiveProvider).value ?? false;
+          if (isPremiumActive) {
+            _saveSettings(_settings!.copyWith(intervalMinutes: value), showLoading: false);
+          } else {
+            // If not premium, show premium subscription page
+            context.router.push(const PremiumSubscriptionRoute());
+          }
+        },
+      ),
+    );
+  }
+
   Widget _buildCustomModeSettings() {
+    final isPremiumActiveAsync = ref.watch(isPremiumActiveProvider);
+
     // Initialize custom times if empty without showing loading indicator
     if (_settings!.customTimes.isEmpty) {
       // Create placeholder times to show immediately
@@ -765,20 +766,57 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
             style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 16),
-          // Custom times grid
-          _buildCustomTimesGrid(),
 
-          // Help text
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 12.0),
-            child: Text(
-              context.l10n.tapToToggleHint,
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.7),
-                fontSize: 13,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
+          // Custom times grid with premium check
+          isPremiumActiveAsync.when(
+            data: (isPremiumActive) {
+              if (isPremiumActive) {
+                return Column(
+                  children: [
+                    // Custom times grid
+                    _buildCustomTimesGrid(),
+
+                    // Help text
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0, top: 12.0),
+                      child: Text(
+                        context.l10n.tapToToggleHint,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.7),
+                          fontSize: 13,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return PremiumFeatureLock(
+                  message: context.l10n.customReminderModeDesc,
+                  child: Column(
+                    children: [
+                      // Custom times grid
+                      _buildCustomTimesGrid(),
+
+                      // Help text
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, top: 12.0),
+                        child: Text(
+                          context.l10n.tapToToggleHint,
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.7),
+                            fontSize: 13,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
+            loading: () => _buildCustomTimesGrid(),
+            error: (_, __) => _buildCustomTimesGrid(),
           ),
         ],
       ),
@@ -895,6 +933,14 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
   }
 
   void _toggleTimeEnabled(int index) {
+    // Check if premium is active
+    final isPremiumActive = ref.read(isPremiumActiveProvider).value ?? false;
+    if (!isPremiumActive) {
+      // If not premium, show premium subscription page
+      context.router.push(const PremiumSubscriptionRoute());
+      return;
+    }
+
     final time = _settings!.customTimes[index];
     final disabledTimes = List<TimeOfDay>.from(_settings!.disabledCustomTimes);
 
@@ -935,6 +981,14 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
   }
 
   void _editCustomTime(int index) {
+    // Check if premium is active
+    final isPremiumActive = ref.read(isPremiumActiveProvider).value ?? false;
+    if (!isPremiumActive) {
+      // If not premium, show premium subscription page
+      context.router.push(const PremiumSubscriptionRoute());
+      return;
+    }
+
     final time = _settings!.customTimes[index];
 
     TimePickerBottomSheet.show(
@@ -992,6 +1046,14 @@ class _ReminderSettingsPageState extends ConsumerState<ReminderSettingsPage>
   // We no longer need the delete function as we're using enable/disable instead
 
   void _addCustomTime() {
+    // Check if premium is active
+    final isPremiumActive = ref.read(isPremiumActiveProvider).value ?? false;
+    if (!isPremiumActive) {
+      // If not premium, show premium subscription page
+      context.router.push(const PremiumSubscriptionRoute());
+      return;
+    }
+
     // Don't allow more than 24 times (one for each hour)
     if (_settings!.customTimes.length >= 24) {
       ScaffoldMessenger.of(context).showSnackBar(

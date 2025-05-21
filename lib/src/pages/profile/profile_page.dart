@@ -1,25 +1,29 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/routing/app_router.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
 import 'package:water_mind/src/core/database/providers/database_providers.dart';
+import 'package:water_mind/src/core/services/premium/premium_service_provider.dart';
 import 'package:water_mind/src/core/services/reminders/models/reminder_mode.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
+import 'package:water_mind/src/pages/profile/models/profile_settings_model.dart';
 import 'package:water_mind/src/pages/profile/providers/profile_provider.dart';
-import 'package:water_mind/src/pages/profile/widgets/daily_goal_bottom_sheet.dart';
+import 'package:water_mind/src/pages/profile/widgets/feedback_bottom_sheet.dart';
 import 'package:water_mind/src/pages/profile/widgets/gender_bottom_sheet.dart';
 import 'package:water_mind/src/pages/profile/widgets/height_bottom_sheet.dart';
 import 'package:water_mind/src/pages/profile/widgets/language_selector_bottom_sheet.dart';
+import 'package:water_mind/src/pages/profile/widgets/premium_daily_goal_bottom_sheet.dart';
+import 'package:water_mind/src/pages/profile/widgets/premium_status_widget.dart';
 import 'package:water_mind/src/pages/profile/widgets/time_settings_bottom_sheet.dart';
 import 'package:water_mind/src/pages/profile/widgets/unit_selector_bottom_sheet.dart';
 import 'package:water_mind/src/pages/profile/widgets/weight_bottom_sheet.dart';
+import 'package:water_mind/src/ui/widgets/premium/premium_icon.dart';
 import 'package:water_mind/src/ui/widgets/profile/stats_row_widget.dart';
-
-import 'models/profile_settings_model.dart';
 
 /// Profile page for the app
 @RoutePage()
@@ -41,10 +45,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
       appBar: AppBar(
         backgroundColor: AppColor.secondaryColor,
         elevation: 0,
-        title: Text(
-          context.l10n.profile,
-          style: const TextStyle(color: Colors.white),
-        ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: profileSettingsAsync.when(
@@ -71,8 +71,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
           child: StatsRowWidget(),
         ),
 
-        const SizedBox(height: 24),
-
+        const SizedBox(height: 16),
+        const PremiumStatusWidget(),
+        const SizedBox(height: 16),
         _buildSettingsCard([
           ref.watch(reminderSettingsProvider).when(
             data: (settings) {
@@ -172,12 +173,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
 
 
         _buildSettingsCard([
-          // Daily Goal
+          // Daily Goal with premium indicator
           ListTile(
             leading: const Icon(Icons.water_drop_outlined, color: Colors.white),
-            title: Text(
-              context.l10n.dailyGoal,
-              style: const TextStyle(color: Colors.white),
+            title: Row(
+              children: [
+                Text(
+                  context.l10n.dailyGoal,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(width: 8),
+
+              ],
             ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
@@ -196,9 +203,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
             },
           ),
 
-          // Custom Daily Goal Switch
+          // Custom Daily Goal Switch with premium check
           SwitchListTile(
-            secondary: const Icon(Icons.edit, color: Colors.white),
+            secondary: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.edit, color: Colors.white),
+                SizedBox(width: 4),
+                PremiumIcon(
+                  size: 16,
+                  color: Colors.white,
+                  backgroundColor: AppColor.primaryColor,
+                ),
+              ],
+            ),
             title: Text(
               context.l10n.useCustomDailyGoal,
               style: const TextStyle(color: Colors.white),
@@ -208,10 +226,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
             activeTrackColor: AppColor.thirdColor,
             onChanged: (value) {
               haptic(HapticFeedbackType.selection);
-              ref.read(profileSettingsProvider.notifier).updateDailyGoal(
-                profileSettings.customDailyGoal ?? 2500,
-                value,
-              );
+
+              // Check if premium is active
+              final isPremiumActive = ref.read(isPremiumActiveProvider).value ?? false;
+              if (isPremiumActive) {
+                ref.read(profileSettingsProvider.notifier).updateDailyGoal(
+                  profileSettings.customDailyGoal ?? 2500,
+                  value,
+                );
+              } else {
+                // If not premium, show premium subscription page
+                context.router.push(const PremiumSubscriptionRoute());
+              }
             },
           ),
 
@@ -370,7 +396,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
             trailing: const Icon(Icons.chevron_right, color: Colors.white),
             onTap: () {
               haptic(HapticFeedbackType.selection);
-              // TODO: Implement feedback functionality
+              FeedbackBottomSheet.show(context: context);
             },
           ),
 
@@ -384,7 +410,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
             trailing: const Icon(Icons.chevron_right, color: Colors.white),
             onTap: () {
               haptic(HapticFeedbackType.selection);
-              // TODO: Implement privacy policy
+              context.router.push( PrivacyPolicyRoute());
             },
           ),
 
@@ -412,7 +438,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
             trailing: const Icon(Icons.chevron_right, color: Colors.white),
             onTap: () {
               haptic(HapticFeedbackType.selection);
-              // TODO: Implement about app
+              context.router.push(const AboutRoute());
             },
           ),
         ]),
@@ -463,7 +489,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
   }
 
   void _showDailyGoalDialog(ProfileSettingsModel profileSettings) {
-    DailyGoalBottomSheet.show(
+    // Use premium daily goal bottom sheet
+    PremiumDailyGoalBottomSheet.show(
       context: context,
       initialValue: profileSettings.customDailyGoal?.toInt() ?? 2500,
       measureUnit: profileSettings.measureUnit,
@@ -525,8 +552,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
       context: context,
       currentLanguage: profileSettings.language,
       onLanguageSelected: (languageCode) {
-        haptic(HapticFeedbackType.success);
-        ref.read(profileSettingsProvider.notifier).updateLanguage(languageCode);
+        // Cập nhật ngôn ngữ trong profile settings và locale
+        ref.read(profileSettingsProvider.notifier).updateLanguage(languageCode, ref: ref);
+        if (mounted) {
+          setState(() {
+            // Kích hoạt rebuild để cập nhật ListTile Language
+          });
+        }
       },
     );
   }
@@ -598,9 +630,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
   }
 
   void _shareApp() {
-    // Share.share(
-    //   'Check out Water Mind app for tracking your daily water intake!',
-    //   subject: 'Water Mind App',
-    // );
+    // Use share_plus package to share the app
+    SharePlus.instance.share(
+      ShareParams(
+        text: 'Check out Water Mind app for tracking your daily water intake!',
+        subject: 'Water Mind App',
+      ),
+    );
   }
 }

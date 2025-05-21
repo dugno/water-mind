@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wheel_picker/wheel_picker.dart';
 import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_config.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_item.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/widgets/wheel_picker.dart';
 
 /// Bottom sheet for selecting measurement units
 class UnitSelectorBottomSheet extends StatefulWidget {
@@ -32,7 +30,7 @@ class UnitSelectorBottomSheet extends StatefulWidget {
   }) {
     return BaseBottomSheet.show(
       context: context,
-      backgroundColor: AppColor.thirdColor,
+      useGradientBackground: true,
       maxHeightFactor: 0.5,
       child: UnitSelectorBottomSheet(
         measureUnit: measureUnit,
@@ -55,37 +53,63 @@ class _UnitSelectorBottomSheetState extends State<UnitSelectorBottomSheet> with 
   }
 
   Widget _buildUnitPicker() {
-    // Create items for the wheel picker
-    final List<WheelPickerItem<MeasureUnit>> unitItems = [
-      WheelPickerItem<MeasureUnit>(
-        value: MeasureUnit.metric,
-        text: context.l10n.metric,
-      ),
-      WheelPickerItem<MeasureUnit>(
-        value: MeasureUnit.imperial,
-        text: context.l10n.imperial,
-      ),
+    // Create a list of measure units
+    final List<MeasureUnit> units = [
+      MeasureUnit.metric,
+      MeasureUnit.imperial,
     ];
 
     // Find initial index
     int initialIndex = _selectedUnit == MeasureUnit.metric ? 0 : 1;
 
-    return SizedBox(
-      height: 200,
-      child: WheelPicker(
-        columns: [unitItems],
-        initialIndices: [initialIndex],
-        onSelectedItemChanged: (columnIndex, itemIndex, value) {
+    // Create controller
+    final unitController = WheelPickerController(
+      itemCount: units.length,
+      initialIndex: initialIndex,
+    );
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.white.withAlpha(26), // 0.1 opacity
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: SizedBox(
+        height: 100,
+        child: WheelPicker(
+        builder: (context, index) {
+          final unit = units[index];
+          final isSelected = unit == _selectedUnit;
+          final unitText = unit == MeasureUnit.metric ? context.l10n.metric : context.l10n.imperial;
+
+          return Text(
+            unitText,
+            style: TextStyle(
+              fontSize: isSelected ? 22 : 20,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              color: isSelected
+                  ? AppColor.thirdColor // Blue color for selected item
+                  : Colors.white70, // Light color for better visibility on dark background
+            ),
+          );
+        },
+        controller: unitController,
+        selectedIndexColor: Colors.transparent,
+        looping: false,
+        style: const WheelPickerStyle(
+          itemExtent: 50,
+          squeeze: 1.0,
+          diameterRatio: 1.5,
+          magnification: 1.2,
+          surroundingOpacity: 0.3,
+        ),
+        onIndexChanged: (index, _) {
           haptic(HapticFeedbackType.selection);
           setState(() {
-            _selectedUnit = value as MeasureUnit;
+            _selectedUnit = units[index];
           });
         },
-        config: const WheelPickerConfig(
-          height: 200,
-          useHapticFeedback: true,
-          itemHeight: 50,
-        ),
+      ),
       ),
     );
   }
@@ -97,37 +121,17 @@ class _UnitSelectorBottomSheetState extends State<UnitSelectorBottomSheet> with 
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8.0),
           child: Text(
             context.l10n.units,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-
-        // Current unit display
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            _selectedUnit == MeasureUnit.metric ? context.l10n.metric : context.l10n.imperial,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
         ),
-
-        const SizedBox(height: 24),
-
-        // Unit picker
-        _buildUnitPicker(),
-
-        const SizedBox(height: 24),
 
         // Description
         Padding(
@@ -136,52 +140,39 @@ class _UnitSelectorBottomSheetState extends State<UnitSelectorBottomSheet> with 
             _selectedUnit == MeasureUnit.metric
                 ? 'Metric: cm, kg, ml'
                 : 'Imperial: in, lb, oz',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: const TextStyle(
               color: Colors.white70,
+              fontSize: 16,
             ),
             textAlign: TextAlign.center,
           ),
         ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 8),
 
-        // Buttons
+        // Unit picker
+        _buildUnitPicker(),
+
+        const SizedBox(height: 8),
+
+        // Save button
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.white),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(context.l10n.cancel),
-                ),
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            onPressed: () {
+              haptic(HapticFeedbackType.success);
+              widget.onUnitChanged(_selectedUnit);
+              Navigator.of(context).pop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.thirdColor,
+              foregroundColor: Colors.white,
+              minimumSize: const Size(double.infinity, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: FilledButton(
-                  onPressed: () {
-                    widget.onUnitChanged(_selectedUnit);
-                    Navigator.of(context).pop();
-                  },
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(context.l10n.save),
-                ),
-              ),
-            ],
+            ),
+            child: Text(context.l10n.save),
           ),
         ),
       ],

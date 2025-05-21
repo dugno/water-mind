@@ -1,17 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:water_mind/src/core/database/daos/water_intake_dao.dart';
 import 'package:water_mind/src/core/database/providers/database_providers.dart';
+import 'package:water_mind/src/core/services/hydration/water_intake_change_notifier.dart';
 import 'package:water_mind/src/core/services/logger/app_logger.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 
 /// Provider để lấy tổng lượng nước đã uống từ khi sử dụng app
 final totalWaterIntakeProvider = FutureProvider<double>((ref) async {
+  // Lắng nghe sự thay đổi từ waterIntakeChangeNotifierProvider để cập nhật khi có thay đổi
+  ref.watch(waterIntakeChangeNotifierProvider);
+
   final dao = ref.watch(waterIntakeDaoProvider);
   return _calculateTotalWaterIntake(dao);
 });
 
 /// Provider để lấy tổng lượng nước đã uống từ khi sử dụng app với đơn vị đo
 final formattedTotalWaterIntakeProvider = FutureProvider<({double amount, MeasureUnit unit})>((ref) async {
+  // Lắng nghe sự thay đổi từ waterIntakeChangeNotifierProvider để cập nhật khi có thay đổi
+  ref.watch(waterIntakeChangeNotifierProvider);
+
   final dao = ref.watch(waterIntakeDaoProvider);
   final totalAmount = await _calculateTotalWaterIntake(dao);
 

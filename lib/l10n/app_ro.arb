@@ -26,17 +26,14 @@
   "male": "Masculin",
   "female": "Feminin",
   "other": "Altul",
-
   "pregnant": "Însărcinată",
   "breastfeeding": "Alăptare",
-
   "heightWeight": "ÎNĂLȚIME ȘI GREUTATE",
   "dateOfBirth": "DATA NAȘTERII",
   "activityLevel": "NIVEL DE ACTIVITATE",
   "livingEnvironment": "CONDIȚII DE VIAȚĂ",
   "wakeUpTime": "ORA DE TREZIRE",
   "bedTime": "ORA DE CULCARE",
-
   "genderDescription": "Aceasta va fi utilizată pentru a calibra planul dvs. personalizat.",
   "heightWeightDescription": "Înălțimea și greutatea dvs. ne ajută să calculăm nevoile dvs. de hidratare.",
   "dateOfBirthDescription": "Vârsta dvs. afectează cerințele de hidratare.",
@@ -44,12 +41,10 @@
   "livingEnvironmentDescription": "Condițiile dvs. de viață afectează nevoile de hidratare.",
   "wakeUpTimeDescription": "Vom programa primul memento de apă după ce vă treziți.",
   "bedTimeDescription": "Vom opri mementourile înainte de ora de culcare.",
-
   "height": "Înălțime",
   "weight": "Greutate",
   "metric": "Metric",
   "imperial": "Imperial",
-
   "january": "Ian",
   "february": "Feb",
   "march": "Mar",
@@ -62,22 +57,18 @@
   "october": "Oct",
   "november": "Noi",
   "december": "Dec",
-
   "am": "AM",
   "pm": "PM",
-
   "sedentary": "Sedentar (puțin sau deloc exerciții)",
   "lightlyActive": "Ușor activ (exerciții ușoare 1-3 zile/săptămână)",
   "moderatelyActive": "Moderat activ (exerciții 3-5 zile/săptămână)",
   "veryActive": "Foarte activ (exerciții intense 6-7 zile/săptămână)",
   "extraActive": "Extrem de activ (exerciții foarte intense sau muncă fizică)",
-
   "airConditioned": "Aer condiționat (interior)",
   "hotSunny": "Cald și însorit",
   "rainyHumid": "Ploios și umed",
   "cold": "Rece",
   "moderate": "Moderat (temperatură blândă)",
-
   "dailyWaterIntake": "Consumul zilnic de apă",
   "calculationFactors": "Factori de calcul",
   "baseIntake": "Consum de bază",
@@ -87,7 +78,6 @@
   "ageFactor": "Vârstă",
   "awakeHoursFactor": "Ore de veghe",
   "weatherFactor": "Vreme",
-
   "sunny": "Însorit",
   "cloudy": "Noros",
   "rainy": "Ploios",
@@ -96,7 +86,6 @@
   "coldWeather": "Rece",
   "snowy": "Ninsoare",
   "windy": "Vânt",
-
   "partlyCloudy": "Parțial noros",
   "overcast": "Înnorat",
   "mist": "Ceață ușoară",
@@ -135,7 +124,6 @@
   "heavyRainThunder": "Ploaie puternică cu tunete",
   "lightSnowThunder": "Ninsoare ușoară cu tunete",
   "heavySnowThunder": "Ninsoare puternică cu tunete",
-
   "selectYourPreferredLanguage": "Selectați limba preferată",
   "dailyGoal": "Obiectiv zilnic",
   "useCustomDailyGoal": "Utilizați obiectiv zilnic personalizat",
@@ -143,40 +131,35 @@
   "dailyGoalDescription": "Setați obiectivul personalizat de consum zilnic de apă",
   "recommendedRangeMetric": "Interval recomandat: 2000-3500 ml",
   "recommendedRangeImperial": "Interval recomandat: 68-118 oz",
-
   "soundAndVibration": "Sunet și vibrație",
   "enableSound": "Activați sunetul",
   "enableVibration": "Activați vibrația",
-
   "units": "Unități",
   "measurementUnit": "Unitate de măsură",
-
   "physicalAttributes": "Atribute fizice",
   "genderWeightHeight": "Gen, greutate și înălțime",
-
   "timeSettings": "Setări de timp",
-
   "about": "Despre",
   "sendFeedback": "Trimiteți feedback",
+  "feedbackThankYou": "Vă mulțumim pentru feedback!",
+  "enterFeedbackHint": "Introduceți feedback-ul dvs. aici...",
+  "feedbackValidationEmpty": "Vă rugăm să introduceți feedback-ul dvs.",
+  "feedbackValidationTooShort": "Feedback-ul trebuie să aibă cel puțin 10 caractere",
   "privacyPolicy": "Politica de confidențialitate",
   "shareApp": "Distribuiți aplicația",
   "aboutApp": "Despre aplicație",
-
   "waterIntakeForecast": "Prognoză consum de apă",
   "noForecastData": "Nu există date de prognoză disponibile",
   "refresh": "Reîmprospătare",
   "refreshingForecast": "Reîmprospătare date prognoză...",
   "recommendedIntake": "recomandat",
   "lastDrink": "Ultima băutură",
-
   "yourProfile": "Profilul dvs.",
   "tapToEdit": "Atingeți pentru a edita",
   "reminderSettings": "Setări memento",
-
   "save": "Salvare",
   "cancel": "Anulare",
   "notSet": "Nesetat",
-
   "reminders": "Memento-uri",
   "enableReminders": "Activați memento-urile",
   "enableRemindersDescription": "Primiți notificări pentru a bea apă pe parcursul zilei",
@@ -187,10 +170,8 @@
   "standardModeDescription": "Memento-uri optime bazate pe ora de trezire și de culcare",
   "intervalModeDescription": "Memento-uri la intervale regulate pe parcursul zilei",
   "customModeDescription": "Setați propriile ore specifice de memento",
-
   "wakeUpAndBedtime": "Ora de trezire și de culcare",
   "wakeUpAndBedtimeDescription": "Vom programa memento-uri în timpul orelor active",
-
   "advancedSettings": "Setări avansate",
   "skipIfGoalMet": "Omiteți dacă obiectivul este atins",
   "skipIfGoalMetDescription": "Nu trimiteți memento-uri dacă ați atins deja obiectivul zilnic",
@@ -198,31 +179,26 @@
   "doNotDisturbDescription": "Întrerupeți memento-urile în anumite ore",
   "doNotDisturbStart": "Începutul Nu deranjați",
   "doNotDisturbEnd": "Sfârșitul Nu deranjați",
-
   "reminderInterval": "Interval memento",
   "customTimes": "Ore personalizate",
   "addTime": "Adăugați oră",
   "maxTimesReached": "Număr maxim de ore atins",
   "needAtLeastOneTime": "Aveți nevoie de cel puțin o oră de memento",
   "timeAlreadyExists": "Această oră există deja",
-
   "hour": "oră",
   "hours": "ore",
   "minute": "minut",
   "minutes": "minute",
   "hourShort": "h",
   "minuteShort": "m",
-
   "congratulations": "Felicitări!",
   "profileSetupComplete": "Profilul dvs. a fost configurat cu succes",
   "yourDailyWaterIntake": "Consumul dvs. zilnic de apă",
   "perDay": "pe zi",
   "basedOnWeather": "Bazat pe vremea actuală",
   "waterIntakeExplanation": "Această recomandare se bazează pe profilul dvs. și condițiile meteorologice actuale. Se va ajusta pe măsură ce condițiile se schimbă.",
-
   "liters": "litri",
   "fluidOunces": "uncie lichidă",
-
   "home": "Acasă",
   "history": "Istoric",
   "waterHistory": "Istoric apă",
@@ -230,10 +206,8 @@
   "week": "Săptămână",
   "month": "Lună",
   "year": "An",
-
   "reminderTimes": "Ore memento",
   "tapToToggleHint": "Atingeți pentru a activa sau dezactiva o oră de memento",
-
   "selectDrinkType": "Selectați tipul de băutură",
   "streak": "Serie",
   "currentStreak": "Serie curentă",
@@ -242,10 +216,41 @@
   "noStreakYet": "Încă nu există serie",
   "drinkWaterToStartStreak": "Beți apă astăzi pentru a începe seria dvs.!",
   "drinkTodayToKeepStreak": "Beți astăzi!",
-
   "selectAmount": "Selectați cantitatea",
   "select": "Selectați",
-
   "totalWaterIntake": "Apă totală",
-  "sinceUsingApp": "de când folosiți aplicația"
+  "sinceUsingApp": "de când folosiți aplicația",
+  "privacyPolicyChangesTitle": "Modificări la această politică",
+  "privacyPolicyIntroContent": "Această politică de confidențialitate descrie modul în care colectăm, folosim și împărtășim informațiile dvs. personale atunci când utilizați aplicația noastră de apă. Vă respectăm confidențialitatea și ne angajăm să vă protejați datele personale.",
+  "aboutAppContactTitle": "Contact",
+  "privacyPolicyCollectTitle": "Informații pe care le colectăm",
+  "privacyPolicyCollectContent": "Colectăm informații pe care le furnizați direct, cum ar fi sexul, greutatea, înălțimea, data nașterii, nivelul activității, mediul de viață, timpul de trezire și ora de culcare. De asemenea, colectăm informații despre obiceiurile dvs. de admisie a apei și modelele de utilizare a aplicațiilor.",
+  "privacyPolicyIntroTitle": "Introducere",
+  "privacyPolicyContactTitle": "Contactaţi-ne",
+  "privacyPolicyLastUpdated": "Ultima actualizare: iunie 2023",
+  "aboutAppDeveloperTitle": "Dezvoltator",
+  "privacyPolicyFeedbackTitle": "Feedback",
+  "aboutAppAcknowledgmentsContent": "Datele meteo furnizate de WeatherApi.com\nPictograme și grafică din diverse biblioteci open-source",
+  "privacyPolicyFeedbackContent": "Când oferiți feedback prin intermediul aplicației noastre, colectăm informațiile pe care le trimiteți împreună cu informațiile de bază ale dispozitivelor pentru a ne ajuta să ne îmbunătățim serviciile.",
+  "aboutAppDescriptionTitle": "Descriere",
+  "aboutAppLoadingVersion": "Versiunea de încărcare ...",
+  "privacyPolicyStorageContent": "Datele dvs. sunt stocate în principal local pe dispozitivul dvs. Unele date de utilizare anonimă pot fi colectate în scopuri de îmbunătățire a aplicațiilor.",
+  "privacyPolicyRightsContent": "Aveți dreptul de a accesa, de a corecta sau de a șterge informațiile dvs. personale în orice moment prin setările aplicației.",
+  "privacyPolicyUseTitle": "Cum folosim informațiile dvs.",
+  "privacyPolicyUseContent": "Folosim informațiile pe care le colectăm pentru a oferi, întreține și îmbunătăți serviciile noastre, inclusiv calcularea aportului de apă recomandat zilnic, trimiterea de memento -uri de hidratare și urmărirea progresului.",
+  "aboutAppDeveloperContent": "Dezvoltat de Vie Tech",
+  "privacyPolicyContactContent": "Dacă aveți întrebări cu privire la această politică de confidențialitate, vă rugăm să ne contactați la support@watermind.app",
+  "privacyPolicyChangesContent": "Putem actualiza această politică de confidențialitate din când în când. Vă vom anunța orice modificare prin publicarea noii politici de confidențialitate pe această pagină.",
+  "aboutAppDescriptionContent": "Water Mind este o aplicație de urmărire a hidrajării concepută pentru a vă ajuta să mențineți niveluri optime de hidratare pe parcursul zilei. Aplicația calculează aportul de apă recomandat pe baza profilului personal și a factorilor de mediu.",
+  "aboutAppFeaturesContent": "• Recomandări personalizate de aport de apă\n• Ajustări de hidratare bazate pe vreme\n• Memento -uri personalizabile\n• Istoric detaliat de hidratare\n• Urmărirea dungi pentru motivație",
+  "aboutAppCopyright": "© {year} VIE Tech. Toate drepturile rezervate.",
+  "privacyPolicyWeatherTitle": "Date meteorologice",
+  "privacyPolicyRightsTitle": "Drepturile tale",
+  "privacyPolicyStorageTitle": "Stocarea datelor",
+  "aboutAppFeaturesTitle": "Caracteristici",
+  "privacyPolicyTitle": "Politica de confidențialitate",
+  "aboutAppContactContent": "Pentru suport sau feedback, vă rugăm să ne contactați la:\nsupport@watermind.app",
+  "privacyPolicyWeatherContent": "Cu permisiunea dvs., vă accesăm locația pentru a oferi recomandări de hidratare bazate pe vreme. Aceste date sunt utilizate doar în aplicație și nu sunt partajate cu terți.",
+  "aboutAppAcknowledgmentsTitle": "Mulțumiri",
+  "aboutAppVersion": "Version {version} ({buildNumber})"
 }

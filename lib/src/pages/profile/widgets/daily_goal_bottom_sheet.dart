@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:wheel_picker/wheel_picker.dart';
 import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_config.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_item.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/widgets/wheel_picker.dart';
 
 /// Bottom sheet for setting daily water intake goal
 class DailyGoalBottomSheet extends StatefulWidget {
   /// Initial value for the daily goal
   final int initialValue;
-  
+
   /// Measurement unit
   final MeasureUnit measureUnit;
-  
+
   /// Callback when the value is saved
   final Function(int) onSaved;
 
@@ -38,7 +36,7 @@ class DailyGoalBottomSheet extends StatefulWidget {
   }) {
     return BaseBottomSheet.show(
       context: context,
-      backgroundColor: AppColor.thirdColor,
+      useGradientBackground: true,
       maxHeightFactor: 0.7,
       child: DailyGoalBottomSheet(
         initialValue: initialValue,
@@ -74,44 +72,82 @@ class _DailyGoalBottomSheetState extends State<DailyGoalBottomSheet> with Haptic
     final minValue = widget.measureUnit == MeasureUnit.metric ? 1000 : 30;
     final maxValue = widget.measureUnit == MeasureUnit.metric ? 5000 : 170;
     final step = widget.measureUnit == MeasureUnit.metric ? 100 : 5;
-    
-    // Create items for the wheel picker
-    final List<WheelPickerItem<int>> items = [];
-    for (int i = minValue; i <= maxValue; i += step) {
-      items.add(WheelPickerItem<int>(
-        value: i,
-        text: '$i $unit',
-      ));
-    }
-    
-    // Find the closest index to the current value
-    int initialIndex = 0;
-    int minDiff = (items[0].value - _value).abs();
-    
-    for (int i = 1; i < items.length; i++) {
-      final diff = (items[i].value - _value).abs();
+
+    // Calculate number of items and find the closest index
+    final itemCount = ((maxValue - minValue) ~/ step) + 1;
+
+    // Find the closest value that matches the step
+    int closestValue = minValue;
+    int minDiff = (minValue - _value).abs();
+
+    for (int i = 0; i < itemCount; i++) {
+      final currentValue = minValue + (i * step);
+      final diff = (currentValue - _value).abs();
       if (diff < minDiff) {
         minDiff = diff;
-        initialIndex = i;
+        closestValue = currentValue;
       }
     }
-    
+
+    // Calculate initial index
+    final initialIndex = (closestValue - minValue) ~/ step;
+
+    // Create controller
+    final valueController = WheelPickerController(
+      itemCount: itemCount,
+      initialIndex: initialIndex,
+    );
+
     return SizedBox(
       height: 200,
       child: WheelPicker(
-        columns: [items],
-        initialIndices: [initialIndex],
-        onSelectedItemChanged: (columnIndex, itemIndex, value) {
+        builder: (context, index) {
+          final value = minValue + (index * step);
+          final isSelected = value == closestValue;
+
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '$value',
+                style: TextStyle(
+                  fontSize: isSelected ? 22 : 20,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: isSelected
+                      ? AppColor.thirdColor // Blue color for selected item
+                      : Colors.white70, // Light color for better visibility on dark background
+                ),
+              ),
+              if (isSelected)
+                Text(
+                  ' $unit',
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.thirdColor, // Blue color for selected item
+                  ),
+                ),
+            ],
+          );
+        },
+        controller: valueController,
+        selectedIndexColor: Colors.transparent,
+        looping: false,
+        style: const WheelPickerStyle(
+          itemExtent: 40,
+          squeeze: 1.0,
+          diameterRatio: 1.5,
+          magnification: 1.2,
+          surroundingOpacity: 0.3,
+        ),
+        onIndexChanged: (index, _) {
           haptic(HapticFeedbackType.selection);
+          final newValue = minValue + (index * step);
           setState(() {
-            _value = value as int;
+            _value = newValue;
             _controller.text = _value.toString();
           });
         },
-        config: const WheelPickerConfig(
-          height: 200,
-          useHapticFeedback: true,
-        ),
       ),
     );
   }
@@ -119,7 +155,7 @@ class _DailyGoalBottomSheetState extends State<DailyGoalBottomSheet> with Haptic
   @override
   Widget build(BuildContext context) {
     final unit = widget.measureUnit == MeasureUnit.metric ? 'ml' : 'oz';
-    
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -135,7 +171,7 @@ class _DailyGoalBottomSheetState extends State<DailyGoalBottomSheet> with Haptic
             textAlign: TextAlign.center,
           ),
         ),
-        
+
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
@@ -146,9 +182,9 @@ class _DailyGoalBottomSheetState extends State<DailyGoalBottomSheet> with Haptic
             textAlign: TextAlign.center,
           ),
         ),
-        
+
         const SizedBox(height: 24),
-        
+
         // Text field for manual input
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -180,14 +216,14 @@ class _DailyGoalBottomSheetState extends State<DailyGoalBottomSheet> with Haptic
             },
           ),
         ),
-        
+
         const SizedBox(height: 24),
-        
+
         // Wheel picker for value selection
         _buildWheelPicker(),
-        
+
         const SizedBox(height: 16),
-        
+
         // Recommended range text
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -201,9 +237,9 @@ class _DailyGoalBottomSheetState extends State<DailyGoalBottomSheet> with Haptic
             textAlign: TextAlign.center,
           ),
         ),
-        
+
         const SizedBox(height: 24),
-        
+
         // Buttons
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

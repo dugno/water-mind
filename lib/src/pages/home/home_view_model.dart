@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,11 +9,17 @@ import 'package:water_mind/src/core/models/drink_type.dart';
 import 'package:water_mind/src/core/models/water_intake_entry.dart';
 import 'package:water_mind/src/core/models/water_intake_history.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
+import 'package:water_mind/src/core/services/hydration/hydration_service_provider.dart';
+import 'package:water_mind/src/core/services/hydration/water_intake_change_notifier.dart';
 import 'package:water_mind/src/core/services/hydration/water_intake_provider.dart';
 import 'package:water_mind/src/core/services/hydration/water_intake_repository.dart';
+import 'package:water_mind/src/core/services/kv_store/kv_store.dart';
+import 'package:water_mind/src/core/services/premium/premium_service_provider.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/ui/widgets/bottom_sheets/amount_wheel_sheet.dart';
 import 'package:water_mind/src/ui/widgets/bottom_sheets/drink_type_wheel_sheet.dart';
+import 'package:water_mind/src/ui/widgets/bottom_sheets/premium_amount_wheel_sheet.dart';
+import 'package:water_mind/src/ui/widgets/bottom_sheets/premium_drink_type_wheel_sheet.dart';
 import 'package:water_mind/src/pages/getting_started/models/user_onboarding_model.dart';
 import 'package:water_mind/src/pages/home/home_state.dart';
 import 'package:water_mind/src/ui/widgets/bottom_sheets/water_intake_editor_sheet.dart';
@@ -101,6 +108,20 @@ class HomeViewModel extends StateNotifier<HomeState> {
 
     // Lấy thông tin loại đồ uống và lượng nước gần nhất
     await _loadLastDrinkInfo();
+
+    // Lắng nghe sự thay đổi dữ liệu từ waterIntakeChangeNotifierProvider
+    _listenToDataChanges();
+  }
+
+  /// Lắng nghe sự thay đổi dữ liệu
+  void _listenToDataChanges() {
+    // Đăng ký lắng nghe sự kiện thay đổi dữ liệu
+    _ref.listen(waterIntakeChangeNotifierProvider, (previous, current) {
+      debugPrint('HOME_VM: Detected data change at ${current.toString()}');
+
+      // Tải lại dữ liệu lịch sử uống nước cho ngày hiện tại
+      _loadWaterIntakeHistory(state.selectedDate);
+    });
   }
 
   /// Bắt đầu animation cho sóng nước
@@ -148,14 +169,62 @@ class HomeViewModel extends StateNotifier<HomeState> {
         }
       }
 
-      // Nếu không có lịch sử, tạo mới với mục tiêu mặc định
+      // Nếu không có lịch sử, tạo mới với mục tiêu được tính toán từ dữ liệu người dùng
       if (history == null) {
         final userModel = state.userModel.valueOrNull;
+
+        // Tính toán mục tiêu dựa trên dữ liệu người dùng và profile settings
+        double recommendedGoal = 2500; // Mục tiêu mặc định
+        final measureUnit = userModel?.measureUnit ?? MeasureUnit.metric;
+
+        // Kiểm tra xem có custom daily goal trong profile settings không
+        try {
+          // Lấy profile settings từ SharedPreferences
+          final profileSettingsJson = KVStoreService.sharedPreferences.getString('profile_settings');
+          if (profileSettingsJson != null) {
+            final profileSettings = jsonDecode(profileSettingsJson) as Map<String, dynamic>;
+
+            // Nếu người dùng đã thiết lập custom daily goal
+            if (profileSettings['useCustomDailyGoal'] == true && profileSettings['customDailyGoal'] != null) {
+              recommendedGoal = profileSettings['customDailyGoal'].toDouble();
+              debugPrint('Using custom daily goal from profile settings: $recommendedGoal');
+
+              // Cập nhật đơn vị đo nếu có
+              if (profileSettings['measureUnit'] != null) {
+                final unit = profileSettings['measureUnit'] == 0 ? MeasureUnit.metric : MeasureUnit.imperial;
+                debugPrint('Using measure unit from profile settings: $unit');
+              }
+            } else if (userModel != null) {
+              // Nếu không có custom daily goal, sử dụng hydration service
+              final hydrationService = _ref.read(hydrationServiceProvider);
+              final hydrationModel = hydrationService.calculateFromUserModel(userModel);
+              recommendedGoal = hydrationModel.dailyWaterIntake;
+              debugPrint('Calculated recommended goal: $recommendedGoal ${hydrationModel.measureUnit == MeasureUnit.metric ? 'ml' : 'fl oz'}');
+            }
+          } else if (userModel != null) {
+            // Nếu không có profile settings, sử dụng hydration service
+            final hydrationService = _ref.read(hydrationServiceProvider);
+            final hydrationModel = hydrationService.calculateFromUserModel(userModel);
+            recommendedGoal = hydrationModel.dailyWaterIntake;
+            debugPrint('Calculated recommended goal: $recommendedGoal ${hydrationModel.measureUnit == MeasureUnit.metric ? 'ml' : 'fl oz'}');
+          }
+        } catch (e) {
+          debugPrint('Error getting daily goal from profile settings: $e');
+
+          // Fallback to hydration service
+          if (userModel != null) {
+            final hydrationService = _ref.read(hydrationServiceProvider);
+            final hydrationModel = hydrationService.calculateFromUserModel(userModel);
+            recommendedGoal = hydrationModel.dailyWaterIntake;
+            debugPrint('Fallback to calculated recommended goal: $recommendedGoal ${hydrationModel.measureUnit == MeasureUnit.metric ? 'ml' : 'fl oz'}');
+          }
+        }
+
         final defaultHistory = WaterIntakeHistory(
           date: date,
           entries: [],
-          dailyGoal: 2500, // Mục tiêu mặc định
-          measureUnit: userModel?.measureUnit ?? MeasureUnit.metric,
+          dailyGoal: recommendedGoal,
+          measureUnit: measureUnit,
         );
 
         // Lưu lịch sử mặc định vào repository
@@ -166,7 +235,7 @@ class HomeViewModel extends StateNotifier<HomeState> {
           isLoading: false,
         );
 
-        debugPrint('Created default history with goal: ${defaultHistory.dailyGoal} ml');
+        debugPrint('Created default history with goal: ${defaultHistory.dailyGoal} ${defaultHistory.measureUnit == MeasureUnit.metric ? 'ml' : 'fl oz'}');
       } else {
         state = state.copyWith(
           todayHistory: AsyncValue.data(history),
@@ -247,7 +316,8 @@ class HomeViewModel extends StateNotifier<HomeState> {
   Future<void> showDrinkTypeSelector(BuildContext context) async {
     final initialDrinkType = state.selectedDrinkType;
 
-    final result = await DrinkTypeWheelSheet.show(
+    // Use premium drink type wheel sheet
+    final result = await PremiumDrinkTypeWheelSheet.show(
       context: context,
       initialDrinkType: initialDrinkType,
     );
@@ -264,7 +334,8 @@ class HomeViewModel extends StateNotifier<HomeState> {
     final measureUnit = state.userModel.valueOrNull?.measureUnit ?? MeasureUnit.metric;
     final initialAmount = state.selectedAmount;
 
-    final result = await AmountWheelSheet.show(
+    // Use premium amount wheel sheet
+    final result = await PremiumAmountWheelSheet.show(
       context: context,
       initialAmount: initialAmount,
       measureUnit: measureUnit,

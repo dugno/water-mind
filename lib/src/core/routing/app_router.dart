@@ -10,6 +10,9 @@ import 'package:water_mind/src/pages/history/water_history_page.dart';
 import 'package:water_mind/src/pages/home/home_page.dart';
 import 'package:water_mind/src/pages/introduction/introduction.dart';
 import 'package:water_mind/src/pages/main_navigation_page.dart';
+import 'package:water_mind/src/pages/about/about_page.dart';
+import 'package:water_mind/src/pages/premium/premium_subscription_page.dart';
+import 'package:water_mind/src/pages/privacy_policy/privacy_policy_page.dart';
 import 'package:water_mind/src/pages/profile/profile_page.dart';
 import 'package:water_mind/src/pages/reminders/reminder_settings_page.dart';
 import 'package:water_mind/src/pages/splash/splash_page.dart';
@@ -85,6 +88,24 @@ class AppRouter extends _$AppRouter {
         AutoRoute(
           path: '/profile',
           page: ProfileRoute.page,
+        ),
+
+        // Privacy Policy page
+        AutoRoute(
+          path: '/privacy-policy',
+          page: PrivacyPolicyRoute.page,
+        ),
+
+        // About App page
+        AutoRoute(
+          path: '/about',
+          page: AboutRoute.page,
+        ),
+
+        // Premium subscription page
+        AutoRoute(
+          path: '/premium',
+          page: PremiumSubscriptionRoute.page,
         ),
         // Add more routes as needed
       ];

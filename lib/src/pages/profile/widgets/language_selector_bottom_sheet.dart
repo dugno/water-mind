@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wheel_picker/wheel_picker.dart';
 import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
 import 'package:water_mind/src/core/services/language/language_manager.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_config.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_item.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/widgets/wheel_picker.dart';
 
 /// Bottom sheet for selecting app language
 class LanguageSelectorBottomSheet extends StatefulWidget {
@@ -32,7 +30,7 @@ class LanguageSelectorBottomSheet extends StatefulWidget {
   }) {
     return BaseBottomSheet.show(
       context: context,
-      backgroundColor: AppColor.thirdColor,
+      useGradientBackground: true,
       maxHeightFactor: 0.6,
       child: LanguageSelectorBottomSheet(
         currentLanguage: currentLanguage,
@@ -66,58 +64,70 @@ class _LanguageSelectorBottomSheetState extends State<LanguageSelectorBottomShee
 
         final languages = snapshot.data!;
 
-        // Create items for the wheel picker with custom widgets that include flag images
-        final List<WheelPickerItem<String>> languageItems = languages.map((lang) {
-          return WheelPickerItem<String>(
-            value: lang.code,
-            text: lang.name, // Vẫn giữ text cho tương thích ngược
-            widget: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Hình ảnh cờ quốc gia
-                Image.asset(
-                  lang.imagePath,
-                  width: 24,
-                  height: 18,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.language, size: 20, color: Colors.white);
-                  },
-                ),
-                const SizedBox(width: 12),
-                // Tên ngôn ngữ
-                Text(
-                  lang.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          );
-        }).toList();
-
         // Find initial index
         int initialIndex = languages.indexWhere((lang) => lang.code == _selectedLanguage);
         if (initialIndex < 0) initialIndex = 0;
 
+        // Create controller
+        final languageController = WheelPickerController(
+          itemCount: languages.length,
+          initialIndex: initialIndex,
+        );
+
         return SizedBox(
           height: 200,
           child: WheelPicker(
-            columns: [languageItems],
-            initialIndices: [initialIndex],
-            onSelectedItemChanged: (columnIndex, itemIndex, value) {
+            builder: (context, index) {
+              final lang = languages[index];
+              final isSelected = lang.code == _selectedLanguage;
+
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Flag image
+                  Image.asset(
+                    lang.imagePath,
+                    width: 24,
+                    height: 18,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.language,
+                        size: 20,
+                        color: isSelected ? AppColor.thirdColor : Colors.white70,
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 12),
+                  // Language name
+                  Text(
+                    lang.name,
+                    style: TextStyle(
+                      fontSize: isSelected ? 22 : 20,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      color: isSelected
+                          ? AppColor.thirdColor // Blue color for selected item
+                          : Colors.white70, // Light color for better visibility on dark background
+                    ),
+                  ),
+                ],
+              );
+            },
+            controller: languageController,
+            selectedIndexColor: Colors.transparent,
+            looping: false,
+            style: const WheelPickerStyle(
+              itemExtent: 50,
+              squeeze: 1.0,
+              diameterRatio: 1.5,
+              magnification: 1.2,
+              surroundingOpacity: 0.3,
+            ),
+            onIndexChanged: (index, _) {
               haptic(HapticFeedbackType.selection);
               setState(() {
-                _selectedLanguage = value as String;
+                _selectedLanguage = languages[index].code;
               });
             },
-            config: const WheelPickerConfig(
-              height: 200,
-              useHapticFeedback: true,
-              itemHeight: 50,
-            ),
           ),
         );
       },
@@ -136,98 +146,48 @@ class _LanguageSelectorBottomSheetState extends State<LanguageSelectorBottomShee
           padding: const EdgeInsets.all(16.0),
           child: Text(
             context.l10n.changeLanguage,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            style: const TextStyle(
               color: Colors.white,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
         ),
 
-        // Current language display
-        FutureBuilder<LanguageModel?>(
-          future: LanguageManager.getLanguageByCode(_selectedLanguage),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(color: Colors.white),
-              );
-            }
-
-            final language = snapshot.data;
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    language?.imagePath ?? '',
-                    width: 32,
-                    height: 24,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.language, size: 24, color: Colors.white);
-                    },
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    language?.name ?? 'Unknown',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
+        // Language picker
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          decoration: BoxDecoration(
+            color: Colors.white.withAlpha(26), // 0.1 opacity
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: _buildLanguagePicker(),
         ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
 
-        // Language picker
-        _buildLanguagePicker(),
-
-        const SizedBox(height: 24),
-
-        // Buttons
+        // Save button
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.white),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(context.l10n.cancel),
-                ),
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            onPressed: () {
+              haptic(HapticFeedbackType.success);
+              // Lưu ngôn ngữ đã chọn trước khi đóng bottom sheet
+              final selectedLanguage = _selectedLanguage;
+              Navigator.of(context).pop();
+              // Gọi callback sau khi đã đóng bottom sheet
+              widget.onLanguageSelected(selectedLanguage);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.thirdColor,
+              foregroundColor: Colors.white,
+              minimumSize: const Size(double.infinity, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: FilledButton(
-                  onPressed: () {
-                    widget.onLanguageSelected(_selectedLanguage);
-                    Navigator.of(context).pop();
-                  },
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(context.l10n.save),
-                ),
-              ),
-            ],
+            ),
+            child: Text(context.l10n.save),
           ),
         ),
       ],

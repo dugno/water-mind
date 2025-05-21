@@ -26,17 +26,14 @@
   "male": "पुरुष",
   "female": "महिला",
   "other": "अन्य",
-
   "pregnant": "गर्भवती",
   "breastfeeding": "स्तनपान",
-
   "heightWeight": "ऊंचाई और वजन",
   "dateOfBirth": "जन्म तिथि",
   "activityLevel": "गतिविधि स्तर",
   "livingEnvironment": "रहने की स्थिति",
   "wakeUpTime": "जागने का समय",
   "bedTime": "सोने का समय",
-
   "genderDescription": "इसका उपयोग आपकी व्यक्तिगत योजना को अनुकूलित करने के लिए किया जाएगा।",
   "heightWeightDescription": "आपकी ऊंचाई और वजन हमें आपकी हाइड्रेशन जरूरतों की गणना करने में मदद करते हैं।",
   "dateOfBirthDescription": "आपकी उम्र आपकी हाइड्रेशन आवश्यकताओं को प्रभावित करती है।",
@@ -44,12 +41,10 @@
   "livingEnvironmentDescription": "आपकी रहने की स्थिति आपकी हाइड्रेशन जरूरतों को प्रभावित करती है।",
   "wakeUpTimeDescription": "हम आपके जागने के बाद आपका पहला पानी रिमाइंडर शेड्यूल करेंगे।",
   "bedTimeDescription": "हम आपके सोने से पहले रिमाइंडर बंद कर देंगे।",
-
   "height": "ऊंचाई",
   "weight": "वजन",
   "metric": "मेट्रिक",
   "imperial": "इम्पीरियल",
-
   "january": "जनवरी",
   "february": "फरवरी",
   "march": "मार्च",
@@ -62,22 +57,18 @@
   "october": "अक्टूबर",
   "november": "नवंबर",
   "december": "दिसंबर",
-
   "am": "पूर्वाह्न",
   "pm": "अपराह्न",
-
   "sedentary": "गतिहीन (कम या कोई व्यायाम नहीं)",
   "lightlyActive": "हल्का सक्रिय (सप्ताह में 1-3 दिन हल्का व्यायाम)",
   "moderatelyActive": "मध्यम सक्रिय (सप्ताह में 3-5 दिन व्यायाम)",
   "veryActive": "बहुत सक्रिय (सप्ताह में 6-7 दिन कठिन व्यायाम)",
   "extraActive": "अत्यधिक सक्रिय (बहुत कठिन व्यायाम या शारीरिक काम)",
-
   "airConditioned": "एयर कंडीशन (इनडोर)",
   "hotSunny": "गर्म और धूप",
   "rainyHumid": "बारिश और नमी",
   "cold": "ठंडा",
   "moderate": "मध्यम (हल्का तापमान)",
-
   "dailyWaterIntake": "आपका दैनिक पानी सेवन",
   "calculationFactors": "गणना कारक",
   "baseIntake": "आधार सेवन",
@@ -87,7 +78,6 @@
   "ageFactor": "उम्र",
   "awakeHoursFactor": "जागने के घंटे",
   "weatherFactor": "मौसम",
-
   "sunny": "धूप",
   "cloudy": "बादल",
   "rainy": "बारिश",
@@ -96,7 +86,6 @@
   "coldWeather": "ठंडा",
   "snowy": "बर्फीला",
   "windy": "हवादार",
-
   "partlyCloudy": "आंशिक रूप से बादल",
   "overcast": "धुंधला",
   "mist": "कोहरा",
@@ -135,7 +124,6 @@
   "heavyRainThunder": "भारी बारिश के साथ बिजली",
   "lightSnowThunder": "हल्की बर्फ के साथ बिजली",
   "heavySnowThunder": "भारी बर्फ के साथ बिजली",
-
   "selectYourPreferredLanguage": "अपनी पसंदीदा भाषा चुनें",
   "dailyGoal": "दैनिक लक्ष्य",
   "useCustomDailyGoal": "कस्टम दैनिक लक्ष्य का उपयोग करें",
@@ -143,40 +131,35 @@
   "dailyGoalDescription": "अपना कस्टम दैनिक पानी सेवन लक्ष्य सेट करें",
   "recommendedRangeMetric": "अनुशंसित सीमा: 2000-3500 मिली",
   "recommendedRangeImperial": "अनुशंसित सीमा: 68-118 औंस",
-
   "soundAndVibration": "ध्वनि और कंपन",
   "enableSound": "ध्वनि सक्षम करें",
   "enableVibration": "कंपन सक्षम करें",
-
   "units": "इकाइयाँ",
   "measurementUnit": "माप इकाई",
-
   "physicalAttributes": "शारीरिक विशेषताएं",
   "genderWeightHeight": "लिंग, वजन और ऊंचाई",
-
   "timeSettings": "समय सेटिंग्स",
-
   "about": "के बारे में",
   "sendFeedback": "प्रतिक्रिया भेजें",
+  "feedbackThankYou": "आपकी प्रतिक्रिया के लिए धन्यवाद!",
+  "enterFeedbackHint": "अपनी प्रतिक्रिया यहां दर्ज करें...",
+  "feedbackValidationEmpty": "कृपया अपनी प्रतिक्रिया दर्ज करें",
+  "feedbackValidationTooShort": "प्रतिक्रिया कम से कम 10 अक्षरों की होनी चाहिए",
   "privacyPolicy": "गोपनीयता नीति",
   "shareApp": "ऐप शेयर करें",
   "aboutApp": "ऐप के बारे में",
-
   "waterIntakeForecast": "पानी सेवन पूर्वानुमान",
   "noForecastData": "कोई पूर्वानुमान डेटा उपलब्ध नहीं",
   "refresh": "रिफ्रेश",
   "refreshingForecast": "पूर्वानुमान डेटा रिफ्रेश हो रहा है...",
   "recommendedIntake": "अनुशंसित",
   "lastDrink": "अंतिम पेय",
-
   "yourProfile": "आपकी प्रोफ़ाइल",
   "tapToEdit": "संपादित करने के लिए टैप करें",
   "reminderSettings": "रिमाइंडर सेटिंग्स",
-
   "save": "सहेजें",
   "cancel": "रद्द करें",
   "notSet": "सेट नहीं",
-
   "reminders": "रिमाइंडर",
   "enableReminders": "रिमाइंडर सक्षम करें",
   "enableRemindersDescription": "दिन भर पानी पीने के लिए सूचनाएं प्राप्त करें",
@@ -187,10 +170,8 @@
   "standardModeDescription": "आपके जागने और सोने के समय पर आधारित इष्टतम रिमाइंडर",
   "intervalModeDescription": "दिन भर नियमित अंतराल पर रिमाइंडर",
   "customModeDescription": "अपने स्वयं के विशिष्ट रिमाइंडर समय सेट करें",
-
   "wakeUpAndBedtime": "जागने और सोने का समय",
   "wakeUpAndBedtimeDescription": "हम आपके सक्रिय घंटों के दौरान रिमाइंडर शेड्यूल करेंगे",
-
   "advancedSettings": "उन्नत सेटिंग्स",
   "skipIfGoalMet": "यदि लक्ष्य पूरा हो गया है तो छोड़ें",
   "skipIfGoalMetDescription": "यदि आपने पहले से ही अपना दैनिक लक्ष्य पूरा कर लिया है तो रिमाइंडर न भेजें",
@@ -198,31 +179,26 @@
   "doNotDisturbDescription": "विशिष्ट घंटों के दौरान रिमाइंडर रोकें",
   "doNotDisturbStart": "परेशान न करें प्रारंभ",
   "doNotDisturbEnd": "परेशान न करें समाप्त",
-
   "reminderInterval": "रिमाइंडर अंतराल",
   "customTimes": "कस्टम समय",
   "addTime": "समय जोड़ें",
   "maxTimesReached": "अधिकतम समय तक पहुंच गया",
   "needAtLeastOneTime": "आपको कम से कम एक रिमाइंडर समय की आवश्यकता है",
   "timeAlreadyExists": "यह समय पहले से मौजूद है",
-
   "hour": "घंटा",
   "hours": "घंटे",
   "minute": "मिनट",
   "minutes": "मिनट",
   "hourShort": "घं",
   "minuteShort": "मि",
-
   "congratulations": "बधाई हो!",
   "profileSetupComplete": "आपकी प्रोफ़ाइल सफलतापूर्वक सेट की गई है",
   "yourDailyWaterIntake": "आपका दैनिक पानी सेवन",
   "perDay": "प्रति दिन",
   "basedOnWeather": "वर्तमान मौसम पर आधारित",
   "waterIntakeExplanation": "यह सिफारिश आपकी प्रोफ़ाइल और वर्तमान मौसम की स्थिति पर आधारित है। स्थितियों के बदलने पर यह समायोजित होगी।",
-
   "liters": "लीटर",
   "fluidOunces": "तरल औंस",
-
   "home": "होम",
   "history": "इतिहास",
   "waterHistory": "पानी का इतिहास",
@@ -230,10 +206,8 @@
   "week": "सप्ताह",
   "month": "महीना",
   "year": "वर्ष",
-
   "reminderTimes": "रिमाइंडर समय",
   "tapToToggleHint": "रिमाइंडर समय को सक्षम या अक्षम करने के लिए टैप करें",
-
   "selectDrinkType": "पेय प्रकार चुनें",
   "streak": "स्ट्रीक",
   "currentStreak": "वर्तमान स्ट्रीक",
@@ -242,10 +216,41 @@
   "noStreakYet": "अभी तक कोई स्ट्रीक नहीं",
   "drinkWaterToStartStreak": "अपनी स्ट्रीक शुरू करने के लिए आज पानी पिएं!",
   "drinkTodayToKeepStreak": "आज पिएं!",
-
   "selectAmount": "मात्रा चुनें",
   "select": "चुनें",
-
   "totalWaterIntake": "कुल पानी",
-  "sinceUsingApp": "ऐप का उपयोग करने के बाद से"
+  "sinceUsingApp": "ऐप का उपयोग करने के बाद से",
+  "privacyPolicyChangesTitle": "इस नीति में परिवर्तन",
+  "privacyPolicyIntroContent": "यह गोपनीयता नीति बताती है कि जब आप हमारे वाटर माइंड एप्लिकेशन का उपयोग करते हैं, तो हम आपकी व्यक्तिगत जानकारी को कैसे एकत्र करते हैं, उपयोग करते हैं और साझा करते हैं। हम आपकी गोपनीयता का सम्मान करते हैं और आपके व्यक्तिगत डेटा की सुरक्षा के लिए प्रतिबद्ध हैं।",
+  "aboutAppContactTitle": "संपर्क",
+  "privacyPolicyCollectTitle": "जानकारी हम एकत्र करते हैं",
+  "privacyPolicyCollectContent": "हम ऐसी जानकारी एकत्र करते हैं जो आप सीधे हमें प्रदान करते हैं, जैसे कि आपका लिंग, वजन, ऊंचाई, जन्म तिथि, गतिविधि स्तर, रहने का वातावरण, वेक-अप समय और सोते समय। हम आपके पानी के सेवन की आदतों और ऐप उपयोग पैटर्न के बारे में भी जानकारी एकत्र करते हैं।",
+  "privacyPolicyIntroTitle": "परिचय",
+  "privacyPolicyContactTitle": "हमसे संपर्क करें",
+  "privacyPolicyLastUpdated": "अंतिम अद्यतन: जून 2023",
+  "aboutAppDeveloperTitle": "डेवलपर",
+  "privacyPolicyFeedbackTitle": "प्रतिक्रिया",
+  "aboutAppAcknowledgmentsContent": "मौसम के आंकड़े ceperapi.com द्वारा प्रदान किए गए\nविभिन्न ओपन-सोर्स लाइब्रेरीज़ से आइकन और ग्राफिक्स",
+  "privacyPolicyFeedbackContent": "जब आप हमारे ऐप के माध्यम से प्रतिक्रिया प्रदान करते हैं, तो हम अपनी सेवाओं को बेहतर बनाने में मदद करने के लिए बुनियादी डिवाइस जानकारी के साथ आपके द्वारा सबमिट की गई जानकारी एकत्र करते हैं।",
+  "aboutAppDescriptionTitle": "विवरण",
+  "aboutAppLoadingVersion": "लोडिंग संस्करण ...",
+  "privacyPolicyStorageContent": "आपका डेटा मुख्य रूप से आपके डिवाइस पर स्थानीय रूप से संग्रहीत किया जाता है। ऐप सुधार उद्देश्यों के लिए कुछ अनाम उपयोग डेटा एकत्र किए जा सकते हैं।",
+  "privacyPolicyRightsContent": "आपके पास ऐप सेटिंग्स के माध्यम से किसी भी समय अपनी व्यक्तिगत जानकारी तक पहुंचने, सही या हटाने का अधिकार है।",
+  "privacyPolicyUseTitle": "हम आपकी सूचना का किस प्रकार प्रयोग करते हैं",
+  "privacyPolicyUseContent": "हम अपनी सेवाओं को प्रदान करने, बनाए रखने और सुधारने के लिए एकत्र की गई जानकारी का उपयोग करते हैं, जिसमें आपके अनुशंसित दैनिक पानी के सेवन की गणना करना, आपको हाइड्रेशन रिमाइंडर भेजना और आपकी प्रगति को ट्रैक करना शामिल है।",
+  "aboutAppDeveloperContent": "Vie Tech द्वारा विकसित किया गया",
+  "privacyPolicyContactContent": "यदि आपके पास इस गोपनीयता नीति के बारे में कोई प्रश्न हैं, तो कृपया हमें support@watermind.app पर संपर्क करें",
+  "privacyPolicyChangesContent": "हम समय -समय पर इस गोपनीयता नीति को अपडेट कर सकते हैं। हम आपको इस पृष्ठ पर नई गोपनीयता नीति पोस्ट करके किसी भी बदलाव की सूचना देंगे।",
+  "aboutAppDescriptionContent": "वाटर माइंड एक हाइड्रेशन ट्रैकिंग ऐप है जो आपको पूरे दिन इष्टतम हाइड्रेशन स्तर बनाए रखने में मदद करने के लिए डिज़ाइन किया गया है। ऐप आपके व्यक्तिगत प्रोफ़ाइल और पर्यावरणीय कारकों के आधार पर आपके अनुशंसित पानी के सेवन की गणना करता है।",
+  "aboutAppFeaturesContent": "• व्यक्तिगत पानी का सेवन सिफारिशें\n• मौसम आधारित जलयोजन समायोजन\n• अनुकूलन योग्य अनुस्मारक\n• विस्तृत जलयोजन इतिहास\n• प्रेरणा के लिए लकीर ट्रैकिंग",
+  "aboutAppCopyright": "© {year} Vie Tech. सर्वाधिकार सुरक्षित.",
+  "privacyPolicyWeatherTitle": "मौसम -आंकड़ा",
+  "privacyPolicyRightsTitle": "आपके हक",
+  "privacyPolicyStorageTitle": "आधार सामग्री भंडारण",
+  "aboutAppFeaturesTitle": "विशेषताएँ",
+  "privacyPolicyTitle": "गोपनीयता नीति",
+  "aboutAppContactContent": "समर्थन या प्रतिक्रिया के लिए, कृपया हमसे संपर्क करें:\nsupport@watermind.app",
+  "privacyPolicyWeatherContent": "आपकी अनुमति के साथ, हम मौसम-आधारित हाइड्रेशन सिफारिशें प्रदान करने के लिए आपके स्थान का उपयोग करते हैं। यह डेटा केवल ऐप के भीतर उपयोग किया जाता है और इसे तीसरे पक्ष के साथ साझा नहीं किया जाता है।",
+  "aboutAppAcknowledgmentsTitle": "स्वीकृतियाँ",
+  "aboutAppVersion": "Version {version} ({buildNumber})"
 }

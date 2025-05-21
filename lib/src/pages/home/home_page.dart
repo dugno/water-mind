@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/routing/app_router.dart';
+import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/pages/home/home_view_model.dart';
 import 'package:water_mind/src/ui/widgets/calendar/controllers/calendar_controller.dart';
 import 'package:water_mind/src/ui/widgets/calendar/widgets/week_view.dart';
 import 'package:water_mind/src/ui/widgets/hydration/water_history_list.dart';
+import 'package:water_mind/src/ui/widgets/premium/premium_icon.dart';
 import 'package:water_mind/src/ui/widgets/streak/streak_display_widget.dart';
 import 'package:water_mind/src/ui/widgets/water_tank/animated_water_cup.dart';
 import 'package:water_mind/src/ui/widgets/weather/weather_app_bar_widget.dart';
@@ -134,15 +136,26 @@ class HomePage extends ConsumerWidget {
               const SizedBox(height: 24),
 
               buildSettingsCard([
-                // Drink type selector
+                // Drink type selector with premium indicator
                 ListTile(
                   leading: Icon(
                     selectedDrinkType.icon,
                     color: Colors.white,
                   ),
-                  title: const Text(
-                    'Loại đồ uống',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  title: Row(
+                    children: [
+                      const Text(
+                        'Loại đồ uống',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 8),
+                      if (selectedDrinkType.id != 'water')
+                        const PremiumIcon(
+                          size: 16,
+                          color: Colors.white,
+                          backgroundColor: AppColor.primaryColor,
+                        ),
+                    ],
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -161,12 +174,23 @@ class HomePage extends ConsumerWidget {
                   },
                 ),
 
-                // Amount selector
+                // Amount selector with premium indicator
                 ListTile(
                   leading: const Icon(Icons.water_drop_outlined, color: Colors.white),
-                  title: const Text(
-                    'Lượng nước',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  title: Row(
+                    children: [
+                      const Text(
+                        'Lượng nước',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 8),
+                      if (selectedAmount != 200.0)
+                        const PremiumIcon(
+                          size: 16,
+                          color: Colors.white,
+                          backgroundColor: AppColor.primaryColor,
+                        ),
+                    ],
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -248,13 +272,56 @@ class HomePage extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const WeatherAppBarWidget(),
-                  IconButton(
-                    icon: const Icon(Icons.person, color: Colors.white),
-                    tooltip: 'Profile',
-                    onPressed: () {
-                      // Navigate to profile page
-                      context.router.push(const ProfileRoute());
-                    },
+                  Row(
+                    children: [
+                      // Premium button with text and icon
+                      InkWell(
+                        onTap: () {
+                          // Navigate to premium subscription page
+                          context.router.push(const PremiumSubscriptionRoute());
+                        },
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [AppColor.primaryColor, AppColor.thirdColor],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const PremiumIcon(
+                                size: 20,
+                                color: Colors.white,
+                                showBackground: false,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                context.l10n.premium,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        icon: const Icon(Icons.person, color: Colors.white),
+                        tooltip: 'Profile',
+                        onPressed: () {
+                          // Navigate to profile page
+                          context.router.push(const ProfileRoute());
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

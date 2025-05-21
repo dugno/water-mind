@@ -28,14 +28,12 @@
   "pregnant": "孕妇",
   "breastfeeding": "哺乳期",
   "other": "其他",
-
   "heightWeight": "身高和体重",
   "dateOfBirth": "出生日期",
   "activityLevel": "活动水平",
   "livingEnvironment": "生活环境",
   "wakeUpTime": "起床时间",
   "bedTime": "睡觉时间",
-
   "genderDescription": "这将用于调整您的个性化计划。",
   "heightWeightDescription": "您的身高和体重帮助我们计算您的水分需求。",
   "dateOfBirthDescription": "您的年龄会影响您的水分需求。",
@@ -43,12 +41,10 @@
   "livingEnvironmentDescription": "您的生活环境会影响您的水分需求。",
   "wakeUpTimeDescription": "我们将在您起床后安排第一次饮水提醒。",
   "bedTimeDescription": "我们将在您睡觉前停止提醒。",
-
   "height": "身高",
   "weight": "体重",
   "metric": "公制",
   "imperial": "英制",
-
   "january": "一月",
   "february": "二月",
   "march": "三月",
@@ -61,22 +57,18 @@
   "october": "十月",
   "november": "十一月",
   "december": "十二月",
-
   "am": "上午",
   "pm": "下午",
-
   "sedentary": "久坐（很少或没有运动）",
   "lightlyActive": "轻度活动（每周1-3天轻度运动）",
   "moderatelyActive": "中度活动（每周3-5天运动）",
   "veryActive": "高度活动（每周6-7天剧烈运动）",
   "extraActive": "极度活动（非常剧烈的运动或体力工作）",
-
   "airConditioned": "空调环境（室内）",
   "hotSunny": "炎热晴朗",
   "rainyHumid": "多雨潮湿",
   "cold": "寒冷",
   "moderate": "温和（适中温度）",
-
   "dailyWaterIntake": "您的每日饮水量",
   "calculationFactors": "计算因素",
   "baseIntake": "基础摄入量",
@@ -86,7 +78,6 @@
   "ageFactor": "年龄",
   "awakeHoursFactor": "清醒时间",
   "weatherFactor": "天气",
-
   "sunny": "晴天",
   "cloudy": "多云",
   "rainy": "下雨",
@@ -95,7 +86,6 @@
   "coldWeather": "寒冷",
   "snowy": "下雪",
   "windy": "有风",
-
   "partlyCloudy": "局部多云",
   "overcast": "阴天",
   "mist": "薄雾",
@@ -134,7 +124,6 @@
   "heavyRainThunder": "大雨伴有雷电",
   "lightSnowThunder": "小雪伴有雷电",
   "heavySnowThunder": "大雪伴有雷电",
-
   "selectYourPreferredLanguage": "选择您偏好的语言",
   "dailyGoal": "每日目标",
   "useCustomDailyGoal": "使用自定义每日目标",
@@ -142,40 +131,35 @@
   "dailyGoalDescription": "设置您的自定义每日饮水目标",
   "recommendedRangeMetric": "推荐范围：2000-3500 毫升",
   "recommendedRangeImperial": "推荐范围：68-118 盎司",
-
   "soundAndVibration": "声音和振动",
   "enableSound": "启用声音",
   "enableVibration": "启用振动",
-
   "units": "单位",
   "measurementUnit": "测量单位",
-
   "physicalAttributes": "身体特征",
   "genderWeightHeight": "性别、体重和身高",
-
   "timeSettings": "时间设置",
-
   "about": "关于",
   "sendFeedback": "发送反馈",
+  "feedbackThankYou": "感谢您的反馈！",
+  "enterFeedbackHint": "在此输入您的反馈...",
+  "feedbackValidationEmpty": "请输入您的反馈",
+  "feedbackValidationTooShort": "反馈必须至少包含10个字符",
   "privacyPolicy": "隐私政策",
   "shareApp": "分享应用",
   "aboutApp": "关于应用",
-
   "waterIntakeForecast": "饮水量预测",
   "noForecastData": "没有可用的预测数据",
   "refresh": "刷新",
   "refreshingForecast": "正在刷新预测数据...",
   "recommendedIntake": "推荐",
   "lastDrink": "最近饮品",
-
   "yourProfile": "您的个人资料",
   "tapToEdit": "点击编辑",
   "reminderSettings": "提醒设置",
-
   "save": "保存",
   "cancel": "取消",
   "notSet": "未设置",
-
   "reminders": "提醒",
   "enableReminders": "启用提醒",
   "enableRemindersDescription": "全天接收饮水通知",
@@ -186,10 +170,8 @@
   "standardModeDescription": "基于您的起床和睡觉时间的最佳提醒",
   "intervalModeDescription": "全天定时提醒",
   "customModeDescription": "设置您自己的特定提醒时间",
-
   "wakeUpAndBedtime": "起床和睡觉时间",
   "wakeUpAndBedtimeDescription": "我们将在您的活动时间安排提醒",
-
   "advancedSettings": "高级设置",
   "skipIfGoalMet": "达到目标时跳过",
   "skipIfGoalMetDescription": "如果您已经达到每日目标，则不发送提醒",
@@ -197,31 +179,26 @@
   "doNotDisturbDescription": "在特定时间暂停提醒",
   "doNotDisturbStart": "勿扰开始时间",
   "doNotDisturbEnd": "勿扰结束时间",
-
   "reminderInterval": "提醒间隔",
   "customTimes": "自定义时间",
   "addTime": "添加时间",
   "maxTimesReached": "已达到最大时间数",
   "needAtLeastOneTime": "您需要至少一个提醒时间",
   "timeAlreadyExists": "此时间已存在",
-
   "hour": "小时",
   "hours": "小时",
   "minute": "分钟",
   "minutes": "分钟",
   "hourShort": "时",
   "minuteShort": "分",
-
   "congratulations": "恭喜！",
   "profileSetupComplete": "您的个人资料已成功设置",
   "yourDailyWaterIntake": "您的每日饮水量",
   "perDay": "每天",
   "basedOnWeather": "基于当前天气",
   "waterIntakeExplanation": "此建议基于您的个人资料和当前天气状况。随着条件变化，它将会调整。",
-
   "liters": "升",
   "fluidOunces": "液体盎司",
-
   "home": "首页",
   "history": "历史",
   "waterHistory": "饮水历史",
@@ -229,10 +206,8 @@
   "week": "周",
   "month": "月",
   "year": "年",
-
   "reminderTimes": "提醒时间",
   "tapToToggleHint": "点击启用或禁用提醒时间",
-
   "selectDrinkType": "选择饮品类型",
   "streak": "连续记录",
   "currentStreak": "当前连续记录",
@@ -241,10 +216,41 @@
   "noStreakYet": "尚无连续记录",
   "drinkWaterToStartStreak": "今天喝水开始您的连续记录！",
   "drinkTodayToKeepStreak": "今天喝水！",
-
   "selectAmount": "选择数量",
   "select": "选择",
-
   "totalWaterIntake": "总饮水量",
-  "sinceUsingApp": "自使用应用以来"
+  "sinceUsingApp": "自使用应用以来",
+  "privacyPolicyChangesTitle": "更改此政策",
+  "privacyPolicyIntroContent": "本隐私政策描述了当您使用水精神应用时，我们如何收集，使用和共享您的个人信息。我们尊重您的隐私，并致力于保护您的个人数据。",
+  "aboutAppContactTitle": "接触",
+  "privacyPolicyCollectTitle": "我们收集的信息",
+  "privacyPolicyCollectContent": "我们收集您直接提供给我们的信息，例如您的性别，体重，身高，出生日期，活动水平，生活环境，唤醒时间和就寝时间。我们还收集有关您的水摄入习惯和应用使用模式的信息。",
+  "privacyPolicyIntroTitle": "介绍",
+  "privacyPolicyContactTitle": "联系我们",
+  "privacyPolicyLastUpdated": "最后更新：2023年6月",
+  "aboutAppDeveloperTitle": "开发人员",
+  "privacyPolicyFeedbackTitle": "反馈",
+  "aboutAppAcknowledgmentsContent": "Weatherapi.com提供的天气数据\n来自各种开源库的图标和图形",
+  "privacyPolicyFeedbackContent": "当您通过我们的应用提供反馈时，我们将收集您提交的信息以及基本的设备信息，以帮助我们改善服务。",
+  "aboutAppDescriptionTitle": "描述",
+  "aboutAppLoadingVersion": "加载版...",
+  "privacyPolicyStorageContent": "您的数据主要存储在您的设备上。可以收集一些匿名用法数据以进行应用程序改进。",
+  "privacyPolicyRightsContent": "您有权随时通过应用程序设置访问，更正或删除您的个人信息。",
+  "privacyPolicyUseTitle": "我们如何使用您的信息",
+  "privacyPolicyUseContent": "我们使用收集的信息来提供，维护和改善我们的服务，包括计算建议的每日饮水，向您发送水合提醒以及跟踪您的进度。",
+  "aboutAppDeveloperContent": "由Vie Tech开发",
+  "privacyPolicyContactContent": "如果您对本隐私政策有任何疑问，请通过support@watermind.app与我们联系",
+  "privacyPolicyChangesContent": "我们可能会不时更新本隐私政策。我们将通过在此页面上发布新的隐私政策来通知您任何更改。",
+  "aboutAppDescriptionContent": "Water Mind是一种水合跟踪应用程序，旨在帮助您全天保持最佳的水合作用水平。该应用程序根据您的个人资料和环境因素来计算您建议的水摄入量。",
+  "aboutAppFeaturesContent": "•个性化的水摄入建议\n•基于天气的水合调整\n•可自定义的提醒\n•详细的水合历史\n•动力跟踪的条纹跟踪",
+  "aboutAppCopyright": "© {year} Vie Tech. 版权所有.",
+  "privacyPolicyWeatherTitle": "天气数据",
+  "privacyPolicyRightsTitle": "您的权利",
+  "privacyPolicyStorageTitle": "数据存储",
+  "aboutAppFeaturesTitle": "特征",
+  "privacyPolicyTitle": "隐私政策",
+  "aboutAppContactContent": "要获得支持或反馈，请通过以下方式与我们联系：\nsupport@watermind.app",
+  "privacyPolicyWeatherContent": "在您的允许下，我们访问您的位置以提供基于天气的水合建议。此数据仅在应用程序中使用，并且不与第三方共享。",
+  "aboutAppAcknowledgmentsTitle": "致谢",
+  "aboutAppVersion": "Version {version} ({buildNumber})"
 }

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wheel_picker/wheel_picker.dart';
 import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_config.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_item.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/widgets/wheel_picker.dart';
 
 /// Bottom sheet for selecting height
 class HeightBottomSheet extends StatefulWidget {
@@ -37,7 +35,7 @@ class HeightBottomSheet extends StatefulWidget {
   }) {
     return BaseBottomSheet.show(
       context: context,
-      backgroundColor: AppColor.thirdColor,
+      useGradientBackground: true,
       maxHeightFactor: 0.6,
       child: HeightBottomSheet(
         initialHeight: initialHeight,
@@ -53,7 +51,7 @@ class HeightBottomSheet extends StatefulWidget {
 
 class _HeightBottomSheetState extends State<HeightBottomSheet> with HapticFeedbackMixin {
   late double _height;
-  
+
   // For wheel pickers
   late int _heightWhole;
   late int _heightDecimal;
@@ -62,7 +60,7 @@ class _HeightBottomSheetState extends State<HeightBottomSheet> with HapticFeedba
   void initState() {
     super.initState();
     _height = widget.initialHeight ?? (widget.measureUnit == MeasureUnit.metric ? 170 : 67);
-    
+
     // Initialize wheel picker values
     _initializeWheelPickerValues();
   }
@@ -98,37 +96,74 @@ class _HeightBottomSheetState extends State<HeightBottomSheet> with HapticFeedba
     // Generate height values for metric (cm)
     const int minHeight = 100;
     const int maxHeight = 220;
-    
+
     // Ensure height is within range
     if (_heightWhole < minHeight) _heightWhole = minHeight;
     if (_heightWhole > maxHeight) _heightWhole = maxHeight;
-    
-    // Create items for the wheel picker
-    final List<WheelPickerItem<int>> heightItems = List.generate(
-      maxHeight - minHeight + 1,
-      (index) => WheelPickerItem<int>(
-        value: minHeight + index,
-        text: '${minHeight + index} cm',
-      ),
-    );
-    
+
     // Calculate initial index
     final initialIndex = (_heightWhole - minHeight).clamp(0, maxHeight - minHeight);
-    
-    return SizedBox(
-      height: 200,
-      child: WheelPicker(
-        columns: [heightItems],
-        initialIndices: [initialIndex],
-        onSelectedItemChanged: (columnIndex, itemIndex, value) {
-          haptic(HapticFeedbackType.selection);
-          setState(() {
-            _heightWhole = value as int;
-          });
-        },
-        config: const WheelPickerConfig(
-          height: 200,
-          useHapticFeedback: true,
+
+    // Create controller
+    final heightController = WheelPickerController(
+      itemCount: maxHeight - minHeight + 1,
+      initialIndex: initialIndex,
+    );
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.white.withAlpha(26), // 0.1 opacity
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: SizedBox(
+        height: 200,
+        child: WheelPicker(
+          builder: (context, index) {
+            final value = minHeight + index;
+            final isSelected = value == _heightWhole;
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '$value',
+                  style: TextStyle(
+                    fontSize: isSelected ? 22 : 20,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    color: isSelected
+                        ? AppColor.thirdColor // Blue color for selected item
+                        : Colors.white70, // Light color for better visibility on dark background
+                  ),
+                ),
+                if (isSelected)
+                  const Text(
+                    ' cm',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: AppColor.thirdColor, // Blue color for selected item
+                    ),
+                  ),
+              ],
+            );
+          },
+          controller: heightController,
+          selectedIndexColor: Colors.transparent,
+          looping: false,
+          style: const WheelPickerStyle(
+            itemExtent: 40,
+            squeeze: 1.0,
+            diameterRatio: 1.5,
+            magnification: 1.2,
+            surroundingOpacity: 0.3,
+          ),
+          onIndexChanged: (index, _) {
+            haptic(HapticFeedbackType.selection);
+            setState(() {
+              _heightWhole = minHeight + index;
+            });
+          },
         ),
       ),
     );
@@ -139,53 +174,140 @@ class _HeightBottomSheetState extends State<HeightBottomSheet> with HapticFeedba
     const int minFeet = 3;
     const int maxFeet = 7;
     const int maxInches = 11;
-    
+
     // Ensure height is within range
     if (_heightWhole < minFeet) _heightWhole = minFeet;
     if (_heightWhole > maxFeet) _heightWhole = maxFeet;
     if (_heightDecimal < 0) _heightDecimal = 0;
     if (_heightDecimal > maxInches) _heightDecimal = maxInches;
-    
-    // Create items for feet
-    final List<WheelPickerItem<int>> feetItems = List.generate(
-      maxFeet - minFeet + 1,
-      (index) => WheelPickerItem<int>(
-        value: minFeet + index,
-        text: '${minFeet + index} ft',
-      ),
-    );
-    
-    // Create items for inches
-    final List<WheelPickerItem<int>> inchesItems = List.generate(
-      maxInches + 1,
-      (index) => WheelPickerItem<int>(
-        value: index,
-        text: '$index in',
-      ),
-    );
-    
+
     // Calculate initial indices
     final feetIndex = (_heightWhole - minFeet).clamp(0, maxFeet - minFeet);
     final inchesIndex = _heightDecimal.clamp(0, maxInches);
-    
-    return SizedBox(
-      height: 200,
-      child: WheelPicker(
-        columns: [feetItems, inchesItems],
-        initialIndices: [feetIndex, inchesIndex],
-        onSelectedItemChanged: (columnIndex, itemIndex, value) {
-          haptic(HapticFeedbackType.selection);
-          setState(() {
-            if (columnIndex == 0) {
-              _heightWhole = value as int;
-            } else {
-              _heightDecimal = value as int;
-            }
-          });
-        },
-        config: const WheelPickerConfig(
-          height: 200,
-          useHapticFeedback: true,
+
+    // Create controllers
+    final feetController = WheelPickerController(
+      itemCount: maxFeet - minFeet + 1,
+      initialIndex: feetIndex,
+    );
+
+    final inchesController = WheelPickerController(
+      itemCount: maxInches + 1,
+      initialIndex: inchesIndex,
+    );
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.white.withAlpha(26), // 0.1 opacity
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: SizedBox(
+        height: 200,
+        child: Row(
+          children: [
+            // Feet wheel
+            Expanded(
+              child: WheelPicker(
+                builder: (context, index) {
+                  final value = minFeet + index;
+                  final isSelected = value == _heightWhole;
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '$value',
+                        style: TextStyle(
+                          fontSize: isSelected ? 22 : 20,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: isSelected
+                              ? AppColor.thirdColor // Blue color for selected item
+                              : Colors.white70, // Light color for better visibility on dark background
+                        ),
+                      ),
+                      if (isSelected)
+                        const Text(
+                          ' ft',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.thirdColor, // Blue color for selected item
+                          ),
+                        ),
+                    ],
+                  );
+                },
+                controller: feetController,
+                selectedIndexColor: Colors.transparent,
+                looping: false,
+                style: const WheelPickerStyle(
+                  itemExtent: 40,
+                  squeeze: 1.0,
+                  diameterRatio: 1.5,
+                  magnification: 1.2,
+                  surroundingOpacity: 0.3,
+                ),
+                onIndexChanged: (index, _) {
+                  haptic(HapticFeedbackType.selection);
+                  setState(() {
+                    _heightWhole = minFeet + index;
+                  });
+                },
+              ),
+            ),
+
+            // Inches wheel
+            Expanded(
+              child: WheelPicker(
+                builder: (context, index) {
+                  final value = index;
+                  final isSelected = value == _heightDecimal;
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '$value',
+                        style: TextStyle(
+                          fontSize: isSelected ? 22 : 20,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: isSelected
+                              ? AppColor.thirdColor // Blue color for selected item
+                              : Colors.white70, // Light color for better visibility on dark background
+                        ),
+                      ),
+                      if (isSelected)
+                        const Text(
+                          ' in',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.thirdColor, // Blue color for selected item
+                          ),
+                        ),
+                    ],
+                  );
+                },
+                controller: inchesController,
+                selectedIndexColor: Colors.transparent,
+                looping: false,
+                style: const WheelPickerStyle(
+                  itemExtent: 40,
+                  squeeze: 1.0,
+                  diameterRatio: 1.5,
+                  magnification: 1.2,
+                  surroundingOpacity: 0.3,
+                ),
+                onIndexChanged: (index, _) {
+                  haptic(HapticFeedbackType.selection);
+                  setState(() {
+                    _heightDecimal = index;
+                  });
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -193,8 +315,6 @@ class _HeightBottomSheetState extends State<HeightBottomSheet> with HapticFeedba
 
   @override
   Widget build(BuildContext context) {
-    final heightUnit = widget.measureUnit == MeasureUnit.metric ? 'cm' : 'ft/in';
-    
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -203,75 +323,39 @@ class _HeightBottomSheetState extends State<HeightBottomSheet> with HapticFeedba
           padding: const EdgeInsets.all(16.0),
           child: Text(
             context.l10n.height,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        
-        // Current height display
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            widget.measureUnit == MeasureUnit.metric
-                ? '${_heightWhole} cm'
-                : '${_heightWhole} ft ${_heightDecimal} in',
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
         ),
-        
-        const SizedBox(height: 24),
-        
+
         // Height picker
         _buildHeightPicker(),
-        
-        const SizedBox(height: 24),
-        
-        // Buttons
+
+        const SizedBox(height: 16),
+
+        // Save button
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.white),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(context.l10n.cancel),
-                ),
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            onPressed: () {
+              haptic(HapticFeedbackType.success);
+              _updateHeightFromWheelPicker();
+              widget.onSaved(_height);
+              Navigator.of(context).pop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.thirdColor,
+              foregroundColor: Colors.white,
+              minimumSize: const Size(double.infinity, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: FilledButton(
-                  onPressed: () {
-                    _updateHeightFromWheelPicker();
-                    widget.onSaved(_height);
-                    Navigator.of(context).pop();
-                  },
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(context.l10n.save),
-                ),
-              ),
-            ],
+            ),
+            child: Text(context.l10n.save),
           ),
         ),
       ],

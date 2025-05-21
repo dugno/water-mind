@@ -28,14 +28,12 @@
   "pregnant": "Schwanger",
   "breastfeeding": "Stillend",
   "other": "Divers",
-
   "heightWeight": "GRÖSSE UND GEWICHT",
   "dateOfBirth": "GEBURTSDATUM",
   "activityLevel": "AKTIVITÄTSNIVEAU",
   "livingEnvironment": "LEBENSBEDINGUNGEN",
   "wakeUpTime": "AUFWACHZEIT",
   "bedTime": "SCHLAFENSZEIT",
-
   "genderDescription": "Dies wird verwendet, um Ihren individuellen Plan zu kalibrieren.",
   "heightWeightDescription": "Ihre Größe und Ihr Gewicht helfen uns, Ihren Flüssigkeitsbedarf zu berechnen.",
   "dateOfBirthDescription": "Ihr Alter beeinflusst Ihren Flüssigkeitsbedarf.",
@@ -43,12 +41,10 @@
   "livingEnvironmentDescription": "Ihre Lebensbedingungen beeinflussen Ihren Flüssigkeitsbedarf.",
   "wakeUpTimeDescription": "Wir planen Ihre erste Wasserreminderung nach dem Aufwachen.",
   "bedTimeDescription": "Wir stoppen die Erinnerungen vor Ihrer Schlafenszeit.",
-
   "height": "Größe",
   "weight": "Gewicht",
   "metric": "Metrisch",
   "imperial": "Imperial",
-
   "january": "Jan",
   "february": "Feb",
   "march": "Mär",
@@ -61,22 +57,18 @@
   "october": "Okt",
   "november": "Nov",
   "december": "Dez",
-
   "am": "AM",
   "pm": "PM",
-
   "sedentary": "Sitzend (wenig oder keine Bewegung)",
   "lightlyActive": "Leicht aktiv (leichte Bewegung 1-3 Tage/Woche)",
   "moderatelyActive": "Mäßig aktiv (Bewegung 3-5 Tage/Woche)",
   "veryActive": "Sehr aktiv (intensive Bewegung 6-7 Tage/Woche)",
   "extraActive": "Extrem aktiv (sehr intensive Bewegung oder körperliche Arbeit)",
-
   "airConditioned": "Klimatisiert (Innenraum)",
   "hotSunny": "Heiß und sonnig",
   "rainyHumid": "Regnerisch und feucht",
   "cold": "Kalt",
   "moderate": "Gemäßigt (milde Temperatur)",
-
   "dailyWaterIntake": "Ihr täglicher Wasserbedarf",
   "calculationFactors": "Berechnungsfaktoren",
   "baseIntake": "Grundbedarf",
@@ -86,7 +78,6 @@
   "ageFactor": "Alter",
   "awakeHoursFactor": "Wachstunden",
   "weatherFactor": "Wetter",
-
   "sunny": "Sonnig",
   "cloudy": "Bewölkt",
   "rainy": "Regnerisch",
@@ -95,7 +86,6 @@
   "coldWeather": "Kalt",
   "snowy": "Verschneit",
   "windy": "Windig",
-
   "partlyCloudy": "Teilweise bewölkt",
   "overcast": "Bedeckt",
   "mist": "Nebel",
@@ -134,7 +124,6 @@
   "heavyRainThunder": "Starker Regen mit Gewitter",
   "lightSnowThunder": "Leichter Schnee mit Gewitter",
   "heavySnowThunder": "Starker Schnee mit Gewitter",
-
   "selectYourPreferredLanguage": "Wählen Sie Ihre bevorzugte Sprache",
   "dailyGoal": "Tagesziel",
   "useCustomDailyGoal": "Benutzerdefiniertes Tagesziel verwenden",
@@ -142,40 +131,35 @@
   "dailyGoalDescription": "Legen Sie Ihr benutzerdefiniertes tägliches Wasseraufnahmeziel fest",
   "recommendedRangeMetric": "Empfohlener Bereich: 2000-3500 ml",
   "recommendedRangeImperial": "Empfohlener Bereich: 68-118 oz",
-
   "soundAndVibration": "Ton und Vibration",
   "enableSound": "Ton aktivieren",
   "enableVibration": "Vibration aktivieren",
-
   "units": "Einheiten",
   "measurementUnit": "Maßeinheit",
-
   "physicalAttributes": "Körperliche Eigenschaften",
   "genderWeightHeight": "Geschlecht, Gewicht und Größe",
-
   "timeSettings": "Zeiteinstellungen",
-
   "about": "Über",
   "sendFeedback": "Feedback senden",
+  "feedbackThankYou": "Vielen Dank für Ihr Feedback!",
+  "enterFeedbackHint": "Geben Sie hier Ihr Feedback ein...",
+  "feedbackValidationEmpty": "Bitte geben Sie Ihr Feedback ein",
+  "feedbackValidationTooShort": "Feedback muss mindestens 10 Zeichen lang sein",
   "privacyPolicy": "Datenschutzrichtlinie",
   "shareApp": "App teilen",
   "aboutApp": "Über die App",
-
   "waterIntakeForecast": "Wasseraufnahmeprognose",
   "noForecastData": "Keine Prognosedaten verfügbar",
   "refresh": "Aktualisieren",
   "refreshingForecast": "Prognosedaten werden aktualisiert...",
   "recommendedIntake": "empfohlen",
   "lastDrink": "Letztes Getränk",
-
   "yourProfile": "Ihr Profil",
   "tapToEdit": "Tippen zum Bearbeiten",
   "reminderSettings": "Erinnerungseinstellungen",
-
   "save": "Speichern",
   "cancel": "Abbrechen",
   "notSet": "Nicht festgelegt",
-
   "reminders": "Erinnerungen",
   "enableReminders": "Erinnerungen aktivieren",
   "enableRemindersDescription": "Erhalten Sie Benachrichtigungen zum Wassertrinken über den Tag verteilt",
@@ -186,10 +170,8 @@
   "standardModeDescription": "Optimale Erinnerungen basierend auf Ihrer Aufwach- und Schlafenszeit",
   "intervalModeDescription": "Erinnerungen in regelmäßigen Abständen über den Tag verteilt",
   "customModeDescription": "Legen Sie Ihre eigenen spezifischen Erinnerungszeiten fest",
-
   "wakeUpAndBedtime": "Aufwach- und Schlafenszeit",
   "wakeUpAndBedtimeDescription": "Wir planen Erinnerungen während Ihrer aktiven Stunden",
-
   "advancedSettings": "Erweiterte Einstellungen",
   "skipIfGoalMet": "Überspringen, wenn Ziel erreicht",
   "skipIfGoalMetDescription": "Keine Erinnerungen senden, wenn Sie Ihr Tagesziel bereits erreicht haben",
@@ -197,31 +179,26 @@
   "doNotDisturbDescription": "Erinnerungen während bestimmter Stunden pausieren",
   "doNotDisturbStart": "Nicht stören Beginn",
   "doNotDisturbEnd": "Nicht stören Ende",
-
   "reminderInterval": "Erinnerungsintervall",
   "customTimes": "Benutzerdefinierte Zeiten",
   "addTime": "Zeit hinzufügen",
   "maxTimesReached": "Maximale Anzahl an Zeiten erreicht",
   "needAtLeastOneTime": "Sie benötigen mindestens eine Erinnerungszeit",
   "timeAlreadyExists": "Diese Zeit existiert bereits",
-
   "hour": "Stunde",
   "hours": "Stunden",
   "minute": "Minute",
   "minutes": "Minuten",
   "hourShort": "h",
   "minuteShort": "m",
-
   "congratulations": "Glückwunsch!",
   "profileSetupComplete": "Ihr Profil wurde erfolgreich eingerichtet",
   "yourDailyWaterIntake": "Ihre tägliche Wasseraufnahme",
   "perDay": "pro Tag",
   "basedOnWeather": "Basierend auf aktuellem Wetter",
   "waterIntakeExplanation": "Diese Empfehlung basiert auf Ihrem Profil und den aktuellen Wetterbedingungen. Sie passt sich an, wenn sich die Bedingungen ändern.",
-
   "liters": "Liter",
   "fluidOunces": "fl oz",
-
   "home": "Startseite",
   "history": "Verlauf",
   "waterHistory": "Wasserverlauf",
@@ -229,10 +206,8 @@
   "week": "Woche",
   "month": "Monat",
   "year": "Jahr",
-
   "reminderTimes": "Erinnerungszeiten",
   "tapToToggleHint": "Tippen, um eine Erinnerungszeit zu aktivieren oder zu deaktivieren",
-
   "selectDrinkType": "Getränketyp auswählen",
   "streak": "Serie",
   "currentStreak": "Aktuelle Serie",
@@ -241,10 +216,41 @@
   "noStreakYet": "Noch keine Serie",
   "drinkWaterToStartStreak": "Trinken Sie heute Wasser, um Ihre Serie zu beginnen!",
   "drinkTodayToKeepStreak": "Trinken Sie heute!",
-
   "selectAmount": "Menge auswählen",
   "select": "Auswählen",
-
   "totalWaterIntake": "Gesamtwasser",
-  "sinceUsingApp": "seit Nutzung der App"
+  "sinceUsingApp": "seit Nutzung der App",
+  "privacyPolicyChangesTitle": "Änderungen an dieser Richtlinie",
+  "privacyPolicyIntroContent": "Diese Datenschutzrichtlinie beschreibt, wie wir Ihre persönlichen Daten sammeln, verwenden und teilen, wenn Sie unsere Wasservermessung verwenden. Wir respektieren Ihre Privatsphäre und verpflichten uns, Ihre persönlichen Daten zu schützen.",
+  "aboutAppContactTitle": "Kontakt",
+  "privacyPolicyCollectTitle": "Informationen, die wir sammeln",
+  "privacyPolicyCollectContent": "Wir sammeln Informationen, die Sie uns direkt zur Verfügung stellen, wie z. B. Geschlecht, Gewicht, Größe, Geburtsdatum, Aktivitätsniveau, Lebensumgebung, Weckzeit und Schlafenszeit. Wir sammeln auch Informationen über Ihre Wasseraufnahmegewohnheiten und App -Nutzungsmuster.",
+  "privacyPolicyIntroTitle": "Einführung",
+  "privacyPolicyContactTitle": "Kontaktieren Sie uns",
+  "privacyPolicyLastUpdated": "Zuletzt aktualisiert: Juni 2023",
+  "aboutAppDeveloperTitle": "Entwickler",
+  "privacyPolicyFeedbackTitle": "Rückmeldung",
+  "aboutAppAcknowledgmentsContent": "Wetterdaten von Weatherapi.com bereitgestellt\nIkonen und Grafiken aus verschiedenen Open-Source-Bibliotheken",
+  "privacyPolicyFeedbackContent": "Wenn Sie über unsere App Feedback geben, sammeln wir die von Ihnen eingereichten Informationen zusammen mit grundlegenden Geräteinformationen, um unsere Dienste zu verbessern.",
+  "aboutAppDescriptionTitle": "Beschreibung",
+  "aboutAppLoadingVersion": "Ladeversion ...",
+  "privacyPolicyStorageContent": "Ihre Daten werden in erster Linie lokal auf Ihrem Gerät gespeichert. Einige anonyme Verwendungsdaten können für App -Verbesserungszwecke gesammelt werden.",
+  "privacyPolicyRightsContent": "Sie haben das Recht, Ihre persönlichen Daten jederzeit über die App -Einstellungen zuzugreifen, zu korrigieren oder zu löschen.",
+  "privacyPolicyUseTitle": "Wie wir Ihre Informationen verwenden",
+  "privacyPolicyUseContent": "Wir verwenden die Informationen, die wir sammeln, um unsere Dienste bereitzustellen, zu warten und zu verbessern, einschließlich der Berechnung Ihrer empfohlenen täglichen Wasseraufnahme, der Versenden von Feuchtigkeitsdiensten und der Verfolgung Ihrer Fortschritte.",
+  "aboutAppDeveloperContent": "Entwickelt von Vie Tech",
+  "privacyPolicyContactContent": "Wenn Sie Fragen zu diesen Datenschutzrichtlinien haben, kontaktieren Sie uns bitte unter support@watermind.app",
+  "privacyPolicyChangesContent": "Wir können diese Datenschutzrichtlinie von Zeit zu Zeit aktualisieren. Wir werden Sie über Änderungen informieren, indem wir die neuen Datenschutzrichtlinien auf dieser Seite veröffentlichen.",
+  "aboutAppDescriptionContent": "Water Mind ist eine App -Tracking -App, mit der Sie den ganzen Tag über optimale Hydratationsniveaus aufrechterhalten können. Die App berechnet Ihre empfohlene Wasseraufnahme anhand Ihres persönlichen Profils und Ihrer Umgebungsfaktoren.",
+  "aboutAppFeaturesContent": "• Empfehlungen für personalisierte Wasseraufnahme\n• Wetterbasierte Hydratationsanpassungen\n• Anpassbare Erinnerungen\n• Detaillierte Hydratationsgeschichte\n• Streifenverfolgung für Motivation",
+  "aboutAppCopyright": "© {year} Vie Tech. Alle Rechte vorbehalten.",
+  "privacyPolicyWeatherTitle": "Wetterdaten",
+  "privacyPolicyRightsTitle": "Ihre Rechte",
+  "privacyPolicyStorageTitle": "Datenspeicherung",
+  "aboutAppFeaturesTitle": "Merkmale",
+  "privacyPolicyTitle": "Datenschutzrichtlinie",
+  "aboutAppContactContent": "Für Unterstützung oder Feedback kontaktieren Sie uns bitte unter:\nSupport@watermind.app",
+  "privacyPolicyWeatherContent": "Mit Ihrer Erlaubnis greifen wir auf Ihren Standort zu, um wetterbasierte Hydratationsempfehlungen zu erhalten. Diese Daten werden nur innerhalb der App verwendet und nicht an Dritte geteilt.",
+  "aboutAppAcknowledgmentsTitle": "Anerkennung",
+  "aboutAppVersion": "Version {version} ({buildNumber})"
 }

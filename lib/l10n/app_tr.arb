@@ -26,17 +26,14 @@
   "male": "Erkek",
   "female": "Kadın",
   "other": "Diğer",
-
   "pregnant": "Hamile",
   "breastfeeding": "Emziren",
-
   "heightWeight": "BOY VE KİLO",
   "dateOfBirth": "DOĞUM TARİHİ",
   "activityLevel": "AKTİVİTE SEVİYESİ",
   "livingEnvironment": "YAŞAM KOŞULLARI",
   "wakeUpTime": "UYANMA SAATİ",
   "bedTime": "YATMA SAATİ",
-
   "genderDescription": "Bu, kişisel planınızı kalibre etmek için kullanılacaktır.",
   "heightWeightDescription": "Boyunuz ve kilonuz, hidrasyon ihtiyaçlarınızı hesaplamamıza yardımcı olur.",
   "dateOfBirthDescription": "Yaşınız hidrasyon gereksinimlerinizi etkiler.",
@@ -44,12 +41,10 @@
   "livingEnvironmentDescription": "Yaşam koşullarınız hidrasyon ihtiyaçlarınızı etkiler.",
   "wakeUpTimeDescription": "Uyandıktan sonra ilk su hatırlatıcınızı programlayacağız.",
   "bedTimeDescription": "Yatma saatinizden önce hatırlatıcıları durduracağız.",
-
   "height": "Boy",
   "weight": "Kilo",
   "metric": "Metrik",
   "imperial": "İngiliz",
-
   "january": "Oca",
   "february": "Şub",
   "march": "Mar",
@@ -62,22 +57,18 @@
   "october": "Eki",
   "november": "Kas",
   "december": "Ara",
-
   "am": "ÖÖ",
   "pm": "ÖS",
-
   "sedentary": "Hareketsiz (az veya hiç egzersiz yok)",
   "lightlyActive": "Hafif aktif (haftada 1-3 gün hafif egzersiz)",
   "moderatelyActive": "Orta derecede aktif (haftada 3-5 gün egzersiz)",
   "veryActive": "Çok aktif (haftada 6-7 gün yoğun egzersiz)",
   "extraActive": "Ekstra aktif (çok yoğun egzersiz veya fiziksel iş)",
-
   "airConditioned": "Klimalı (iç mekan)",
   "hotSunny": "Sıcak ve güneşli",
   "rainyHumid": "Yağmurlu ve nemli",
   "cold": "Soğuk",
   "moderate": "Ilıman (hafif sıcaklık)",
-
   "dailyWaterIntake": "Günlük Su Tüketiminiz",
   "calculationFactors": "Hesaplama Faktörleri",
   "baseIntake": "Temel alım",
@@ -87,7 +78,6 @@
   "ageFactor": "Yaş",
   "awakeHoursFactor": "Uyanık saatler",
   "weatherFactor": "Hava durumu",
-
   "sunny": "Güneşli",
   "cloudy": "Bulutlu",
   "rainy": "Yağmurlu",
@@ -96,7 +86,6 @@
   "coldWeather": "Soğuk",
   "snowy": "Karlı",
   "windy": "Rüzgarlı",
-
   "partlyCloudy": "Parçalı Bulutlu",
   "overcast": "Kapalı",
   "mist": "Sisli",
@@ -135,7 +124,6 @@
   "heavyRainThunder": "Gök Gürültülü Şiddetli Yağmur",
   "lightSnowThunder": "Gök Gürültülü Hafif Kar",
   "heavySnowThunder": "Gök Gürültülü Şiddetli Kar",
-
   "selectYourPreferredLanguage": "Tercih ettiğiniz dili seçin",
   "dailyGoal": "Günlük Hedef",
   "useCustomDailyGoal": "Özel günlük hedef kullan",
@@ -143,40 +131,35 @@
   "dailyGoalDescription": "Özel günlük su tüketim hedefinizi belirleyin",
   "recommendedRangeMetric": "Önerilen aralık: 2000-3500 ml",
   "recommendedRangeImperial": "Önerilen aralık: 68-118 oz",
-
   "soundAndVibration": "Ses ve Titreşim",
   "enableSound": "Sesi etkinleştir",
   "enableVibration": "Titreşimi etkinleştir",
-
   "units": "Birimler",
   "measurementUnit": "Ölçüm birimi",
-
   "physicalAttributes": "Fiziksel Özellikler",
   "genderWeightHeight": "Cinsiyet, kilo ve boy",
-
   "timeSettings": "Zaman Ayarları",
-
   "about": "Hakkında",
   "sendFeedback": "Geri bildirim gönder",
+  "feedbackThankYou": "Geri bildiriminiz için teşekkürler!",
+  "enterFeedbackHint": "Geri bildiriminizi buraya girin...",
+  "feedbackValidationEmpty": "Lütfen geri bildiriminizi girin",
+  "feedbackValidationTooShort": "Geri bildirim en az 10 karakter olmalıdır",
   "privacyPolicy": "Gizlilik politikası",
   "shareApp": "Uygulamayı paylaş",
   "aboutApp": "Uygulama hakkında",
-
   "waterIntakeForecast": "Su Tüketimi Tahmini",
   "noForecastData": "Tahmin verisi yok",
   "refresh": "Yenile",
   "refreshingForecast": "Tahmin verileri yenileniyor...",
   "recommendedIntake": "önerilen",
   "lastDrink": "Son İçecek",
-
   "yourProfile": "Profiliniz",
   "tapToEdit": "Düzenlemek için dokunun",
   "reminderSettings": "Hatırlatıcı ayarları",
-
   "save": "Kaydet",
   "cancel": "İptal",
   "notSet": "Ayarlanmadı",
-
   "reminders": "Hatırlatıcılar",
   "enableReminders": "Hatırlatıcıları Etkinleştir",
   "enableRemindersDescription": "Gün boyunca su içmek için bildirimler alın",
@@ -187,10 +170,8 @@
   "standardModeDescription": "Uyanma ve yatma saatinize göre optimize edilmiş hatırlatıcılar",
   "intervalModeDescription": "Gün boyunca düzenli aralıklarla hatırlatıcılar",
   "customModeDescription": "Kendi özel hatırlatıcı zamanlarınızı belirleyin",
-
   "wakeUpAndBedtime": "Uyanma ve Yatma Saati",
   "wakeUpAndBedtimeDescription": "Aktif saatleriniz boyunca hatırlatıcılar programlayacağız",
-
   "advancedSettings": "Gelişmiş Ayarlar",
   "skipIfGoalMet": "Hedef Karşılandıysa Atla",
   "skipIfGoalMetDescription": "Günlük hedefinize zaten ulaştıysanız hatırlatıcı gönderme",
@@ -198,31 +179,26 @@
   "doNotDisturbDescription": "Belirli saatlerde hatırlatıcıları duraklat",
   "doNotDisturbStart": "Rahatsız Etme Başlangıcı",
   "doNotDisturbEnd": "Rahatsız Etme Bitişi",
-
   "reminderInterval": "Hatırlatıcı Aralığı",
   "customTimes": "Özel Zamanlar",
   "addTime": "Zaman Ekle",
   "maxTimesReached": "Maksimum zaman sayısına ulaşıldı",
   "needAtLeastOneTime": "En az bir hatırlatıcı zamanına ihtiyacınız var",
   "timeAlreadyExists": "Bu zaman zaten var",
-
   "hour": "saat",
   "hours": "saat",
   "minute": "dakika",
   "minutes": "dakika",
   "hourShort": "s",
   "minuteShort": "d",
-
   "congratulations": "Tebrikler!",
   "profileSetupComplete": "Profiliniz başarıyla kuruldu",
   "yourDailyWaterIntake": "Günlük Su Tüketiminiz",
   "perDay": "günde",
   "basedOnWeather": "Mevcut hava durumuna göre",
   "waterIntakeExplanation": "Bu öneri, profilinize ve mevcut hava koşullarına dayanmaktadır. Koşullar değiştikçe ayarlanacaktır.",
-
   "liters": "litre",
   "fluidOunces": "sıvı ons",
-
   "home": "Ana Sayfa",
   "history": "Geçmiş",
   "waterHistory": "Su Geçmişi",
@@ -230,10 +206,8 @@
   "week": "Hafta",
   "month": "Ay",
   "year": "Yıl",
-
   "reminderTimes": "Hatırlatıcı Zamanları",
   "tapToToggleHint": "Bir hatırlatıcı zamanını etkinleştirmek veya devre dışı bırakmak için dokunun",
-
   "selectDrinkType": "İçecek Türü Seçin",
   "streak": "Seri",
   "currentStreak": "Mevcut Seri",
@@ -242,10 +216,41 @@
   "noStreakYet": "Henüz seri yok",
   "drinkWaterToStartStreak": "Serinizi başlatmak için bugün su için!",
   "drinkTodayToKeepStreak": "Bugün için!",
-
   "selectAmount": "Miktar Seçin",
   "select": "Seç",
-
   "totalWaterIntake": "Toplam Su",
-  "sinceUsingApp": "uygulamayı kullanmaya başladığınızdan beri"
+  "sinceUsingApp": "uygulamayı kullanmaya başladığınızdan beri",
+  "privacyPolicyChangesTitle": "Bu politikadaki değişiklikler",
+  "privacyPolicyIntroContent": "Bu Gizlilik Politikası, Su Mind uygulamamızı kullanırken kişisel bilgilerinizi nasıl topladığımızı, kullandığımızı ve paylaştığımızı açıklar. Gizliliğinize saygı duyuyoruz ve kişisel verilerinizi korumaya kararlıyız.",
+  "aboutAppContactTitle": "Temas etmek",
+  "privacyPolicyCollectTitle": "Topladığımız bilgiler",
+  "privacyPolicyCollectContent": "Doğrudan bize verdiğiniz bilgileri, cinsiyetiniz, kilo, boy, doğum tarihiniz, aktivite seviyesi, yaşam ortamı, uyandırma zamanı ve yatma zamanı gibi bilgileri topluyoruz. Ayrıca su alım alışkanlıklarınız ve uygulama kullanım modelleriniz hakkında bilgi topluyoruz.",
+  "privacyPolicyIntroTitle": "giriiş",
+  "privacyPolicyContactTitle": "Bize Ulaşın",
+  "privacyPolicyLastUpdated": "Son Güncelleme: Haziran 2023",
+  "aboutAppDeveloperTitle": "Geliştirici",
+  "privacyPolicyFeedbackTitle": "Geri bildirim",
+  "aboutAppAcknowledgmentsContent": "Weatherapi.com tarafından sağlanan hava durumu verileri\nÇeşitli açık kaynaklı kütüphanelerden simgeler ve grafikler",
+  "privacyPolicyFeedbackContent": "Uygulamamız aracılığıyla geri bildirim sağladığınızda, hizmetlerimizi geliştirmemize yardımcı olacak temel cihaz bilgileriyle birlikte gönderdiğiniz bilgileri toplarız.",
+  "aboutAppDescriptionTitle": "Tanım",
+  "aboutAppLoadingVersion": "Yükleme sürümü ...",
+  "privacyPolicyStorageContent": "Verileriniz öncelikle cihazınızda yerel olarak saklanır. Uygulama iyileştirme amaçları için bazı anonim kullanım verileri toplanabilir.",
+  "privacyPolicyRightsContent": "Uygulama ayarları aracılığıyla kişisel bilgilerinize istediğiniz zaman erişme, düzeltme veya silme hakkınız vardır.",
+  "privacyPolicyUseTitle": "Bilgilerinizi nasıl kullanıyoruz",
+  "privacyPolicyUseContent": "Topladığımız bilgileri, önerilen günlük su alımınızı hesaplamak, size hidrasyon hatırlatıcıları göndermek ve ilerlemenizi izlemek de dahil olmak üzere hizmetlerimizi sağlamak, korumak ve geliştirmek için kullanıyoruz.",
+  "aboutAppDeveloperContent": "Vie Tech tarafından geliştirildi",
+  "privacyPolicyContactContent": "Bu Gizlilik Politikası hakkında herhangi bir sorunuz varsa, lütfen support@water.app adresinden bize ulaşın.",
+  "privacyPolicyChangesContent": "Bu gizlilik politikasını zaman zaman güncelleyebiliriz. Bu sayfada yeni Gizlilik Politikasını yayınlayarak herhangi bir değişiklik hakkında sizi bilgilendireceğiz.",
+  "aboutAppDescriptionContent": "Water Mind, gün boyunca optimal hidrasyon seviyelerini korumanıza yardımcı olmak için tasarlanmış bir hidrasyon izleme uygulamasıdır. Uygulama, önerilen su alımınızı kişisel profilinize ve çevresel faktörlerinize göre hesaplar.",
+  "aboutAppFeaturesContent": "• Kişiselleştirilmiş su alım önerileri\n• Hava tabanlı hidrasyon ayarlamaları\n• Özelleştirilebilir hatırlatıcılar\n• Ayrıntılı hidrasyon geçmişi\n• Motivasyon için çizgi izleme",
+  "aboutAppCopyright": "© {year} VIE Tech. Her hakkı saklıdır.",
+  "privacyPolicyWeatherTitle": "Hava durumu verileri",
+  "privacyPolicyRightsTitle": "Haklarınız",
+  "privacyPolicyStorageTitle": "Veri depolama",
+  "aboutAppFeaturesTitle": "Özellikler",
+  "privacyPolicyTitle": "Gizlilik Politikası",
+  "aboutAppContactContent": "Destek veya geri bildirim için lütfen bizimle iletişime geçin:\nsupport@waterMind.app",
+  "privacyPolicyWeatherContent": "İzninizle, hava tabanlı hidrasyon önerileri sağlamak için konumunuza erişiyoruz. Bu veriler yalnızca uygulama içinde kullanılır ve üçüncü taraflarla paylaşılmaz.",
+  "aboutAppAcknowledgmentsTitle": "Onaylar",
+  "aboutAppVersion": "Version {version} ({buildNumber})"
 }

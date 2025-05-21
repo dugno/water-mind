@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wheel_picker/wheel_picker.dart';
 import 'package:water_mind/src/common/constant/app_color.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_config.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/models/wheel_picker_item.dart';
-import 'package:water_mind/src/ui/widgets/wheel_picker/widgets/wheel_picker.dart';
 
 /// Bottom sheet for selecting gender
 class GenderBottomSheet extends StatefulWidget {
@@ -32,7 +30,7 @@ class GenderBottomSheet extends StatefulWidget {
   }) {
     return BaseBottomSheet.show(
       context: context,
-      backgroundColor: Colors.white,
+      useGradientBackground: true,
       maxHeightFactor: 0.6,
       child: GenderBottomSheet(
         initialGender: initialGender,
@@ -85,54 +83,76 @@ class _GenderBottomSheetState extends State<GenderBottomSheet> with HapticFeedba
   }
 
   Widget _buildGenderPicker() {
-    // Create items for the wheel picker
-    final List<WheelPickerItem<Gender>> genderItems = [
-      WheelPickerItem<Gender>(
-        value: Gender.male,
-        text: '${_getGenderText(Gender.male)} (${Icons.male.codePoint.toRadixString(16)})',
-      ),
-      WheelPickerItem<Gender>(
-        value: Gender.female,
-        text: '${_getGenderText(Gender.female)} (${Icons.female.codePoint.toRadixString(16)})',
-      ),
-      WheelPickerItem<Gender>(
-        value: Gender.pregnant,
-        text: _getGenderText(Gender.pregnant),
-      ),
-      WheelPickerItem<Gender>(
-        value: Gender.breastfeeding,
-        text: _getGenderText(Gender.breastfeeding),
-      ),
-      WheelPickerItem<Gender>(
-        value: Gender.other,
-        text: _getGenderText(Gender.other),
-      ),
+    // Create a list of all gender values
+    final List<Gender> genders = [
+      Gender.male,
+      Gender.female,
+      Gender.pregnant,
+      Gender.breastfeeding,
+      Gender.other,
     ];
 
     // Find initial index
-    int initialIndex = 0;
-    for (int i = 0; i < genderItems.length; i++) {
-      if (genderItems[i].value == _gender) {
-        initialIndex = i;
-        break;
-      }
-    }
+    int initialIndex = genders.indexOf(_gender);
+    if (initialIndex < 0) initialIndex = 0;
 
-    return SizedBox(
-      height: 200,
-      child: WheelPicker(
-        columns: [genderItems],
-        initialIndices: [initialIndex],
-        onSelectedItemChanged: (columnIndex, itemIndex, value) {
-          haptic(HapticFeedbackType.selection);
-          setState(() {
-            _gender = value as Gender;
-          });
-        },
-        config: const WheelPickerConfig(
-          height: 200,
-          useHapticFeedback: true,
-          itemHeight: 50,
+    // Create controller
+    final genderController = WheelPickerController(
+      itemCount: genders.length,
+      initialIndex: initialIndex,
+    );
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.white.withAlpha(26), // 0.1 opacity
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: SizedBox(
+        height: 200,
+        child: WheelPicker(
+          builder: (context, index) {
+            final gender = genders[index];
+            final isSelected = gender == _gender;
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  _getGenderIcon(gender),
+                  color: isSelected ? AppColor.thirdColor : Colors.white70,
+                  size: isSelected ? 24 : 22,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  _getGenderText(gender),
+                  style: TextStyle(
+                    fontSize: isSelected ? 22 : 20,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    color: isSelected
+                        ? AppColor.thirdColor // Blue color for selected item
+                        : Colors.white70, // Light color for better visibility on dark background
+                  ),
+                ),
+              ],
+            );
+          },
+          controller: genderController,
+          selectedIndexColor: Colors.transparent,
+          looping: false,
+          style: const WheelPickerStyle(
+            itemExtent: 50,
+            squeeze: 1.0,
+            diameterRatio: 1.5,
+            magnification: 1.2,
+            surroundingOpacity: 0.3,
+          ),
+          onIndexChanged: (index, _) {
+            haptic(HapticFeedbackType.selection);
+            setState(() {
+              _gender = genders[index];
+            });
+          },
         ),
       ),
     );
@@ -148,82 +168,38 @@ class _GenderBottomSheetState extends State<GenderBottomSheet> with HapticFeedba
           padding: const EdgeInsets.all(16.0),
           child: Text(
             context.l10n.gender,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            style: const TextStyle(
               color: Colors.white,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
         ),
 
-        // Current gender display
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                _getGenderIcon(_gender),
-                color: Colors.white,
-                size: 32,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                _getGenderText(_gender),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 24),
-
         // Gender picker
         _buildGenderPicker(),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
 
-        // Buttons
+        // Save button
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.white),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(context.l10n.cancel),
-                ),
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            onPressed: () {
+              haptic(HapticFeedbackType.success);
+              widget.onSaved(_gender);
+              Navigator.of(context).pop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.thirdColor,
+              foregroundColor: Colors.white,
+              minimumSize: const Size(double.infinity, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: FilledButton(
-                  onPressed: () {
-                    widget.onSaved(_gender);
-                    Navigator.of(context).pop();
-                  },
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(context.l10n.save),
-                ),
-              ),
-            ],
+            ),
+            child: Text(context.l10n.save),
           ),
         ),
       ],

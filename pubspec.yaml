@@ -39,6 +39,7 @@ dependencies:
   # Firebase
   firebase_core: ^3.13.0
   firebase_remote_config: ^5.4.3
+  cloud_firestore: ^5.6.7
   # UI Components
   wheel_picker: ^0.2.1
   vector_graphics: ^1.1.18
@@ -52,6 +53,9 @@ dependencies:
   # Database
   drift: ^2.16.0
   sqlite3_flutter_libs: ^0.5.20
+  share_plus: ^11.0.0
+  package_info_plus: ^8.3.0
+  purchases_flutter: ^8.8.1
 
 dev_dependencies:
   flutter_test:

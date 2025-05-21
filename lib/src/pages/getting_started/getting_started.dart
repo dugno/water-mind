@@ -21,6 +21,8 @@ import 'package:water_mind/src/pages/getting_started/viewmodels/getting_started_
 import 'package:water_mind/src/pages/getting_started/widgets/language_selector_fullscreen.dart';
 import 'package:water_mind/src/ui/widgets/progress_bar/progress_bar_theme.dart';
 import 'package:water_mind/src/ui/widgets/progress_bar/segmented_progress_bar.dart';
+import 'package:water_mind/src/core/services/language/language_manager.dart';
+import 'package:water_mind/src/core/providers/locale_provider.dart';
 
 /// Screen for the getting started flow
 @RoutePage()
@@ -39,7 +41,7 @@ class GettingStartedPage extends ConsumerWidget {
   final bool fromHome;
 
   // Language selection
-  bool get isEnglish => true; // Placeholder, replace with actual implementation
+  bool get isEnglish => KVStoreService.appLanguage == 'en';
 
   void _triggerHapticFeedback() {
     HapticFeedback.lightImpact();
@@ -110,7 +112,7 @@ class GettingStartedPage extends ConsumerWidget {
     }
   }
 
-  void _showLanguageSelector(BuildContext context) {
+  void _showLanguageSelector(BuildContext context, WidgetRef ref) {
     // Lấy ngôn ngữ hiện tại từ KVStoreService
     final currentLanguage = KVStoreService.appLanguage;
 
@@ -119,9 +121,15 @@ class GettingStartedPage extends ConsumerWidget {
       context: context,
       currentLanguage: currentLanguage,
       onLanguageSelected: (languageCode) async {
-        // Cập nhật ngôn ngữ trong KVStoreService
-        await KVStoreService.setAppLanguage(languageCode);
+        // Cập nhật ngôn ngữ trong locale provider (sẽ tự động cập nhật KVStoreService)
+        await ref.read(localeProvider.notifier).setLocale(languageCode);
         AppLogger.info('Language changed to: $languageCode');
+
+        // Force rebuild to update the language selector UI
+        if (context.mounted) {
+          // Invalidate the state to trigger a rebuild
+          ref.invalidate(gettingStartedViewModelProvider(initialStep: initialStep));
+        }
       },
     );
   }
@@ -353,28 +361,43 @@ class GettingStartedPage extends ConsumerWidget {
 
           // Language selector
           GestureDetector(
-            onTap: () => _showLanguageSelector(context),
-            child: Row(
-              children: [
-                Image.asset(
-                  isEnglish
-                      ? 'assets/images/language/united_kingdom.png'
-                      : 'assets/images/language/vietnam.png',
-                  width: 16,
-                  height: 12,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.language, size: 16, color: Colors.white);
-                  },
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  isEnglish ? 'EN' : 'VI',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
+            onTap: () => _showLanguageSelector(context, ref),
+            child: FutureBuilder<LanguageModel?>(
+              future: LanguageManager.getLanguageByCode(KVStoreService.appLanguage),
+              builder: (context, snapshot) {
+                // Default values if data is not loaded yet
+                String flagPath = isEnglish
+                    ? 'assets/images/language/united_kingdom.png'
+                    : 'assets/images/language/vietnam.png';
+                String abbreviation = isEnglish ? 'EN' : 'VI';
+
+                // Use data from LanguageManager if available
+                if (snapshot.hasData && snapshot.data != null) {
+                  flagPath = snapshot.data!.imagePath;
+                  abbreviation = snapshot.data!.abbreviation;
+                }
+
+                return Row(
+                  children: [
+                    Image.asset(
+                      flagPath,
+                      width: 16,
+                      height: 12,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.language, size: 16, color: Colors.white);
+                      },
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      abbreviation,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:water_mind/src/common/constant/app_color.dart';
 
 /// A base bottom sheet widget that can be extended for various use cases
 class BaseBottomSheet extends StatelessWidget {
@@ -17,6 +18,9 @@ class BaseBottomSheet extends StatelessWidget {
   /// The background color of the bottom sheet
   final Color? backgroundColor;
 
+  /// Whether to use gradient background
+  final bool useGradientBackground;
+
   /// The shape of the bottom sheet
   final ShapeBorder? shape;
 
@@ -31,6 +35,7 @@ class BaseBottomSheet extends StatelessWidget {
     this.isScrollable = true,
     this.padding = const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
     this.backgroundColor,
+    this.useGradientBackground = false,
     this.shape,
     this.maxHeightFactor,
   });
@@ -43,6 +48,7 @@ class BaseBottomSheet extends StatelessWidget {
     bool isScrollable = true,
     EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
     Color? backgroundColor,
+    bool useGradientBackground = false,
     ShapeBorder? shape,
     bool isDismissible = true,
     bool enableDrag = true,
@@ -53,7 +59,7 @@ class BaseBottomSheet extends StatelessWidget {
       isScrollControlled: true,
       isDismissible: isDismissible,
       enableDrag: enableDrag,
-      backgroundColor: backgroundColor ?? Colors.white,
+      backgroundColor: useGradientBackground ? Colors.transparent : (backgroundColor ?? Colors.white),
       shape: shape ?? const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -62,6 +68,7 @@ class BaseBottomSheet extends StatelessWidget {
         isScrollable: isScrollable,
         padding: padding,
         backgroundColor: backgroundColor,
+        useGradientBackground: useGradientBackground,
         shape: shape,
         maxHeightFactor: maxHeightFactor,
         child: child,
@@ -72,7 +79,7 @@ class BaseBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final maxHeight = maxHeightFactor != null 
+    final maxHeight = maxHeightFactor != null
         ? mediaQuery.size.height * maxHeightFactor!
         : null;
 
@@ -103,8 +110,24 @@ class BaseBottomSheet extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: backgroundColor ?? Theme.of(context).colorScheme.surface,
+        color: useGradientBackground ? null : (backgroundColor ?? Theme.of(context).colorScheme.surface),
+        gradient: useGradientBackground ? LinearGradient(
+          colors: [
+            AppColor.primaryColor.withAlpha(204), // 0.8 opacity
+            AppColor.secondaryColor.withAlpha(179), // 0.7 opacity
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ) : null,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: useGradientBackground ? [
+          BoxShadow(
+            color: AppColor.primaryColor.withAlpha(77), // 0.3 opacity
+            blurRadius: 8,
+            spreadRadius: 1,
+            offset: const Offset(0, 2),
+          ),
+        ] : null,
       ),
       child: SafeArea(
         child: content,
@@ -118,7 +141,9 @@ class BaseBottomSheet extends StatelessWidget {
         width: 40,
         height: 4,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+          color: useGradientBackground
+              ? Colors.white.withAlpha(51) // 0.2 opacity
+              : Theme.of(context).colorScheme.onSurface.withAlpha(51), // 0.2 opacity
           borderRadius: BorderRadius.circular(2),
         ),
       ),
