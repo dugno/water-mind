@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:water_mind/src/core/database/daos/reminder_settings_dao.dart';
 import 'package:water_mind/src/core/services/logger/app_logger.dart';
 import 'package:water_mind/src/core/services/reminders/models/water_reminder_model.dart';

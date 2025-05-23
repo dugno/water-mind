@@ -6,8 +6,6 @@ import 'package:water_mind/src/core/routing/app_router.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
 import 'package:water_mind/src/pages/home/home_view_model.dart';
-import 'package:water_mind/src/ui/widgets/calendar/controllers/calendar_controller.dart';
-import 'package:water_mind/src/ui/widgets/calendar/widgets/week_view.dart';
 import 'package:water_mind/src/ui/widgets/hydration/water_history_list.dart';
 import 'package:water_mind/src/ui/widgets/premium/premium_icon.dart';
 import 'package:water_mind/src/ui/widgets/streak/streak_display_widget.dart';
@@ -67,32 +65,32 @@ class HomePage extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.only(top: 8, bottom: 16),
             children: [
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                decoration: BoxDecoration(
-                  color: AppColor.thirdColor,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 90,
-                    child: WeekView(
-                      controller: CalendarController(),
-                      // Sử dụng onTap của DayView trong WeekView
-                    ),
-                  ),
-                ),
-              ),
+              // Container(
+              //   margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              //   decoration: BoxDecoration(
+              //     color: AppColor.thirdColor,
+              //     borderRadius: BorderRadius.circular(16),
+              //     boxShadow: [
+              //       BoxShadow(
+              //         color: Colors.black.withOpacity(0.1),
+              //         blurRadius: 10,
+              //         offset: const Offset(0, 2),
+              //       ),
+              //     ],
+              //   ),
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: SizedBox(
+              //       height: 90,
+              //       child: WeekView(
+              //         controller: CalendarController(),
+              //         // Sử dụng onTap của DayView trong WeekView
+              //       ),
+              //     ),
+              //   ),
+              // ),
 
-              const SizedBox(height: 24),
+              // const SizedBox(height: 24),
 
               buildSettingsCard([
                 // Water cup with animation
@@ -264,7 +262,6 @@ class HomePage extends ConsumerWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Header with weather and profile
             Container(
               margin: const EdgeInsets.only(top: 16.0, bottom: 8.0),
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

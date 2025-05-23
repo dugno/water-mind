@@ -7,7 +7,7 @@ import 'package:water_mind/src/core/routing/app_router.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_mixin.dart';
 import 'package:water_mind/src/core/services/haptic/haptic_service.dart';
 import 'package:water_mind/src/core/database/providers/database_providers.dart';
-import 'package:water_mind/src/core/services/premium/premium_service_provider.dart';
+import 'package:water_mind/src/core/services/logger/app_logger.dart';
 import 'package:water_mind/src/core/services/reminders/models/reminder_mode.dart';
 import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/enum.dart';
@@ -22,7 +22,7 @@ import 'package:water_mind/src/pages/profile/widgets/premium_status_widget.dart'
 import 'package:water_mind/src/pages/profile/widgets/time_settings_bottom_sheet.dart';
 import 'package:water_mind/src/pages/profile/widgets/unit_selector_bottom_sheet.dart';
 import 'package:water_mind/src/pages/profile/widgets/weight_bottom_sheet.dart';
-import 'package:water_mind/src/ui/widgets/premium/premium_icon.dart';
+
 import 'package:water_mind/src/ui/widgets/profile/stats_row_widget.dart';
 
 /// Profile page for the app
@@ -190,7 +190,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '${profileSettings.customDailyGoal?.toInt() ?? 2500} ${profileSettings.measureUnit == MeasureUnit.metric ? 'ml' : 'oz'}',
+                  _formatDailyGoal(profileSettings),
                   style: const TextStyle(color: Colors.white, fontSize: 16),
                 ),
                 const SizedBox(width: 8),
@@ -203,43 +203,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
             },
           ),
 
-          // Custom Daily Goal Switch with premium check
-          SwitchListTile(
-            secondary: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.edit, color: Colors.white),
-                SizedBox(width: 4),
-                PremiumIcon(
-                  size: 16,
-                  color: Colors.white,
-                  backgroundColor: AppColor.primaryColor,
-                ),
-              ],
-            ),
-            title: Text(
-              context.l10n.useCustomDailyGoal,
-              style: const TextStyle(color: Colors.white),
-            ),
-            value: profileSettings.useCustomDailyGoal,
-            activeColor: Colors.white,
-            activeTrackColor: AppColor.thirdColor,
-            onChanged: (value) {
-              haptic(HapticFeedbackType.selection);
 
-              // Check if premium is active
-              final isPremiumActive = ref.read(isPremiumActiveProvider).value ?? false;
-              if (isPremiumActive) {
-                ref.read(profileSettingsProvider.notifier).updateDailyGoal(
-                  profileSettings.customDailyGoal ?? 2500,
-                  value,
-                );
-              } else {
-                // If not premium, show premium subscription page
-                context.router.push(const PremiumSubscriptionRoute());
-              }
-            },
-          ),
 
           // Gender
           ListTile(
@@ -451,7 +415,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: AppColor.thirdColor.withOpacity(0.8),
+        color: AppColor.thirdColor.withAlpha(204), // 0.8 * 255 = 204
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -466,11 +430,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
       measureUnit: profileSettings.measureUnit,
       onUnitChanged: (selectedUnit) {
         haptic(HapticFeedbackType.success);
+
+        // Cập nhật chiều cao và cân nặng
         ref.read(profileSettingsProvider.notifier).updateHeightWeight(
           profileSettings.height ?? 170,
           profileSettings.weight ?? 70,
           selectedUnit,
         );
+
+        // Không cần cập nhật mục tiêu uống nước hàng ngày ở đây
+        // Đã được xử lý trong phương thức updateHeightWeight
+
+        // Kích hoạt rebuild UI
+        if (mounted) {
+          setState(() {});
+        }
       },
     );
   }
@@ -498,7 +472,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
         haptic(HapticFeedbackType.success);
         ref.read(profileSettingsProvider.notifier).updateDailyGoal(
           value.toDouble(),
-          true,
+          false, // Không sử dụng useCustomDailyGoal nữa
         );
       },
     );
@@ -637,5 +611,24 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with HapticFeedbackMi
         subject: 'Water Mind App',
       ),
     );
+  }
+
+  /// Định dạng giá trị mục tiêu uống nước hàng ngày với đơn vị đo phù hợp
+  String _formatDailyGoal(ProfileSettingsModel profileSettings) {
+    final dailyGoal = profileSettings.customDailyGoal?.toInt() ?? 2500;
+
+    if (profileSettings.measureUnit == MeasureUnit.metric) {
+      // Nếu đơn vị là metric, hiển thị giá trị ml
+      return '$dailyGoal ml';
+    } else {
+      // Nếu đơn vị là imperial, chuyển đổi từ ml sang fl oz
+      // 1 ml ≈ 0.033814 fl oz
+      final flOz = (dailyGoal * 0.033814).round();
+
+      // Ghi log để debug
+      AppLogger.info('Chuyển đổi từ $dailyGoal ml sang $flOz oz');
+
+      return '$flOz oz';
+    }
   }
 }

@@ -7,6 +7,8 @@ import 'package:water_mind/src/core/database/daos/water_intake_dao.dart';
 import 'package:water_mind/src/core/models/water_intake_entry.dart';
 import 'package:water_mind/src/core/models/water_intake_history.dart';
 import 'package:water_mind/src/core/models/drink_type.dart';
+import 'package:water_mind/src/core/models/daily_water_summary.dart';
+import 'package:water_mind/src/core/services/hydration/daily_water_summary_repository.dart';
 import 'package:water_mind/src/core/services/hydration/water_intake_change_notifier.dart';
 import 'package:water_mind/src/core/services/hydration/water_intake_repository.dart';
 import 'package:water_mind/src/core/services/streak/streak_service.dart';
@@ -16,7 +18,7 @@ import 'package:water_mind/src/core/services/logger/app_logger.dart';
 import 'package:logger/logger.dart' as logger;
 
 // Tạo mock classes
-@GenerateMocks([WaterIntakeDao, StreakService, Ref])
+@GenerateMocks([WaterIntakeDao, StreakService, Ref, DailyWaterSummaryRepository])
 import 'water_intake_repository_streak_test.mocks.dart';
 
 // Cung cấp dummy value cho WaterIntakeChangeNotifier
@@ -37,6 +39,7 @@ void _initializeAppLogger() {
     AppLogger.logFile = tempFile;
   } catch (e) {
     // Bỏ qua lỗi nếu logger đã được khởi tạo
+    // ignore: avoid_print
     print('Logger initialization error (can be ignored): $e');
   }
 }
@@ -54,12 +57,14 @@ void main() {
   late MockWaterIntakeDao mockDao;
   late MockStreakService mockStreakService;
   late MockRef mockRef;
+  late MockDailyWaterSummaryRepository mockDailyWaterSummaryRepository;
   late ProviderContainer container;
 
   setUp(() {
     mockDao = MockWaterIntakeDao();
     mockStreakService = MockStreakService();
     mockRef = MockRef();
+    mockDailyWaterSummaryRepository = MockDailyWaterSummaryRepository();
 
     // Tạo ProviderContainer thật để sử dụng với các provider
     container = ProviderContainer(
@@ -74,7 +79,18 @@ void main() {
     when(mockRef.read(waterIntakeChangeNotifierProvider.notifier))
         .thenReturn(container.read(waterIntakeChangeNotifierProvider.notifier));
 
-    repository = DriftWaterIntakeRepository(mockDao, mockRef);
+    // Giả lập phương thức updateFromWaterIntakeHistory của DailyWaterSummaryRepository
+    when(mockDailyWaterSummaryRepository.updateFromWaterIntakeHistory(any))
+        .thenAnswer((_) async => DailyWaterSummary(
+              date: DateTime.now(),
+              userId: 'current_user',
+              totalAmount: 0,
+              totalEffectiveAmount: 0,
+              dailyGoal: 2500,
+              measureUnit: MeasureUnit.metric,
+            ));
+
+    repository = DriftWaterIntakeRepository(mockDao, mockRef, mockDailyWaterSummaryRepository);
   });
 
   tearDown(() {
@@ -113,6 +129,7 @@ void main() {
       // Assert
       verify(mockDao.addWaterIntakeEntry(date, entry)).called(1);
       verify(mockStreakService.updateUserStreak(date)).called(1);
+      verify(mockDailyWaterSummaryRepository.updateFromWaterIntakeHistory(any)).called(1);
     });
 
     test('addWaterIntakeEntry should handle errors', () async {

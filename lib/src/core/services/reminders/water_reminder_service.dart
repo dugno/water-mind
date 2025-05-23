@@ -1,16 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:water_mind/src/core/network/models/network_result.dart';
+import 'package:water_mind/src/core/services/hydration/water_intake_repository.dart';
 import 'package:water_mind/src/core/services/logger/app_logger.dart';
 import 'package:water_mind/src/core/services/notifications/notification_factory.dart';
 import 'package:water_mind/src/core/services/notifications/notification_manager.dart';
 import 'package:water_mind/src/core/services/reminders/reminder_repository.dart';
+import 'package:water_mind/src/core/services/user/user_repository.dart';
 import 'package:water_mind/src/core/services/weather/daily_weather_service.dart';
-import 'package:water_mind/src/core/services/weather/models/weather_data.dart';
-import 'package:water_mind/src/core/utils/app_localizations_helper.dart';
 import 'package:water_mind/src/core/utils/enum/weather_condition.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'models/reminder_mode.dart';
 import 'models/water_reminder_model.dart';
 import 'reminder_service_interface.dart';
@@ -50,12 +47,27 @@ class WaterReminderService implements ReminderServiceInterface {
   /// Repository for reminder settings
   final ReminderRepository _reminderRepository;
 
+  /// Repository for user data
+  final UserRepository _userRepository;
+
+  /// Repository for water intake data
+  final WaterIntakeRepository _waterIntakeRepository;
+
+  /// Service for weather data
+  final DailyWeatherService _weatherService;
+
   /// Constructor
   WaterReminderService({
     required NotificationManager notificationManager,
     required ReminderRepository reminderRepository,
+    required UserRepository userRepository,
+    required WaterIntakeRepository waterIntakeRepository,
+    required DailyWeatherService weatherService,
   }) : _notificationManager = notificationManager,
-       _reminderRepository = reminderRepository;
+       _reminderRepository = reminderRepository,
+       _userRepository = userRepository,
+       _waterIntakeRepository = waterIntakeRepository,
+       _weatherService = weatherService;
 
   @override
   Future<void> initialize() async {
@@ -342,7 +354,7 @@ class WaterReminderService implements ReminderServiceInterface {
 
       if (settings.customTimes.isEmpty) {
         debugPrint('Custom mode: No custom times defined, nothing to schedule');
-        return true; // No reminders to schedule is considered success
+        return true; 
       }
 
       debugPrint('Custom mode: Scheduling ${settings.customTimes.length} reminders at user-defined times');
@@ -404,13 +416,21 @@ class WaterReminderService implements ReminderServiceInterface {
       // Get user data and water intake history for personalization
       final userData = await _getUserData();
       final waterIntakeHistory = await _getWaterIntakeHistory();
+      String weatherType;
+      try {
+        weatherType = await _getCurrentWeatherType();
+        debugPrint('Using actual weather data for reminder: $weatherType');
+      } catch (e) {
+        weatherType = _getRandomWeatherType();
+        debugPrint('Using fallback weather data for reminder: $weatherType');
+      }
 
-      // Generate personalized notification content
       final notificationContent = _generateNotificationContent(
         hour: hour,
         minute: minute,
         userData: userData,
-        waterIntakeHistory: waterIntakeHistory
+        waterIntakeHistory: waterIntakeHistory,
+        weatherType: weatherType
       );
 
       // Create the notification
@@ -445,15 +465,39 @@ class WaterReminderService implements ReminderServiceInterface {
   /// Get user data for personalization
   Future<Map<String, dynamic>?> _getUserData() async {
     try {
-      // This is a placeholder - in a real implementation, you would fetch actual user data
-      // from your user repository or service
+      // Lấy dữ liệu người dùng thực từ repository
+      final userData = await _userRepository.getUserData();
+
+      if (userData == null) {
+        debugPrint('No user data found, using default values');
+        return {
+          'name': 'User',
+          'dailyGoal': 0, // ml
+          'language': 'en',
+        };
+      }
+
+      // Chuyển đổi từ UserOnboardingModel sang Map
       return {
-        'name': 'User',
-        'dailyGoal': 2500.0, // ml
-        'language': 'vi',
+        'name': 'User', // Không có trường name trong UserOnboardingModel
+        'gender': userData.gender?.name,
+        'height': userData.height,
+        'weight': userData.weight,
+        'measureUnit': userData.measureUnit.name,
+        'dateOfBirth': userData.dateOfBirth?.toIso8601String(),
+        'activityLevel': userData.activityLevel?.name,
+        'livingEnvironment': userData.livingEnvironment?.name,
+        'wakeUpTime': userData.wakeUpTime != null
+            ? '${userData.wakeUpTime!.hour}:${userData.wakeUpTime!.minute}'
+            : null,
+        'bedTime': userData.bedTime != null
+            ? '${userData.bedTime!.hour}:${userData.bedTime!.minute}'
+            : null,
+        'language': 'vi', // Mặc định là tiếng Việt, có thể lấy từ UserPreferences nếu cần
       };
     } catch (e) {
       debugPrint('Error getting user data: $e');
+      AppLogger.reportError(e, StackTrace.current, 'Error getting user data for reminder');
       return null;
     }
   }
@@ -461,18 +505,43 @@ class WaterReminderService implements ReminderServiceInterface {
   /// Get water intake history for personalization
   Future<Map<String, dynamic>?> _getWaterIntakeHistory() async {
     try {
-      // This is a placeholder - in a real implementation, you would fetch actual water intake history
-      // from your water intake repository or service
+      // Lấy ngày hiện tại
       final now = DateTime.now();
+
+      // Lấy lịch sử uống nước cho ngày hiện tại
+      final history = await _waterIntakeRepository.getWaterIntakeHistory(now);
+
+      if (history == null) {
+        debugPrint('No water intake history found for today, using default values');
+        return {
+          'date': now,
+          'totalAmount': 0.0, // ml
+          'dailyGoal': 2500.0, // ml
+          'progress': 0.0, // 0%
+          'remainingAmount': 2500.0, // ml
+        };
+      }
+
+      // Tính toán các giá trị
+      final totalAmount = history.totalAmount;
+      final dailyGoal = history.dailyGoal;
+      final progress = history.progressPercentage;
+      final remainingAmount = history.remainingAmount > 0 ? history.remainingAmount : 0.0;
+
+      debugPrint('Water intake history for today: total=$totalAmount, goal=$dailyGoal, progress=$progress');
+
       return {
         'date': now,
-        'totalAmount': 1200.0, // ml
-        'dailyGoal': 2500.0, // ml
-        'progress': 0.48, // 48%
-        'remainingAmount': 1300.0, // ml
+        'totalAmount': totalAmount,
+        'dailyGoal': dailyGoal,
+        'progress': progress,
+        'remainingAmount': remainingAmount,
+        'goalMet': history.goalMet,
+        'measureUnit': history.measureUnit.name,
       };
     } catch (e) {
       debugPrint('Error getting water intake history: $e');
+      AppLogger.reportError(e, StackTrace.current, 'Error getting water intake history for reminder');
       return null;
     }
   }
@@ -483,6 +552,7 @@ class WaterReminderService implements ReminderServiceInterface {
     required int minute,
     Map<String, dynamic>? userData,
     Map<String, dynamic>? waterIntakeHistory,
+    String? weatherType,
   }) {
     // Default values if data is not available
     final double progress = waterIntakeHistory?['progress'] ?? 0.0;
@@ -492,8 +562,8 @@ class WaterReminderService implements ReminderServiceInterface {
     // Get time of day to personalize message
     final timeOfDay = _getTimeOfDay(hour);
 
-    // Get weather type (in a real implementation, this would use actual weather data)
-    final weatherType = _getRandomWeatherType();
+    // Use provided weather type or fallback to random
+    final weatherConditionType = weatherType ?? _getRandomWeatherType();
 
     // Get localized messages
     final messages = _getLocalizedMessages(language);
@@ -503,7 +573,7 @@ class WaterReminderService implements ReminderServiceInterface {
     final title = titles.containsKey(timeOfDay) ? titles[timeOfDay] : titles['default'];
 
     // Get body message
-    final body = _getBodyMessage(language, progress, remainingAmount, timeOfDay, weatherType);
+    final body = _getBodyMessage(language, progress, remainingAmount, timeOfDay, weatherConditionType);
 
     return _NotificationContent(
       title: title,
@@ -707,8 +777,16 @@ class WaterReminderService implements ReminderServiceInterface {
       final messages = _getLocalizedMessages(language);
       final weatherTitle = messages['titles']['weather'];
 
-      // Create a weather-based message (in a real implementation, this would use actual weather data)
-      final weatherType = _getRandomWeatherType();
+      // Lấy dữ liệu thời tiết thực từ service
+      String weatherType;
+      try {
+        weatherType = await _getCurrentWeatherType();
+        debugPrint('Using actual weather data for morning notification: $weatherType');
+      } catch (e) {
+        // Fallback to random weather if there's an error
+        weatherType = _getRandomWeatherType();
+        debugPrint('Using fallback weather data for morning notification: $weatherType');
+      }
       final weatherBody = messages['bodies']['weather'][weatherType];
 
       // Create the notification
@@ -739,8 +817,87 @@ class WaterReminderService implements ReminderServiceInterface {
     }
   }
 
-  /// Get a random weather type for demo purposes
-  /// In a real implementation, this would be replaced with actual weather data
+  /// Get current weather type from weather service
+  /// Returns a string representation of the weather condition
+  Future<String> _getCurrentWeatherType() async {
+    try {
+      final weatherResult = await _weatherService.getCurrentWeather();
+      return weatherResult.when(
+        success: (data) {
+          final condition = data.condition;
+          debugPrint('Current weather condition: ${condition.name}');
+
+          // Phân loại thời tiết thành các nhóm cho thông báo
+          if (condition == WeatherCondition.hot ||
+              condition == WeatherCondition.humid ||
+              condition == WeatherCondition.sunny) {
+            return 'hot';
+          } else if (condition == WeatherCondition.partlyCloudy) {
+            return 'sunny';
+          } else if (condition == WeatherCondition.patchyRainPossible ||
+                     condition == WeatherCondition.patchyLightRain ||
+                     condition == WeatherCondition.lightRain ||
+                     condition == WeatherCondition.moderateRainAtTimes ||
+                     condition == WeatherCondition.moderateRain ||
+                     condition == WeatherCondition.heavyRainAtTimes ||
+                     condition == WeatherCondition.heavyRain ||
+                     condition == WeatherCondition.lightRainShower ||
+                     condition == WeatherCondition.moderateOrHeavyRainShower ||
+                     condition == WeatherCondition.torrentialRainShower ||
+                     condition == WeatherCondition.patchyLightRainWithThunder ||
+                     condition == WeatherCondition.moderateOrHeavyRainWithThunder ||
+                     condition == WeatherCondition.thunderyOutbreaksPossible) {
+            return 'rainy';
+          } else if (condition == WeatherCondition.patchySnowPossible ||
+                     condition == WeatherCondition.patchySleetPossible ||
+                     condition == WeatherCondition.patchyFreezingDrizzlePossible ||
+                     condition == WeatherCondition.blowingSnow ||
+                     condition == WeatherCondition.blizzard ||
+                     condition == WeatherCondition.freezingFog ||
+                     condition == WeatherCondition.patchyLightDrizzle ||
+                     condition == WeatherCondition.lightDrizzle ||
+                     condition == WeatherCondition.freezingDrizzle ||
+                     condition == WeatherCondition.heavyFreezingDrizzle ||
+                     condition == WeatherCondition.lightFreezingRain ||
+                     condition == WeatherCondition.moderateOrHeavyFreezingRain ||
+                     condition == WeatherCondition.lightSleet ||
+                     condition == WeatherCondition.moderateOrHeavySleet ||
+                     condition == WeatherCondition.patchyLightSnow ||
+                     condition == WeatherCondition.lightSnow ||
+                     condition == WeatherCondition.patchyModerateSnow ||
+                     condition == WeatherCondition.moderateSnow ||
+                     condition == WeatherCondition.patchyHeavySnow ||
+                     condition == WeatherCondition.heavySnow ||
+                     condition == WeatherCondition.icePellets ||
+                     condition == WeatherCondition.lightSleetShowers ||
+                     condition == WeatherCondition.moderateOrHeavySleetShowers ||
+                     condition == WeatherCondition.lightSnowShowers ||
+                     condition == WeatherCondition.moderateOrHeavySnowShowers ||
+                     condition == WeatherCondition.lightShowersOfIcePellets ||
+                     condition == WeatherCondition.moderateOrHeavyShowersOfIcePellets ||
+                     condition == WeatherCondition.patchyLightSnowWithThunder ||
+                     condition == WeatherCondition.moderateOrHeavySnowWithThunder) {
+            return 'cold';
+          } else {            return 'default';
+          }
+        },
+        error: (error) {
+          debugPrint('Error getting weather data: $error');
+          return 'default';
+        },
+        loading: () {
+          debugPrint('Weather data is loading, using default');
+          return 'default';
+        },
+      );
+    } catch (e) {
+      debugPrint('Exception getting weather data: $e');
+      AppLogger.reportError(e, StackTrace.current, 'Error getting weather data for reminder');
+      return 'default';
+    }
+  }
+
+  /// Fallback method to get a random weather type when actual data is not available
   String _getRandomWeatherType() {
     final weatherTypes = ['hot', 'sunny', 'cold', 'rainy', 'default'];
     return weatherTypes[Random().nextInt(weatherTypes.length)];

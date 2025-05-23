@@ -32,8 +32,11 @@ class DatabaseVersions {
   /// Phiên bản thêm bảng UserStreakTable
   static const int addUserStreakTable = 5;
 
+  /// Phiên bản thêm bảng DailyWaterSummaryTable
+  static const int addDailyWaterSummaryTable = 6;
+
   /// Phiên bản hiện tại
-  static const int currentVersion = addUserStreakTable;
+  static const int currentVersion = addDailyWaterSummaryTable;
 }
 
 /// Cơ sở dữ liệu chính của ứng dụng
@@ -45,6 +48,7 @@ class DatabaseVersions {
   UserPreferencesTable,
   ForecastHydrationTable,
   UserStreakTable,
+  DailyWaterSummaryTable,
 ])
 class AppDatabase extends _$AppDatabase {
   /// Constructor
@@ -136,6 +140,39 @@ class AppDatabase extends _$AppDatabase {
               last_updated TEXT NOT NULL
             )
           ''');
+        }
+
+        // Nâng cấp lên phiên bản 6 (thêm bảng DailyWaterSummaryTable)
+        if (from < DatabaseVersions.addDailyWaterSummaryTable && to >= DatabaseVersions.addDailyWaterSummaryTable) {
+          AppLogger.info('Adding daily water summary table');
+
+          // Tạo bảng DailyWaterSummaryTable
+          await customStatement('''
+            CREATE TABLE daily_water_summary_table (
+              id TEXT NOT NULL PRIMARY KEY,
+              date TEXT NOT NULL,
+              user_id TEXT NOT NULL,
+              total_amount REAL NOT NULL,
+              total_effective_amount REAL NOT NULL,
+              daily_goal REAL NOT NULL,
+              measure_unit INTEGER NOT NULL,
+              goal_met INTEGER NOT NULL DEFAULT 0,
+              last_updated TEXT NOT NULL,
+              FOREIGN KEY (user_id) REFERENCES user_data_table (id),
+              CHECK (total_amount >= 0),
+              CHECK (total_effective_amount >= 0),
+              CHECK (daily_goal > 0)
+            )
+          ''');
+
+          // Thêm index cho bảng DailyWaterSummaryTable
+          await customStatement(
+            'CREATE INDEX idx_daily_water_summary_date ON daily_water_summary_table (date)'
+          );
+
+          await customStatement(
+            'CREATE INDEX idx_daily_water_summary_user_id ON daily_water_summary_table (user_id)'
+          );
         }
       },
       beforeOpen: (details) async {
@@ -736,6 +773,93 @@ class AppDatabase extends _$AppDatabase {
     // Không làm gì cả, giữ lại tất cả dữ liệu
     AppLogger.info('Database cleanup disabled. All forecast hydration data will be kept for the entire app lifecycle.');
     return 0; // Trả về 0 để chỉ ra rằng không có bản ghi nào bị xóa
+  }
+
+  // ----------------------
+  // Daily Water Summary Methods
+  // ----------------------
+
+  /// Lấy tổng lượng nước uống theo ngày
+  Future<DailyWaterSummaryTableData?> getDailyWaterSummaryByDate(DateTime date, String userId) async {
+    try {
+      final dateString = date.toIso8601String().split('T')[0];
+      final query = select(dailyWaterSummaryTable)
+        ..where((tbl) => tbl.id.equals(dateString) & tbl.userId.equals(userId));
+      return await query.getSingleOrNull();
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error getting daily water summary by date');
+      rethrow;
+    }
+  }
+
+  /// Lấy tất cả tổng lượng nước uống
+  Future<List<DailyWaterSummaryTableData>> getAllDailyWaterSummaries({
+    int? limit,
+    int? offset,
+    DateTime? startDate,
+    DateTime? endDate,
+    String userId = 'current_user',
+  }) async {
+    try {
+      final query = select(dailyWaterSummaryTable)
+        ..where((tbl) => tbl.userId.equals(userId))
+        ..orderBy([(t) => OrderingTerm.desc(t.date)]);
+
+      // Thêm phân trang nếu có
+      if (limit != null) {
+        query.limit(limit, offset: offset);
+      }
+
+      // Lấy kết quả
+      final results = await query.get();
+
+      // Lọc kết quả theo ngày bắt đầu và ngày kết thúc
+      return results.where((data) {
+        final dateString = data.date.toIso8601String().split('T')[0];
+
+        // Kiểm tra điều kiện ngày bắt đầu
+        if (startDate != null) {
+          final startDateString = startDate.toIso8601String().split('T')[0];
+          if (dateString.compareTo(startDateString) < 0) {
+            return false;
+          }
+        }
+
+        // Kiểm tra điều kiện ngày kết thúc
+        if (endDate != null) {
+          final nextDay = DateTime(endDate.year, endDate.month, endDate.day + 1);
+          final nextDayString = nextDay.toIso8601String().split('T')[0];
+          if (dateString.compareTo(nextDayString) >= 0) {
+            return false;
+          }
+        }
+
+        return true;
+      }).toList();
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error getting all daily water summaries');
+      rethrow;
+    }
+  }
+
+  /// Lưu hoặc cập nhật tổng lượng nước uống
+  Future<void> saveDailyWaterSummary(DailyWaterSummaryTableCompanion summary) async {
+    try {
+      await into(dailyWaterSummaryTable).insertOnConflictUpdate(summary);
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error saving daily water summary');
+      rethrow;
+    }
+  }
+
+  /// Xóa tất cả tổng lượng nước uống
+  Future<void> clearAllDailyWaterSummaries(String userId) async {
+    try {
+      await (delete(dailyWaterSummaryTable)..where((tbl) => tbl.userId.equals(userId))).go();
+    } catch (e) {
+      AppLogger.reportError(e, StackTrace.current, 'Error clearing all daily water summaries');
+      rethrow;
+    }
   }
 }
 

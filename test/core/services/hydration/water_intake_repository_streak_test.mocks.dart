@@ -3,17 +3,20 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i7;
+import 'dart:async' as _i8;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i10;
+import 'package:mockito/src/dummies.dart' as _i11;
 import 'package:riverpod/src/internals.dart' as _i5;
-import 'package:water_mind/src/core/database/daos/water_intake_dao.dart' as _i6;
+import 'package:water_mind/src/core/database/daos/water_intake_dao.dart' as _i7;
 import 'package:water_mind/src/core/database/database.dart' as _i2;
-import 'package:water_mind/src/core/models/user_streak_model.dart' as _i9;
+import 'package:water_mind/src/core/models/daily_water_summary.dart' as _i6;
+import 'package:water_mind/src/core/models/user_streak_model.dart' as _i10;
 import 'package:water_mind/src/core/models/water_intake_entry.dart' as _i4;
 import 'package:water_mind/src/core/models/water_intake_history.dart' as _i3;
-import 'package:water_mind/src/core/services/streak/streak_service.dart' as _i8;
+import 'package:water_mind/src/core/services/hydration/daily_water_summary_repository.dart'
+    as _i12;
+import 'package:water_mind/src/core/services/streak/streak_service.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -104,10 +107,21 @@ class _FakeProviderSubscription_6<State1> extends _i1.SmartFake
         );
 }
 
+class _FakeDailyWaterSummary_7 extends _i1.SmartFake
+    implements _i6.DailyWaterSummary {
+  _FakeDailyWaterSummary_7(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [WaterIntakeDao].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockWaterIntakeDao extends _i1.Mock implements _i6.WaterIntakeDao {
+class MockWaterIntakeDao extends _i1.Mock implements _i7.WaterIntakeDao {
   MockWaterIntakeDao() {
     _i1.throwOnMissingStub(this);
   }
@@ -130,7 +144,7 @@ class MockWaterIntakeDao extends _i1.Mock implements _i6.WaterIntakeDao {
       ) as _i2.WaterIntakeHistoryTableCompanion);
 
   @override
-  _i7.Future<_i3.WaterIntakeHistory> historyFromData(
+  _i8.Future<_i3.WaterIntakeHistory> historyFromData(
           _i2.WaterIntakeHistoryTableData? data) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -138,14 +152,14 @@ class MockWaterIntakeDao extends _i1.Mock implements _i6.WaterIntakeDao {
           [data],
         ),
         returnValue:
-            _i7.Future<_i3.WaterIntakeHistory>.value(_FakeWaterIntakeHistory_1(
+            _i8.Future<_i3.WaterIntakeHistory>.value(_FakeWaterIntakeHistory_1(
           this,
           Invocation.method(
             #historyFromData,
             [data],
           ),
         )),
-      ) as _i7.Future<_i3.WaterIntakeHistory>);
+      ) as _i8.Future<_i3.WaterIntakeHistory>);
 
   @override
   _i2.WaterIntakeEntryTableCompanion entryToCompanion(
@@ -173,7 +187,7 @@ class MockWaterIntakeDao extends _i1.Mock implements _i6.WaterIntakeDao {
       ) as _i2.WaterIntakeEntryTableCompanion);
 
   @override
-  _i7.Future<_i4.WaterIntakeEntry> entryFromData(
+  _i8.Future<_i4.WaterIntakeEntry> entryFromData(
           _i2.WaterIntakeEntryTableData? data) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -181,38 +195,38 @@ class MockWaterIntakeDao extends _i1.Mock implements _i6.WaterIntakeDao {
           [data],
         ),
         returnValue:
-            _i7.Future<_i4.WaterIntakeEntry>.value(_FakeWaterIntakeEntry_3(
+            _i8.Future<_i4.WaterIntakeEntry>.value(_FakeWaterIntakeEntry_3(
           this,
           Invocation.method(
             #entryFromData,
             [data],
           ),
         )),
-      ) as _i7.Future<_i4.WaterIntakeEntry>);
+      ) as _i8.Future<_i4.WaterIntakeEntry>);
 
   @override
-  _i7.Future<_i3.WaterIntakeHistory?> getWaterIntakeHistory(DateTime? date) =>
+  _i8.Future<_i3.WaterIntakeHistory?> getWaterIntakeHistory(DateTime? date) =>
       (super.noSuchMethod(
         Invocation.method(
           #getWaterIntakeHistory,
           [date],
         ),
-        returnValue: _i7.Future<_i3.WaterIntakeHistory?>.value(),
-      ) as _i7.Future<_i3.WaterIntakeHistory?>);
+        returnValue: _i8.Future<_i3.WaterIntakeHistory?>.value(),
+      ) as _i8.Future<_i3.WaterIntakeHistory?>);
 
   @override
-  _i7.Future<void> saveWaterIntakeHistory(_i3.WaterIntakeHistory? history) =>
+  _i8.Future<void> saveWaterIntakeHistory(_i3.WaterIntakeHistory? history) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveWaterIntakeHistory,
           [history],
         ),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
 
   @override
-  _i7.Future<_i3.WaterIntakeHistory> addWaterIntakeEntry(
+  _i8.Future<_i3.WaterIntakeHistory> addWaterIntakeEntry(
     DateTime? date,
     _i4.WaterIntakeEntry? entry,
   ) =>
@@ -225,7 +239,7 @@ class MockWaterIntakeDao extends _i1.Mock implements _i6.WaterIntakeDao {
           ],
         ),
         returnValue:
-            _i7.Future<_i3.WaterIntakeHistory>.value(_FakeWaterIntakeHistory_1(
+            _i8.Future<_i3.WaterIntakeHistory>.value(_FakeWaterIntakeHistory_1(
           this,
           Invocation.method(
             #addWaterIntakeEntry,
@@ -235,10 +249,10 @@ class MockWaterIntakeDao extends _i1.Mock implements _i6.WaterIntakeDao {
             ],
           ),
         )),
-      ) as _i7.Future<_i3.WaterIntakeHistory>);
+      ) as _i8.Future<_i3.WaterIntakeHistory>);
 
   @override
-  _i7.Future<void> deleteWaterIntakeEntry(
+  _i8.Future<void> deleteWaterIntakeEntry(
     DateTime? date,
     String? entryId,
   ) =>
@@ -250,12 +264,12 @@ class MockWaterIntakeDao extends _i1.Mock implements _i6.WaterIntakeDao {
             entryId,
           ],
         ),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
 
   @override
-  _i7.Future<List<_i3.WaterIntakeHistory>> getAllWaterIntakeHistory({
+  _i8.Future<List<_i3.WaterIntakeHistory>> getAllWaterIntakeHistory({
     int? limit,
     int? offset,
     DateTime? startDate,
@@ -272,68 +286,68 @@ class MockWaterIntakeDao extends _i1.Mock implements _i6.WaterIntakeDao {
             #endDate: endDate,
           },
         ),
-        returnValue: _i7.Future<List<_i3.WaterIntakeHistory>>.value(
+        returnValue: _i8.Future<List<_i3.WaterIntakeHistory>>.value(
             <_i3.WaterIntakeHistory>[]),
-      ) as _i7.Future<List<_i3.WaterIntakeHistory>>);
+      ) as _i8.Future<List<_i3.WaterIntakeHistory>>);
 
   @override
-  _i7.Future<void> clearAllWaterIntakeHistory() => (super.noSuchMethod(
+  _i8.Future<void> clearAllWaterIntakeHistory() => (super.noSuchMethod(
         Invocation.method(
           #clearAllWaterIntakeHistory,
           [],
         ),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
 
   @override
-  _i7.Future<void> deleteWaterIntakeHistoryOlderThan(DateTime? date) =>
+  _i8.Future<void> deleteWaterIntakeHistoryOlderThan(DateTime? date) =>
       (super.noSuchMethod(
         Invocation.method(
           #deleteWaterIntakeHistoryOlderThan,
           [date],
         ),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
 }
 
 /// A class which mocks [StreakService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockStreakService extends _i1.Mock implements _i8.StreakService {
+class MockStreakService extends _i1.Mock implements _i9.StreakService {
   MockStreakService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i7.Future<_i9.UserStreakModel?> getUserStreak() => (super.noSuchMethod(
+  _i8.Future<_i10.UserStreakModel?> getUserStreak() => (super.noSuchMethod(
         Invocation.method(
           #getUserStreak,
           [],
         ),
-        returnValue: _i7.Future<_i9.UserStreakModel?>.value(),
-      ) as _i7.Future<_i9.UserStreakModel?>);
+        returnValue: _i8.Future<_i10.UserStreakModel?>.value(),
+      ) as _i8.Future<_i10.UserStreakModel?>);
 
   @override
-  _i7.Future<void> updateUserStreak(DateTime? activityDate) =>
+  _i8.Future<void> updateUserStreak(DateTime? activityDate) =>
       (super.noSuchMethod(
         Invocation.method(
           #updateUserStreak,
           [activityDate],
         ),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
 
   @override
-  _i7.Future<bool> hasStreakToday() => (super.noSuchMethod(
+  _i8.Future<bool> hasStreakToday() => (super.noSuchMethod(
         Invocation.method(
           #hasStreakToday,
           [],
         ),
-        returnValue: _i7.Future<bool>.value(false),
-      ) as _i7.Future<bool>);
+        returnValue: _i8.Future<bool>.value(false),
+      ) as _i8.Future<bool>);
 }
 
 /// A class which mocks [Ref].
@@ -360,7 +374,7 @@ class MockRef<State extends Object?> extends _i1.Mock
           #refresh,
           [provider],
         ),
-        returnValue: _i10.dummyValue<T>(
+        returnValue: _i11.dummyValue<T>(
           this,
           Invocation.method(
             #refresh,
@@ -467,7 +481,7 @@ class MockRef<State extends Object?> extends _i1.Mock
           #read,
           [provider],
         ),
-        returnValue: _i10.dummyValue<T>(
+        returnValue: _i11.dummyValue<T>(
           this,
           Invocation.method(
             #read,
@@ -491,7 +505,7 @@ class MockRef<State extends Object?> extends _i1.Mock
           #watch,
           [provider],
         ),
-        returnValue: _i10.dummyValue<T>(
+        returnValue: _i11.dummyValue<T>(
           this,
           Invocation.method(
             #watch,
@@ -555,4 +569,85 @@ class MockRef<State extends Object?> extends _i1.Mock
           ),
         ),
       ) as _i5.ProviderSubscription<T>);
+}
+
+/// A class which mocks [DailyWaterSummaryRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDailyWaterSummaryRepository extends _i1.Mock
+    implements _i12.DailyWaterSummaryRepository {
+  MockDailyWaterSummaryRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i8.Future<_i6.DailyWaterSummary?> getDailyWaterSummary(DateTime? date) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getDailyWaterSummary,
+          [date],
+        ),
+        returnValue: _i8.Future<_i6.DailyWaterSummary?>.value(),
+      ) as _i8.Future<_i6.DailyWaterSummary?>);
+
+  @override
+  _i8.Future<void> saveDailyWaterSummary(_i6.DailyWaterSummary? summary) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveDailyWaterSummary,
+          [summary],
+        ),
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
+
+  @override
+  _i8.Future<_i6.DailyWaterSummary> updateFromWaterIntakeHistory(
+          _i3.WaterIntakeHistory? history) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateFromWaterIntakeHistory,
+          [history],
+        ),
+        returnValue:
+            _i8.Future<_i6.DailyWaterSummary>.value(_FakeDailyWaterSummary_7(
+          this,
+          Invocation.method(
+            #updateFromWaterIntakeHistory,
+            [history],
+          ),
+        )),
+      ) as _i8.Future<_i6.DailyWaterSummary>);
+
+  @override
+  _i8.Future<List<_i6.DailyWaterSummary>> getAllDailyWaterSummaries({
+    int? limit,
+    int? offset,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAllDailyWaterSummaries,
+          [],
+          {
+            #limit: limit,
+            #offset: offset,
+            #startDate: startDate,
+            #endDate: endDate,
+          },
+        ),
+        returnValue: _i8.Future<List<_i6.DailyWaterSummary>>.value(
+            <_i6.DailyWaterSummary>[]),
+      ) as _i8.Future<List<_i6.DailyWaterSummary>>);
+
+  @override
+  _i8.Future<void> clearAllDailyWaterSummaries() => (super.noSuchMethod(
+        Invocation.method(
+          #clearAllDailyWaterSummaries,
+          [],
+        ),
+        returnValue: _i8.Future<void>.value(),
+        returnValueForMissingStub: _i8.Future<void>.value(),
+      ) as _i8.Future<void>);
 }

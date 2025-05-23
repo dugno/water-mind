@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:water_mind/src/core/database/daos/user_data_dao.dart';
 import 'package:water_mind/src/core/services/logger/app_logger.dart';
 import 'package:water_mind/src/pages/getting_started/models/user_onboarding_model.dart';

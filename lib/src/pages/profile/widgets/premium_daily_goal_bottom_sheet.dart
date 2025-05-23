@@ -60,7 +60,15 @@ class _PremiumDailyGoalBottomSheetState extends ConsumerState<PremiumDailyGoalBo
   @override
   void initState() {
     super.initState();
-    _value = widget.initialValue;
+
+    // Chuyển đổi giá trị từ metric sang imperial nếu cần
+    if (widget.measureUnit == MeasureUnit.imperial) {
+      // Chuyển đổi từ ml sang fl oz (1 ml ≈ 0.033814 fl oz)
+      _value = (widget.initialValue * 0.033814).round();
+    } else {
+      _value = widget.initialValue;
+    }
+
     _controller = TextEditingController(text: _value.toString());
   }
 
@@ -194,11 +202,18 @@ class _PremiumDailyGoalBottomSheetState extends ConsumerState<PremiumDailyGoalBo
               ElevatedButton(
                 onPressed: () {
                   haptic(HapticFeedbackType.medium);
-                  
+
                   // Check if premium is active
                   final isPremiumActive = ref.read(isPremiumActiveProvider).value ?? false;
                   if (isPremiumActive) {
-                    widget.onSaved(_value);
+                    // Chuyển đổi giá trị từ imperial sang metric nếu cần
+                    if (widget.measureUnit == MeasureUnit.imperial) {
+                      // Chuyển đổi từ fl oz sang ml (1 fl oz ≈ 29.5735 ml)
+                      final metricValue = (_value * 29.5735).round();
+                      widget.onSaved(metricValue);
+                    } else {
+                      widget.onSaved(_value);
+                    }
                     Navigator.of(context).pop();
                   } else {
                     // If not premium, use the default calculated value
@@ -254,9 +269,9 @@ class _PremiumDailyGoalBottomSheetState extends ConsumerState<PremiumDailyGoalBo
             },
           ),
         ),
-        
+
         const SizedBox(height: 16),
-        
+
         // Slider for quick adjustment
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

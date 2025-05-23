@@ -44,7 +44,9 @@ class WaterIntakeHistory with _$WaterIntakeHistory {
         return '${totalAmount.toStringAsFixed(0)} ml';
       }
     } else {
-      return '${totalAmount.toStringAsFixed(1)} fl oz';
+      // Chuyển đổi từ ml sang fl oz (1 ml ≈ 0.033814 fl oz)
+      final flOz = totalAmount * 0.033814;
+      return '${flOz.toStringAsFixed(1)} fl oz';
     }
   }
 
@@ -57,7 +59,9 @@ class WaterIntakeHistory with _$WaterIntakeHistory {
         return '${dailyGoal.toStringAsFixed(0)} ml';
       }
     } else {
-      return '${dailyGoal.toStringAsFixed(1)} fl oz';
+      // Chuyển đổi từ ml sang fl oz (1 ml ≈ 0.033814 fl oz)
+      final flOz = dailyGoal * 0.033814;
+      return '${flOz.toStringAsFixed(1)} fl oz';
     }
   }
 }

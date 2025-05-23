@@ -253,3 +253,43 @@ class UserStreakTable extends Table {
   @override
   Set<Column> get primaryKey => {id};
 }
+
+/// Bảng lưu trữ tổng lượng nước uống theo ngày
+class DailyWaterSummaryTable extends Table {
+  /// ID duy nhất của bản ghi (dựa trên ngày)
+  TextColumn get id => text()();
+
+  /// Ngày của bản ghi (định dạng ISO8601)
+  TextColumn get date => text().map(const DateTimeConverter())();
+
+  /// ID của người dùng (mặc định là 'current_user')
+  TextColumn get userId => text().references(UserDataTable, #id)();
+
+  /// Tổng lượng nước đã uống trong ngày (ml hoặc fl oz)
+  RealColumn get totalAmount => real()();
+
+  /// Tổng lượng nước hiệu quả đã uống trong ngày (ml hoặc fl oz)
+  RealColumn get totalEffectiveAmount => real()();
+
+  /// Mục tiêu uống nước hàng ngày (ml hoặc fl oz)
+  RealColumn get dailyGoal => real()();
+
+  /// Đơn vị đo lường (0: metric, 1: imperial)
+  IntColumn get measureUnit => integer().map(const MeasureUnitConverter())();
+
+  /// Đã đạt mục tiêu hay chưa
+  BoolColumn get goalMet => boolean().withDefault(const Constant(false))();
+
+  /// Thời gian cập nhật cuối cùng
+  TextColumn get lastUpdated => text().map(const DateTimeConverter())();
+
+  @override
+  Set<Column> get primaryKey => {id};
+
+  @override
+  List<String> get customConstraints => [
+    'CHECK (total_amount >= 0)',
+    'CHECK (total_effective_amount >= 0)',
+    'CHECK (daily_goal > 0)',
+  ];
+}

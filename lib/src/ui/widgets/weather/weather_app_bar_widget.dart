@@ -50,8 +50,8 @@ class WeatherAppBarWidget extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          width: 24,
-          height: 24,
+          width: 30,
+          height: 30,
           child: WeatherIconMapper.getWeatherIconFromCondition(
             condition,
             isDay: true,
@@ -64,13 +64,7 @@ class WeatherAppBarWidget extends ConsumerWidget {
           ),
         ),
         const SizedBox(width: 4),
-        Text(
-          condition.getString(context),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-        ),
+      
       ],
     );
   }

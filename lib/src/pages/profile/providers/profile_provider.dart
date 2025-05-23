@@ -157,8 +157,25 @@ class ProfileSettingsNotifier extends StateNotifier<AsyncValue<ProfileSettingsMo
 
       // Nếu có custom daily goal, đồng bộ với đơn vị đo mới
       if (updated.useCustomDailyGoal && updated.customDailyGoal != null) {
+        double convertedGoal = updated.customDailyGoal!;
+
+        // Chuyển đổi giá trị mục tiêu uống nước hàng ngày khi thay đổi đơn vị đo
+        if (unit == MeasureUnit.imperial && settings.measureUnit == MeasureUnit.metric) {
+          // Không cần chuyển đổi giá trị vì đã lưu ở dạng ml
+          AppLogger.info('Giữ nguyên giá trị mục tiêu uống nước hàng ngày khi chuyển từ metric sang imperial: $convertedGoal ml');
+        } else if (unit == MeasureUnit.metric && settings.measureUnit == MeasureUnit.imperial) {
+          // Không cần chuyển đổi giá trị vì đã lưu ở dạng ml
+          AppLogger.info('Giữ nguyên giá trị mục tiêu uống nước hàng ngày khi chuyển từ imperial sang metric: $convertedGoal ml');
+        }
+
+        // Cập nhật giá trị mục tiêu uống nước hàng ngày
+        final updatedWithGoal = updated.copyWith(customDailyGoal: convertedGoal);
+        state = AsyncValue.data(updatedWithGoal);
+        await _saveProfileSettings(updatedWithGoal);
+
+        // Đồng bộ với WaterIntakeHistory
         await _syncDailyGoalWithWaterIntakeHistory(
-          updated.customDailyGoal!,
+          convertedGoal,
           unit
         );
       } else {

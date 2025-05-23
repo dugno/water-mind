@@ -532,6 +532,13 @@ class _DailyChartTabState extends State<DailyChartTab> {
     final timeFormat = DateFormat.Hm();
     final String unit = measureUnit == MeasureUnit.metric ? 'ml' : 'fl oz';
 
+    // Chuyển đổi giá trị nếu cần
+    double displayAmount = entry.amount;
+    if (measureUnit == MeasureUnit.imperial) {
+      // Chuyển đổi từ ml sang fl oz (1 ml ≈ 0.033814 fl oz)
+      displayAmount = entry.amount * 0.033814;
+    }
+
     return ListTile(
       leading: SizedBox(
         width: 40,
@@ -544,7 +551,7 @@ class _DailyChartTabState extends State<DailyChartTab> {
         ),
       ),
       title: Text(
-        '${entry.amount.toStringAsFixed(0)} $unit of ${entry.drinkType.name}',
+        '${displayAmount.toStringAsFixed(measureUnit == MeasureUnit.metric ? 0 : 1)} $unit of ${entry.drinkType.name}',
         style: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
